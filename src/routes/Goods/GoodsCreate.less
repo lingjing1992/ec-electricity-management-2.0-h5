@@ -1,0 +1,374 @@
+// 这里是校验信息
+@import "~antd/lib/style/themes/default.less";
+//.card {
+//  margin-bottom: 24px;
+//  :global{
+//    .ant-card-head{
+//      border-bottom: none;
+//      padding-left: 0;
+//    }
+//    .ant-card-body{
+//      padding: 0;
+//    }
+//
+//  }
+//}
+//.basicInformation{
+//  max-width: 900px;
+//  margin: 0 auto;
+//}
+#GoodsCreate{
+  :global{
+    .ant-form-item-label label:after{
+      display: none;
+    }
+  }
+  .basicInfoCard{
+    width: 900px;
+    margin: 0 auto;
+  }
+  :global{
+    .ant-card-head-wrapper{
+      width: 900px;
+      margin: 0 auto;
+    }
+    .ant-tabs-nav-container{
+      padding-left: 0;
+    }
+  }
+  .otherInfo{
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.85);
+    font-weight: normal;
+  }
+  .skuInfoCard{
+    :global{
+      .ant-card-head-wrapper{
+        max-width: 1400px;
+        width: auto;
+        margin: 0 auto;
+      }
+      .ant-card-head{
+        padding: 0;
+      }
+    }
+  }
+
+}
+
+.heading {
+  font-size: 14px;
+  line-height: 22px;
+  margin: 0 0 16px 0;
+}
+
+.steps {
+  max-width: 750px;
+  margin: 16px auto;
+}
+
+.errorIcon {
+  cursor: pointer;
+  color: @error-color;
+  margin-right: 24px;
+  i {
+    margin-right: 4px;
+  }
+}
+
+.errorPopover {
+  :global {
+    .ant-popover-inner-content {
+      padding: 0;
+      max-height: 290px;
+      overflow: auto;
+      min-width: 256px;
+    }
+  }
+}
+
+.goodsDetailForm{
+  :global{
+    .ant-form-item-label{
+      line-height:45px;
+    }
+  }
+}
+.errorListItem {
+  list-style: none;
+  border-bottom: 1px solid @border-color-split;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: all .3s;
+  &:hover {
+    background: @primary-1;
+  }
+  &:last-child {
+    border: 0;
+  }
+  .errorIcon {
+    color: @error-color;
+    float: left;
+    margin-top: 4px;
+    margin-right: 12px;
+    padding-bottom: 22px;
+  }
+  .errorField {
+    font-size: 12px;
+    color: @text-color-secondary;
+    margin-top: 2px;
+  }
+}
+
+.editable {
+  td {
+    padding-top: 13px !important;
+    padding-bottom: 12.5px !important;
+  }
+}
+
+// custom footer for fixed footer toolbar
+.advancedForm + div {
+  padding-bottom: 64px;
+}
+
+.advancedForm {
+  :global {
+    .ant-form .ant-row:last-child .ant-form-item {
+      margin-bottom: 24px;
+    }
+    .ant-table td {
+      transition: none !important;
+    }
+  }
+}
+
+.skuPropertyName{
+  position: relative;
+  span {
+    color: #ccc;
+    font-size: 12px;
+  }
+}
+
+.optional {
+  color: @text-color-secondary;
+  font-style: normal;
+}
+// 这里是校验信息 end
+.GoodsCreate {
+  overflow: hidden;
+  padding-bottom: 60px!important;
+  :global {
+    .ant-select-selection--multiple .ant-select-selection__rendered > ul > li{
+      margin-top: 5px;
+    }
+    .ant-form-item :not(.ant-form) > .ant-form-item,
+    .ant-form-item>.ant-form-item:last-child {
+      //margin-bottom: 0;
+    }
+    /* tile uploaded pictures */
+    .upload-list-inline .ant-upload-list-item {
+      float: left;
+      width: 120px;
+      height: 70px;
+      margin-right: 36px;
+      background-color: #fff;
+    }
+
+    .ant-upload-list-item:nth-of-type(6n){
+      margin-right: 0;
+    }
+    .ant-upload-list-picture .ant-upload-list-item-thumbnail img, .ant-upload-list-picture-card .ant-upload-list-item-thumbnail img,.ant-upload-list-picture .ant-upload-list-item-thumbnail, .ant-upload-list-picture-card .ant-upload-list-item-thumbnail{
+      width: 50px;
+      height: 50px;
+    }
+    .ant-upload-list-picture .ant-upload-list-item-thumbnail, .ant-upload-list-picture-card .ant-upload-list-item-thumbnail{
+      left: 9px;
+      top: 9px;
+    }
+    .ant-upload-list-picture .anticon-cross{
+      top: 2px;
+      right: 2px;
+    }
+
+    .ant-upload-list-item-name{
+      line-height: 52px;
+      padding-left: 75px;
+    }
+
+    .upload-list-inline .ant-upload-animate-enter {
+      animation-name: uploadAnimateInlineIn;
+    }
+    .upload-list-inline .ant-upload-animate-leave {
+      animation-name: uploadAnimateInlineOut;
+    }
+    /* tile uploaded pictures end */
+    .avatar-uploader > .ant-upload {
+      width: 64px;
+      height: 64px;
+      display: inline-block;
+    }
+    .ant-upload.ant-upload-select-picture-card > .ant-upload {
+      width: 64px;
+      height: 64px;
+    }
+    .ant-upload.ant-upload-select-picture-card > .ant-upload img {
+      width: 100%;
+      height: 100%;
+    }
+    .ant-table-tbody > tr.ant-table-row-selected td{
+      background-color: #fff;
+    }
+  }
+}
+:global {
+  // 上传图片的时候叉大一点
+  :root .ant-upload-list-item .anticon-cross {
+    font-size: 16px;
+    //.spuTableForm .ant-form-item-control>* {
+    //  margin-top: 9px;
+    //}
+  }
+}
+.GoodsCreate .regionStyle {
+  border: 1px solid red;
+  margin-top: 10px;
+  padding: 10px;
+}
+.GoodsCreate .errorStyle {
+  color: red;
+  margin-top: 10px;
+  padding: 10px;
+}
+
+.GoodsCreate .gooodsPicDesc {
+  font-size: 12px;
+  color: #1890ff;
+}
+
+.GoodsCreate .spuAttributes {
+  font-size: 12px;
+  color: #1890ff;
+}
+.GoodsCreate :global .ant-form-item-label {
+  text-align: right;
+}
+.goodsNameForm{
+  margin-bottom: 48px;
+}
+.GoodsCreate .goodsNameForm:global > .ant-form-item-label:before,
+.GoodsCreate .saleInfoForm:global > .ant-form-item-label:before {
+  display: inline-block;
+  margin-right: 4px;
+  content: "*";
+  font-family: SimSun;
+  line-height: 1;
+  font-size: 14px;
+  color: #f5222d;
+}
+.GoodsCreate .spuAttributesForm {
+  margin: 0;
+  :global{
+    .ant-checkbox-group-item{
+      margin-top: 12px;
+    }
+    .ant-form-item-label{
+      height: auto;
+      line-height: inherit;
+      margin-top: 14px;
+    }
+  }
+}
+.GoodsCreate .show {
+  display: block;
+}
+.GoodsCreate .hidden {
+  display: none;
+}
+.spuTitleName :global .ant-col-4.ant-form-item-label label:after {
+  content: '';
+}
+.spuAttrTableForm {
+  margin-bottom: 0;
+
+}
+.spuTableForm{
+  margin-bottom: 0;
+}
+.spuButton{
+  margin-top: 24px;
+}
+.GoodsCreate .spuAttrTableForm .spuActive {
+  position: absolute;
+  margin-top: -28px;
+  right: -32px;
+  top: 28px;
+}
+.GoodsCreate :global .ant-checkbox-disabled+span {
+  color: rgba(0,0,0,0.65);
+}
+.GoodsCreate :global .ant-checkbox+span,
+.GoodsCreate :global .ant-checkbox-wrapper+span {
+  width: 194px;
+  display: inline-block;
+}
+.skuInfo{
+  max-width: 1400px;
+  margin: 0 auto;
+  :global .ant-card-head-title{
+    font-size: 14px;
+    padding-bottom: 0;
+    height: 46px;
+    color: rgba(0, 0, 0, 0.85);
+    font-weight: normal;
+
+  }
+  :global{
+    .ant-checkbox-wrapper span:last-of-type{
+      width: auto;
+    }
+    .ant-checkbox-wrapper span.ant-checkbox{
+      width: 16px;
+    }
+    .ant-checkbox-wrapper+span{
+      display: none;
+    }
+  }
+}
+.inputFormItem{
+  margin-top: 20px;
+  width: 800px;
+}
+.otherLanguageInput{
+  margin-left: 99px;
+  margin-top: 10px;
+}
+.languageInput{
+  margin-bottom: 0;
+}
+.uploadImage{
+  box-sizing: border-box;
+}
+
+.exchangeTool{
+  :global{
+    .ant-modal-body{
+      padding-top: 0;
+      padding-bottom: 14px;
+    }
+    .ant-btn:nth-of-type(1){
+      display: none;
+    }
+    .ant-modal-content .ant-modal-footer button:last-of-type{
+      width: 100px;
+    }
+
+    .ant-modal-footer{
+      text-align: center;
+    }
+    .ant-modal-content{
+      padding-bottom: 10px;
+    }
+  }
+}

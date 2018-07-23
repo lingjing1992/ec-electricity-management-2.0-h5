@@ -1,0 +1,154 @@
+@import "~antd/lib/style/themes/default.less";
+
+.DataGoodsSalesList .searchInput {
+  width: 200px;
+  padding-right: 57px;
+}
+.DataGoodsSalesList .searchButton {
+  height: 30px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  box-sizing: border-box;
+  margin-left: -63px;
+  border-color: #fff;
+  margin-top: 1px;
+}
+.tableTop {
+  margin-top: 8px;
+}
+
+:global {
+  // tooltip的时候
+  .ant-tooltip-inner {
+    word-wrap: break-word;
+  }
+  // 排序的时候
+  :root .ant-table-column-sorter .anticon-caret-down,
+  :root .ant-table-column-sorter .anticon-caret-up {
+    font-size: 14px;
+  }
+}
+.shuxing {
+  white-space: nowrap;
+  overflow: hidden;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+}
+
+.DataGoodsSalesList{
+  :global{
+    td[colspan]{
+      padding: 0!important;
+    }
+    .ant-table-expanded-row.ant-table-expanded-row-level-1:first-of-type{
+      display: none;
+    }
+    .ant-table-tbody>.ant-table-expanded-row:first-of-type td{
+      border-bottom: none;
+    }
+  }
+
+  .supplyCost{
+    width: 120px;
+  }
+}
+
+
+.DataGoodsSalesList .spuID {
+  width: 100px;
+}
+.DataGoodsSalesList .spuIcon {
+  width: 100px;
+}
+.DataGoodsSalesList .onSaleDate {
+  width: 74px;
+  padding: 0;
+}
+.DataGoodsSalesList .pv {
+  width: 120px;
+}
+.DataGoodsSalesList .orderCount {
+  width: 100px;
+}
+.DataGoodsSalesList .orderPayCount {
+  width: 100px;
+}
+.DataGoodsSalesList .salesCount {
+  width: 140px;
+}
+.DataGoodsSalesList .salesAmount {
+  width: 120px;
+}
+.DataGoodsSalesList .orderRate {
+  width: 140px;
+}
+.DataGoodsSalesList .salesRate {
+  width: 100px;
+}
+.DataGoodsSalesList .conversionRate {
+  width: 120px;
+}
+.DataGoodsSalesList .expandedRowKeys {
+  width: 50px;
+}
+.DataGoodsSalesList .spuId {
+  width: 100px;
+}
+.DataGoodsSalesList .filter {
+  margin-right: 6px;
+}
+.DataGoodsSalesList {
+  :global {
+    td[colspan='11'] {
+      padding: 0;
+    }
+    .expandTable0{
+      display: none;
+    }
+    .ant-table-expanded-row:last-of-type td:last-of-type{
+      border: none;
+    }
+    .expandTable table .ant-table-tbody{
+      background-color: #f0f2f5;
+    }
+    .expandTable .ant-table-tbody tr:last-of-type td{
+      border: none;
+    }
+  }
+}
+.DataGoodsSalesList {
+  .tablepv{
+    width: 99px!important;
+  }
+  // 展开，收起
+  .check {
+    transition: all 0.3s;
+  }
+  .up {
+    transform: rotate(180deg);
+  }
+  :global {
+    .ant-table-content .ant-table-tbody > tr > td:first-of-type,
+    .ant-table-content .ant-table-thead > tr > th:first-of-type {
+      display: none;
+    }
+  }
+}
+.goodsInfoImg {
+  width: 50px;
+  height: 50px;
+  // background: #ccc;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.goodsInfoImg img {
+  width: 100%;
+  height: 100%;
+}
+
+@media screen and (max-width: 1034px){
+  .tableTop{
+    margin-top: 25px;
+  }
+}

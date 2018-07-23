@@ -1,0 +1,60 @@
+{
+  "entry": "src/index.js",
+  "hash": true,
+  "env": {
+    "development": {
+      "extraBabelPlugins": [
+        "dva-hmr",
+        "transform-runtime",
+        "transform-decorators-legacy",
+        "transform-class-properties",
+        ["import", { "libraryName": "antd", "style": true }]
+      ],
+      "proxy": {
+        "/api": {
+                  "target": "http://dev-ecmc.batmobi.net/",
+                  "changeOrigin": true,
+                  "secure": false
+                }
+      }
+    },
+    "testEnvironments": {
+      "extraBabelPlugins": [
+        "dva-hmr",
+        "transform-runtime",
+        "transform-decorators-legacy",
+        "transform-class-properties",
+        ["import", { "libraryName": "antd", "style": true }]
+      ],
+      "proxy": {
+        "/api": {
+          "target": "http://test-ecmc.batmobi.net/",
+          "changeOrigin": true,
+          "secure": false
+        }
+      }
+    },
+    "production": {
+      "extraBabelPlugins": [
+        "transform-runtime",
+        "transform-decorators-legacy",
+        "transform-class-properties",
+        ["import", { "libraryName": "antd", "style": true }]
+      ],
+      "proxy": {
+        "/api": {
+          "target": "http://merchant.pearlgo.com/",
+          "changeOrigin": true,
+          "secure": false
+        }
+      }
+    }
+  },
+  "externals": {
+    "g2": "G2",
+    "g-cloud": "Cloud",
+    "g2-plugin-slider": "G2.Plugin.slider"
+  },
+  "ignoreMomentLocale": true,
+  "theme": "./src/theme.js"
+}

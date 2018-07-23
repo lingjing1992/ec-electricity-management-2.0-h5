@@ -1,0 +1,261 @@
+@import "~antd/lib/style/themes/default.less";
+
+#GoodsList .searchInput {
+  width: 200px;
+  padding-right: 57px;
+}
+
+.supplierChangesPromit{
+  color: red;
+  .icon:hover{
+    cursor: pointer;
+  }
+}
+
+#GoodsList .searchButton {
+  height: 30px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  box-sizing: border-box;
+  margin-left: -63px;
+  border-color: #fff;
+  margin-top: 4px;
+}
+.tableTop {
+  //margin-top: 16px;
+}
+
+.goodsInfoImg {
+  width: 50px;
+  height: 50px;
+  // background: #ccc;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.goodsInfoImg img {
+  width: 100%;
+  height: 100%;
+}
+
+.goodsInfoDescription {
+  display: inline-block;
+  width: 100px;
+  vertical-align: middle;
+}
+
+:global {
+  #GoodsList .goodsInfo {
+    padding: 0;
+  }
+}
+
+.GoodsListImportFileModal {
+  :global{
+    .ant-modal-footer button:last-of-type {
+      width: auto;
+    }
+    .ant-modal-header{
+      border-bottom: 1px solid #ececec!important;
+    }
+    .ant-modal-body{
+      padding-top: 20px;
+    }
+  }
+}
+
+
+.displayInlineBlock {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.sku {
+  width: 100px;
+}
+
+:global {
+
+  .ant-table-expanded-row {
+    table td {
+      padding: 16px 16px;
+    }
+  }
+  .ant-tabs-bar {
+    background-color: #fff;
+    margin-bottom: 0;
+  }
+  .ant-form-inline {
+    background-color: #fff;
+  }
+  .ant-tabs-extra-content {
+    margin-right: 20px;
+  }
+}
+#GoodsList {
+  padding: 0;
+  :global {
+    //td[colspan='11'] {
+    //  padding: 0;
+    //}
+    //td[colspan="8"]{
+    //  padding: 0!important;
+    //}
+    //td[colspan="9"]{
+    //  padding: 0!important;
+    //}
+    .ant-table-expanded-row>td{
+      padding: 0!important;
+    }
+    .ant-tabs-bar{
+      border-color: #fff;
+      border-radius: 6px;
+    }
+  }
+  .expandTablePrice{
+    width: 120px;
+  }
+  .expandTableCountry{
+    width: 100px;
+  }
+  .expandTableStorage{
+    width: 88px;
+  }
+}
+.formItemBoxButton {
+  //margin-top: 4px;
+  margin-right: 16px;
+}
+.formList {
+  box-sizing: border-box;
+}
+#GoodsList .goodsTd0 {
+  width: 50px;
+  padding: 0;
+}
+//.goodsTd1 {
+//  width: 100px;
+//}
+
+//.goodsTd2 {
+//  min-width: 50px;
+//}
+//
+//.goodsTd3 {
+//  width: 200px;
+//}
+//
+//.goodsTd4 {
+//  width: 60px;
+//}
+//.specialGoodsTd4 {
+//  width: 100px;
+//}
+//.goodsTd5 {
+//  width: 250px;
+//}
+//
+//.goodsTd6 {
+//  width: 150px;
+//}
+//
+//.goodsTd7 {
+//  width: 150px;
+//  max-height: 62px;
+//}
+//.specialGoodsTd7 {
+//  width: 172px;
+//}
+//.goodsTd8 {
+//  width: 150px;
+//}
+//
+//.goodsTd9 {
+//  min-width: 60px;
+//}
+//
+//.goodsTd10 {
+//  min-width: 60px;
+//}
+//
+//.goodsTd11 {
+//  width: 142px;
+//  font-size: 14px;
+//}
+
+.shuxing {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.goodsListExpandedRowRender {
+  font-size: 12px;
+}
+.goodsListExpandedRowRenderTable {
+  border-bottom: 1px solid #ccc;
+  tr {
+    td {
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+  }
+}
+.goodsListExpandedRowRenderTable:last-child {
+  border-bottom: 0;
+}
+#GoodsList {
+  // 展开，收起
+  .check {
+    transition: all 0.3s;
+  }
+  .up {
+    transform: rotate(180deg);
+  }
+  :global {
+    .ant-table-content .ant-table-tbody > tr > td:first-of-type,
+    .ant-table-content .ant-table-thead > tr > th:first-of-type {
+      display: none;
+    }
+  }
+}
+.skuTableItem {
+  height: 50px;
+  line-height: 50px;
+  margin-bottom: 4px;
+}
+.skuTableItem img{
+  height: 100%;
+}
+#GoodsList .extendCountries {
+  width: 103px;
+}
+
+.distribution{
+  font-size: 12px;
+  padding: 2px;
+  border: 1px dotted #ddd;
+  display: inline-block;
+  border-radius: 2px;
+  margin-right: 5px;
+}
+
+//扩展表格
+.expandTable{
+  padding: 0;
+  table{
+    background-color: #f0f2f5;
+  }
+}
+.utmCampaign, .utmTerm{
+  width:45%;
+  display: inline-block;
+  float: right;
+  input{
+    margin-top: 10px;
+  }
+}
+.utmCampaign{
+  float: left;
+}
+
+

@@ -1,0 +1,94 @@
+@classType1: 62px;
+@classType2: 72px;
+@classType3: 92px;
+@classType4: 152px;
+@classType5: 172px;
+@classType6: 192px;
+@classType7: 212px;
+@classType8: 102px;
+@classType9: 142px;
+.columnsChild(@width){
+  width: @width;
+  >div,>span,>input{
+    min-width: @width;
+    display: block;
+  }
+  :global{
+    .ellipsis{
+      width: @width;
+    }
+  }
+}
+
+
+.newTable{
+  :global{
+    .tleft{
+      text-align: left!important;
+    }
+    .tcenter{
+      text-align: center!important;
+      >div,span,input{
+        margin: 0 auto;
+      }
+    }
+    .tright{
+      text-align: center!important;
+    }
+    .ellipsis{
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    .tableImage{
+      width: 50px;
+      img{
+        width: 100%;
+      }
+    }
+    .ant-table-pagination.ant-pagination{
+      margin-bottom: 0;
+    }
+  }
+  .halfPadding{
+    padding-top: 18px!important;
+    padding-bottom: 18px!important;
+  }
+}
+
+.columnsChild1{
+  .columnsChild(@classType1);
+}
+
+.columnsChild2{
+  .columnsChild(@classType2);
+}
+
+.columnsChild3{
+  .columnsChild(@classType3);
+}
+
+.columnsChild4{
+  .columnsChild(@classType4);
+}
+
+.columnsChild5{
+  .columnsChild(@classType5);
+}
+
+.columnsChild6{
+  .columnsChild(@classType6);
+}
+
+.columnsChild7{
+  .columnsChild(@classType7);
+}
+
+.columnsChild8{
+  .columnsChild(@classType8);
+}
+
+.columnsChild9{
+  .columnsChild(@classType9);
+}
+

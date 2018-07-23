@@ -1,0 +1,196 @@
+.totalBox{
+    padding-bottom: 24px;
+    & > div {
+        background: #fff;
+        text-align: center;
+        width: 23%;
+        height: 120px;
+        border-radius: 4px;
+        position: relative;
+        .unit{
+            font-size: 24px;
+        }
+        & > span {
+            width: 16px;
+            height:16px;
+            border-radius: 50%;
+            background: #f00;
+            position: absolute;
+            top: 12px;
+            left: 12px;
+        }
+        & > p {
+            font-size: 14px;
+            padding-top:18px;
+            line-height: 29px;
+            color:#666;
+        }
+        & > strong {
+            font-size: 36px;
+            color:#555;
+            font-weight: 400;
+        }
+    }
+}
+.rankList{
+    & > li {
+        line-height: 48px;
+        text-align: center;
+        & > span{
+            display: inline-block;
+            width:33.3%;
+
+        }
+    }
+    .rank {
+        text-align: center;
+        line-height: 24px;
+        display: inline-block;
+        width:24px;
+        border-radius: 50%;
+        background: #212121;
+        color: #fff;
+    }
+    .listHead {
+        color: #212121;
+        font-size: 14px;
+        font-weight: 600;
+    }
+}
+.subtitle{
+    line-height: 56px;
+    height:56px;
+    padding-left:25px;
+    font-size: 16px;
+    font-weight: 600;
+    border-bottom: 1px solid #ccc;
+    color:#000;
+}
+.linkbox{
+    display: block;
+    width:23%;
+    height:160px;
+    font-size: 30px;
+    color: #fff;
+    line-height: 180px;
+    text-align: center;
+    cursor: pointer;
+    transition: all .3s;
+    & > div{
+        border-radius: 5px;
+        padding-right:10px;
+        p{
+            width: 100%;
+            height: 100%;
+        }
+    }
+    &:hover {
+        opacity: .8;
+    }
+    .father1{
+        background: #4291f7;
+    }
+    .father2{
+        background: #7c4cd8;
+    }
+    .father3{
+        background: #59bfc0;
+    }
+    .father4{
+        background: #de5567;
+    }
+    .child1{
+        background: url('../../assets/home01.png') no-repeat bottom right;
+    }
+    .child2{
+        background: url('../../assets/home02.png') no-repeat bottom right;
+    }
+    .child3{
+        background: url('../../assets/home03.png') no-repeat bottom right;
+    }
+    .child4{
+        background: url('../../assets/home04.png') no-repeat bottom right;
+    }
+}
+@media screen and (max-width: 1580px){
+    .linkbox{
+        font-size: 26px;
+    }
+}
+
+@media screen and (max-width: 1400px){
+    .linkbox{
+        font-size: 22px;
+    }
+}
+.dialog{
+    position: absolute;
+    width:410px;
+    height:362px;
+    top:50%;
+    left:50%;
+    margin-left: -210px;
+    margin-top: -181px;
+    :global {
+        .ant-modal-content{
+            width:410px;
+            border-radius: 8px;
+        }
+        .ant-modal-close{
+            display: none;
+        }
+        .ant-modal-footer{
+            display: none;
+        }
+        .ant-modal-body{
+            padding:38px 25px 0;
+            position: relative;
+            height:362px;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+    }
+    .dialogClose{
+        width:12px;
+        height:12px;
+        background: url(../../assets/dialog-close.png);
+        position: absolute;
+        top:12px;
+        right:12px;
+        cursor: pointer;
+    }
+    .hi{
+        width:48px;
+        height:50px;
+        background: url(../../assets/hi.png);
+        margin: 0 auto;
+    }
+    .title{
+        padding-top:36px;
+        span{
+            color: #4d98f8;
+        }
+    }
+    .content{
+        padding-top:15px;
+        line-height: 30px;
+        color:#666;
+        span{
+            color: #333;
+        }
+    }
+    .button{
+        display: block;
+        position: absolute;
+        bottom:-1px;
+        width:100%;
+        left:0;
+        height:58px;
+        font-size: 16px;
+        color: #fff;
+        background: #4d98f8;
+        text-align: center;
+        line-height: 58px;
+        cursor: pointer;
+    }
+}

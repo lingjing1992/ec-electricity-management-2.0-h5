@@ -1,0 +1,254 @@
+import React, { Component } from 'react';
+import styles from './SubSearch.less';
+import { Redirect, Switch, routerRedux } from 'dva/router';
+import {Input, Icon, Checkbox, Button} from 'antd';
+import { connect } from 'dva';
+
+@connect(state => ({
+  global: state.global,
+  distribution: state.distribution
+}))
+
+export default class SubSearch extends Component {
+  state = {
+    sortData: [
+      {
+        name: '销量',
+        selected: false,
+        sort: -1
+      },{
+        name: '供货价',
+        selected: false,
+        sort: -1
+      },{
+        name: '上架时间',
+        selected: false,
+        sort: -1
+      }
+    ],
+    checkboxStatus: 1,
+    supplyPriceSection: {
+      min: null,
+      max: null
+    },
+    referencePriceSection: {
+      min: null,
+      max: null
+    }
+  }
+  componentWillMount () {
+    this.init()
+  }
+  componentWillReceiveProps (nextProps) {
+    const {rankType, orderBy} = nextProps.distribution.searchData
+    // console.log(nextProps.distribution)
+    if (rankType !== this.props.distribution.searchData.rankType) {
+      const {sortData} = this.state
+      let index = -1;
+      if (rankType == 101) {
+        index = 0
+      } else if (rankType == 102) {
+        index = 2
+      }
+      if (rankType !== null) {
+        let data = sortData[index]
+        data.selected = true
+        data.sort = 1
+        this.setState({
+          sortData: sortData
+        })
+      }
+    } else if(rankType === '' && orderBy === -1){
+      this.setState({
+        sortData: [
+          {
+            name: '销量',
+            selected: false,
+            sort: -1
+          },{
+            name: '供货价',
+            selected: false,
+            sort: -1
+          },{
+            name: '上架时间',
+            selected: false,
+            sort: -1
+          }
+        ]
+      })
+    }
+  }
+  init () {
+    //根据搜索条件判断初始排序选择的状态
+    const {sort, orderBy, status, rankType} = this.props.distribution.searchData
+    const {sortData} = this.state
+
+    if (orderBy !== -1) {
+      sortData[orderBy].selected = true
+      sortData[orderBy].sort= sort
+      this.setState({
+        sortData
+      })
+    }
+
+    if (status !== '') {
+      this.setState({
+        checkboxStatus: status
+      })
+    }
+
+
+  }
+  render() {
+    //初始数据，用于数据初始化
+    const defSortData = [
+      {
+        name: '销量',
+        selected: false,
+        sort: -1
+      },{
+        name: '供货价',
+        selected: false,
+        sort: -1
+      },{
+        name: '上架时间',
+        selected: false,
+        sort: -1
+      }
+    ]
+
+    let {sortData, checkboxStatus, supplyPriceSection, referencePriceSection} = this.state
+    let sortIndex = -1
+
+    const {searchData} = this.props.distribution
+
+    //是否筛选未领取商品 点击事件
+    const onChange = (e) => {
+      const status = e.target.checked ? 0 : 1
+
+      this.setState({
+        checkboxStatus: status
+      })
+
+      //在原搜索条件基础上增加是否未领取搜索条件
+      this.props.dispatch({
+        type: 'distribution/changeSearchData',
+        payload: {
+          ...searchData,
+          status
+        }
+      })
+    }
+
+    //排序点击事件
+    const sortClick = (e,index) => {
+      let data = sortData[index]
+      // 改变顺序状态, 若无状态则默认正序，若有状态取反状态
+      data.sort = data.sort === -1 ? 1 : data.sort === 0 ? 1 : 0
+      data.selected = true
+
+      sortData = [...defSortData]
+      sortData.splice(index,1,data)
+      this.setState({
+        sortData
+      })
+
+      //在原搜索条件基础上增加排序搜索条件
+      this.props.dispatch({
+        type: 'distribution/changeSearchData',
+        payload: {
+          ...searchData,
+          orderBy: index,
+          sort: data.sort,
+          rankType: null
+        }
+      })
+    }
+
+    //价格区间更新事件
+    const inputChangeHandle = (e, x, y) => {
+      const val = e.target.value
+      let data = {
+        supplyPriceSection,
+        referencePriceSection
+      }
+      data[x][y] = val.trim() ? Number(val) : null;
+      this.setState({
+        ...data
+      })
+    }
+
+    //子搜索点击事件
+    const onSearchHandle = () => {
+
+      //在原搜索条件基础上增加排序搜索条件
+      this.props.dispatch({
+        type: 'distribution/changeSearchData',
+        payload: {
+          ...searchData,
+          supplyPriceSection,
+          referencePriceSection
+        }
+      })
+    }
+
+    //重置点击事件
+    const onResetHandel = () => {
+      this.setState({
+        supplyPriceSection: {
+          min: null,
+          max: null
+        },
+        referencePriceSection: {
+          min: null,
+          max: null
+        }
+      })
+    }
+    return (
+      <div className={`${styles.subSearch} clearfix`}>
+        <div className="sort">
+          {sortData.map((item, index) => {
+            const selected = item.selected ? 'selected' : ''
+            const up = item.sort === 0 ? 'up' : ''
+            const down = item.sort === 1 ? 'down' : ''
+            const tdClassName = `${selected} ${up} ${down}`
+            return (
+              <div key={index} className={tdClassName} onClick={(e) => {sortClick(e, index)}}>
+                <span className="name">{item.name}</span>
+                <span className="down">↓</span>
+                <span className="up">↑</span>
+              </div>
+            )
+          })}
+          <div>
+            <Checkbox value={0} onChange={onChange} defaultChecked={checkboxStatus === 0}>未领取</Checkbox>
+          </div>
+        </div>
+        <Button className="reset" onClick = {() => {onResetHandel()}}>重置</Button>
+        <Button type="primary" className="search" onClick={()=>{onSearchHandle()}}>搜索</Button>
+        <div className="ref-setion">
+          <span className={styles.fontsize}>参考售价：</span>
+          <Input className="input" value={supplyPriceSection.min} onChange={(e) => {
+            inputChangeHandle(e, 'supplyPriceSection', 'min')
+          }}></Input>
+          <span> - </span>
+          <Input className="input" value={supplyPriceSection.max} onChange={(e) => {
+            inputChangeHandle(e, 'supplyPriceSection', 'max')
+          }}></Input>
+        </div>
+        <div className="spu-setion">
+          <span className={styles.fontsize}>供货成本：</span>
+          <Input className="input" value={referencePriceSection.min} onChange={(e) => {
+            inputChangeHandle(e, 'referencePriceSection', 'min')
+          }}></Input>
+          <span> - </span>
+          <Input className="input" value={referencePriceSection.max} onChange={(e) => {
+            inputChangeHandle(e, 'referencePriceSection', 'max')
+          }}></Input>
+        </div>
+
+      </div>
+    )
+  }
+}

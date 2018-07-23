@@ -1,0 +1,373 @@
+@import '~antd/lib/style/v2-compatible-reset.less';
+
+html, body, :global(#root) {
+  height: 100%;
+  min-width: 900px;
+}
+
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f0f2f5;
+}
+
+:global {
+  .layout {
+    .ant-notification-notice-message {
+      line-height: 15px;
+    }
+    .ant-modal-header {
+      border-top: 5px solid #1890ff;
+      border-bottom: none !important;
+    }
+    .ant-modal-footer {
+      border-top: none !important;
+      button:first-of-type {
+        border: none !important;
+      }
+      button:last-of-type {
+        width: 100px;
+      }
+    }
+    .ant-table-wrapper {
+      background-color: #fff !important;
+    }
+    .ant-table-expanded-row {
+      background-color: #f0f2f5 !important;
+    }
+    //.ant-table-content .ant-table-thead > tr {
+    //  > th {
+    //    text-align: center;
+    //  }
+    //}
+    //.ant-table-content .ant-table-tbody > tr > td {
+    //  text-align: center;
+    //}
+    .ant-table-pagination {
+      margin-top: 20px !important;
+      margin-right: 20px !important;
+    }
+    //.ant-layout-content>div {
+    //  background-color: #fff;
+    //  padding: 24px;
+    //  border-radius: 2px;
+    //}
+    .showregular {
+      white-space: nowrap; /* 不换行 */
+      overflow: hidden; /* 内容超出宽度时隐藏超出部分的内容 */
+      text-overflow: ellipsis; /* 当对象内文本溢出时显示省略标记(...) ；需与overflow:hidden;一起使用。*/
+    }
+    input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+    }
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
+    .ant-layout.ant-layout-has-sider > .ant-layout, .ant-layout.ant-layout-has-sider > .ant-layout-content, .ant-layout {
+      overflow: visible;
+    }
+    .ant-table-thead > tr > th, .ant-table-tbody > tr > td {
+      word-break: inherit;
+    }
+    .ant-checkbox {
+      top: -0.16em;
+    }
+    //表格
+
+    //表格hover颜色
+    .ant-table-thead > tr.ant-table-row-hover > td, .ant-table-tbody > tr.ant-table-row-hover > td, .ant-table-thead > tr:hover > td, .ant-table-tbody > tr:hover > td {
+      background: rgba(24, 144, 255, .1);
+      //background: #1890ff;
+    }
+    .ant-table-content .ant-table-tbody > tr > td:nth-of-type(2), .ant-table-content .ant-table-thead > tr > th:nth-of-type(2) {
+      padding-left: 24px;
+    }
+    .ant-table-content .ant-table-tbody > tr > td:last-of-type, .ant-table-content .ant-table-thead > tr > th:last-of-type {
+      padding-right: 24px;
+    }
+    //按钮规范
+    .ant-btn, .ant-input, .ant-select-selection--single, .ant-form-item-label, .ant-pagination-options-quick-jumper input {
+      height: 36px;
+      line-height: 34px;
+    }
+    .ant-input {
+      //padding-top: 0;
+      //padding-bottom: 0;
+      height: 36px;
+      //line-height: 34px;
+      line-height: 28px;
+    }
+    .ant-form-item-control {
+      min-height: 36px;
+      line-height: 34px;
+    }
+    .ant-calendar-picker-input {
+      line-height: 26px;
+    }
+
+    //正常按钮的间隔为18px
+    .ant-form-inline .ant-form-item {
+      margin-right: 18px;
+    }
+    .ant-form-inline .ant-form-item.belong {
+      margin-right: 8px;
+    }
+    //属于同一部分的间隔
+    .ant-btn {
+      padding: 0 18px;
+      min-width: 74px;
+    }
+    .ant-btn.ant-input-search-button {
+      min-width: auto;
+      //padding: 0 15px;
+      //padding: 0;
+      min-width: 48px;
+    }
+    .ant-select-selection__rendered {
+      height: 34px;
+      line-height: 34px;
+    }
+
+    .button-group-bottom, .ant-form-item-with-help {
+      margin-bottom: 24px;
+    }
+
+    //选择空间的尺寸规范
+    form .ant-select.select-size-small {
+      width: 128px;
+    }
+
+    form .ant-select.select-size-middle {
+      width: 168px;
+    }
+
+    form .ant-select.select-size-bigger {
+      width: 208px;
+    }
+
+    .ant-input-affix-wrapper.select-Input {
+      width: 268px;
+    }
+    //底部边距
+    .margin-bottom-24 {
+      margin-bottom: 24px;
+    }
+    //顶部边距
+    .margin-top-24 {
+      margin-top: 24px;
+    }
+    //tab栏标准
+    .ant-tabs {
+      margin-bottom: 24px;
+
+    }
+    .ant-tabs-nav-container {
+      padding-left: 24px;
+    }
+    .ant-tabs-nav .ant-tabs-tab {
+      //padding-left: 2px;
+      //padding-right: 2px;
+      padding: 0 16px;
+      margin-right: 36px;
+      height: 58px;
+      line-height: 58px;
+      color: rgba(0, 0, 0, 0.65);
+    }
+    //历史记录样式修改
+    input:-webkit-autofill {
+      color: #ccc;
+
+    }
+
+    .ant-pagination-options-quick-jumper input {
+      height: 36px;
+    }
+    .ant-confirm {
+      width: 279px !important;
+      .ant-confirm-btns {
+        margin-top: 62px;
+        .ant-btn {
+          height: 32px;
+          line-height: 32px;
+          border: none;
+        }
+      }
+      .anticon-question-circle {
+        font-size: 16px;
+        line-height: 30px;
+        margin-top: 0;
+        vertical-align: top;
+      }
+      .ant-confirm-body {
+        margin-top: 45px;
+      }
+    }
+    .layout-padding {
+      padding: 24px;
+    }
+    .breadcrumb-box {
+      margin-bottom: 24px;
+      padding: 0 0 0 24px !important;
+      height: 58px;
+      overflow: hidden;
+      .ant-card-body {
+        padding: 0;
+      }
+      .ant-breadcrumb {
+        line-height: 58px;
+      }
+    }
+    //卡片样式
+    .ant-card {
+      background-color: #fff;
+      border-radius: 6px;
+      margin-bottom: 24px;
+      padding: 24px;
+      :global {
+        .ant-card-head {
+          border-bottom: none;
+
+        }
+        .ant-card-body {
+          padding: 0;
+        }
+        .ant-card-head-title {
+          font-weight: bold;
+          padding-top: 10px;
+        }
+        //.ant-form-item{
+        //  padding-bottom: 30px;
+        //}
+      }
+      label.ant-form-item-required:after {
+        display: none;
+      }
+    }
+
+    .ant-card-type-inner {
+      .ant-card-head-title {
+        padding-top: 13px;
+      }
+      .ant-card-head {
+        margin-bottom: 10px;
+      }
+    }
+
+    .ant-card-bordered {
+      border: none;
+    }
+
+    .ant-card-900, .ant-card-head-900 .ant-card-head-wrapper {
+      width: 900px;
+      margin: 0 auto;
+    }
+
+    .ant-card-1156 {
+      width: 1156px;
+      margin: 0 auto;
+    }
+
+    .ant-card-wider-padding .ant-card-head {
+      padding-left: 0;
+      padding-right: 0;
+    }
+    .ant-modal-wrap, .ant-modal-mask {
+      z-index: 1002;
+    }
+    //富文本编辑器行高初始化
+    .edui-default .edui-box {
+      height: auto;
+      line-height: initial;
+    }
+    ol, ul, dl, p{
+      margin-bottom: 0;
+    }
+    .ant-tabs-bar{
+      background-color: #fff;
+      margin-bottom: 0;
+    }
+    //.ant-pagination,.ant-pagination-item,.ant-pagination-total-text{
+    //  line-height: 34px;
+    //  height: 36px;
+    //}
+  }
+  //表格内边距
+  .ant-table-thead > tr > th, .ant-table-tbody > tr > td {
+    padding: 28px 28px 28px 0;
+  }
+  .ant-table-content .ant-table-tbody > tr > td, .ant-table-content .ant-table-thead > tr > th {
+    text-align: left;
+  }
+  .ant-table-tbody > tr > td.ant-table-row-expand-icon-cell {
+    padding-left: 24px;
+  }
+  .ant-table-title, .ant-table-footer {
+    display: none;
+  }
+  .ant-table-content .ant-table-tbody > tr > td:first-of-type, .ant-table-content .ant-table-thead > tr > th:first-of-type {
+    display: none;
+  }
+  .ant-modal-wrap, .ant-modal-mask,.ant-modal{
+    z-index: 1002!important;
+  }
+
+  .ant-table-content .ant-table-tbody > tr > td:first-of-type,.ant-table-content .ant-table-thead > tr > th:first-of-type{
+    display: none;
+  }
+  //弹窗样式覆盖
+  .ant-modal-content {
+    padding: 12px;
+    &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 12px;
+      width: 28px;
+      border-top: 2px solid #1890ff;
+
+    }
+    .ant-modal-header {
+      border-top: none;
+      border-bottom: none;
+      padding: 0;
+      margin-bottom: 28px;
+    }
+    .ant-modal-close {
+      top: 13px;
+      right: 13px;
+    }
+    .ant-modal-close-x {
+      width: 15px;
+      height: 12px;
+      line-height: 12px;
+    }
+    .ant-modal-body {
+      padding: 0;
+      .ant-confirm-body-wrapper {
+        width: 255px;
+        line-height: 30px;
+      }
+    }
+    .ant-modal-footer {
+      text-align: right;
+      padding: 0;
+      margin-top: 20px;
+      border-top: none;
+      .ant-btn {
+        height: 32px;
+        line-height: 32px;
+      }
+    }
+  }
+  .left {
+    float: left;
+  }
+  .right {
+    float: right;
+  }
+  .ant-pagination{
+    text-align: right;
+  }
+}

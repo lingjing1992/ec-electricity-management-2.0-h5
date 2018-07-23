@@ -1,0 +1,24 @@
+@import "~antd/lib/style/themes/default.less";
+
+.CouponCreate {
+  padding-bottom: 30px;
+  :global {
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+    }
+    input[type="number"]{
+      -moz-appearance: textfield;
+    }
+  }
+  .spuIdsArr {
+    :global {
+      .ant-form-item-required:before {
+        content: '';
+      }
+      .ant-form-item-label label:after {
+        content: '';
+      }
+    }
+  }
+}

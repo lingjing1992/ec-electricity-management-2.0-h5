@@ -1,0 +1,113 @@
+.disHeader {
+  position: relative;
+  .distributionChnage{
+    position: absolute;
+    right: -22px;
+    top: 0;
+  }
+  :global {
+    .ant-badge-count {
+      right: -9px;
+      top: -9px;
+    }
+    .logo {
+      width: 148px;
+      height: 36px;
+      margin-right: 36px;
+      cursor: pointer;
+      display: inline-block;
+    }
+    .search {
+      position: relative;
+      display: inline-block;
+      .search-title {
+        position: absolute;
+        left: 0;
+        top: 7px;
+        z-index: 2;
+        line-height: 22px;
+        border-right: 1px solid #d9d9d9;
+        width: 114px;
+        display: block;
+        text-align: center;
+        color: #666;
+      }
+      .search-input {
+        width: 561px;
+        line-height: 36px;
+        height: 36px;
+        input {
+          padding-left: 130px;
+        }
+        button {
+          height: 36px;
+        }
+      }
+      .keyword {
+        span {
+          padding: 0 10px;
+          border-right: 1px solid #666;
+          color: #666;
+          display: inline-block;
+          margin-top: 8px;
+          font-size: 12px;
+          line-height: 12px;
+          cursor: pointer;
+          &:hover {
+            color: #1890ff;
+          }
+          &:last-child {
+            border-right: none;
+          }
+        }
+      }
+    }
+    .changeTips {
+      position: relative;
+      display: block;
+      top: 0;
+      right: 24px;
+      // width:206px;
+      height: 36px;
+      line-height: 36px;
+      padding: 0 14px;
+      border: 1px solid #d9d9d9;
+      border-radius: 3px;
+      //vertical-align: top;
+      margin-left: 54px;
+      cursor: pointer;
+      color: #000;
+    }
+  }
+}
+
+.tab {
+  display: block;
+  background: #f8f8f8;
+  margin-top: 28px;
+  :global {
+    .ant-radio-button-wrapper {
+      background: #f8f8f8;
+      width: 180px;
+      height: 38px;
+      font-size: 16px;
+      line-height: 38px;
+      text-align: center;
+      padding: 0;
+      border: none;
+      &:first-child {
+        border-radius: 0;
+      }
+      &:last-child {
+        border-radius: 0;
+      }
+      &:before {
+        height: 0;
+      }
+    }
+    .ant-radio-button-wrapper-checked {
+      background: #1890ff;
+      color: #fff;
+    }
+  }
+}

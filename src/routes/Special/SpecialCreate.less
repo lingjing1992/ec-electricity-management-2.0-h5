@@ -1,0 +1,95 @@
+.specialCreate{
+  padding-bottom: 30px;
+  //min-width:1400px;
+  :global{
+    .ant-upload.ant-upload-select{
+      margin-bottom: 20px;
+    }
+  }
+}
+.productionGroupCard:global(.ant-card){
+  margin-bottom: 0;
+}
+.module{
+  text-indent:10px;
+  height: 40px;
+  width: 100%;
+  line-height: 40px;
+  border-bottom: 1px solid #f0f2f5;
+}
+.top{
+  border-top: 10px solid #f0f2f5;
+}
+.form {
+  :global{
+    .ant-form-item{
+      margin-bottom: 10px;
+    }
+    textarea{
+      height: 136px!important;
+    }
+    .is-validating.has-feedback:after{
+      display: none;
+    }
+    //.ant-upload-list-picture .ant-upload-list-item{
+    //  height: auto;
+    //}
+    .ant-upload-list-picture .ant-upload-list-item-thumbnail img{
+      height:auto;
+      display: inline-block;
+      margin-top: -3px;
+    }
+    .ant-upload-list-picture .ant-upload-list-item-thumbnail{
+      line-height: 48px;
+      vertical-align: middle;
+      text-align: center;
+    }
+    //.ant-upload-list-picture .ant-upload-list-item-name,.ant-upload-list-picture .ant-upload-list-item-thumbnail.anticon:before, .ant-upload-list-picture-card .ant-upload-list-item-thumbnail.anticon:before{
+    //  line-height: normal;
+    //}
+  }
+  .uploadItem{
+    margin-bottom: 20px;
+  }
+}
+
+.imageReg {
+  position: absolute;
+  left: 0;
+  font-size: 12px;
+  top: 30px;
+}
+.upload{
+  position: relative;
+}
+.goodGroupsTitle{
+  padding-top: 8px;
+  padding-left: 34px;
+  color: #333;
+  font-size: 16px;
+}
+.btnbox{
+  width: 800px;
+  text-align: center;
+}
+.groupsAddBtn{
+  width: 400px;
+  border: 1px dashed #d9d9d9;
+  display: inline-block;
+  border-radius: 4px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+}
+.groupsAddBtn:hover{
+  border-color: #1890ff;
+}
+.goodsPoint::before{
+  display: inline-block;
+  margin-right: 4px;
+  content: "*";
+  font-family: SimSun;
+  line-height: 1;
+  font-size: 14px;
+  color: #f5222d;
+}

@@ -1,0 +1,59 @@
+.subSearch{
+    margin: 24px 0;
+    line-height: 36px;
+    :global{
+        .sort{
+            text-align: center;
+            border-radius: 3px;
+            float: left;
+            &>div{
+                border: 1px solid #dbdbdb;
+                width: 108px;
+                height: 36px;
+                cursor: pointer;
+                position: relative;
+                float: left;
+                margin-left: -1px;
+                &:first-child {
+                    margin-left: 0;
+                }
+                &.selected {
+                    color: #4d97f7;
+                    border-color: #4d97f7;
+                    z-index: 2;
+                }
+                &.up .down{
+                    color: #666;
+                }
+                &.down .up{
+                    color: #666;
+                }
+            }
+        }
+        .spu-setion{
+            float: right;
+        }
+        .ref-setion{
+            float: right;
+            margin-left:12px;
+        }
+        .input{
+            display: inline-block;
+            width:48px;
+            height:36px;
+            line-height: 36px;
+            padding:0 2px;
+        }
+        .search {
+            width:64px;
+            height:36px;
+            margin: 0 8px 0 18px;
+            float: right;
+        }
+        .reset {
+            width:64px;
+            height:36px;
+            float: right;
+        }
+    }
+}
