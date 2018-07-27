@@ -44,9 +44,45 @@ export const getFlatMenuKeys = menu =>
 export const getMenuMatchKeys = (flatMenuKeys, paths) =>
   paths.reduce(
     (matchKeys, path) =>
-      matchKeys.concat(flatMenuKeys.filter(item => pathToRegexp(item).test(path))),
+    {
+      const arr = matchKeys.concat(flatMenuKeys.filter(item => pathToRegexp(item).test(path)));
+      return reSetMenuMatchKeys(arr);
+    },
     []
   );
+//截断正常的侧边栏匹配，把某些页面呀归为侧边栏部分
+const reSetMenuMatchKeys = (result) => {
+  if(result.length===2){
+    const pre = result[0];
+    const pathName = result[1];
+    //分销市场
+    if(['/goods/distributionSearchList','/goods/distributionActivity','/goods/distributionCommodityChange'].includes(pathName)){
+      return [pre,'/goods/distributionIndex'];
+    }else if(['/goods/goodsCreate'].includes(pathName)){
+      return [pre,'/goods/goodsList'];
+    }else if(['/shop/StyleTemplatesDetails'].includes(pathName)){
+      return [pre,'/shop/PromoList'];
+    }else if(['/shop/shopDetails'].includes(pathName)){
+      return [pre,'/shop/shopLists'];
+    }else if(['/order/orderDetail'].includes(pathName)){
+      return [pre,'/order/orderList'];
+    }else if(['/marketing/marketingCreate'].includes(pathName)){
+      return [pre,'/marketing/marketingList'];
+    }else if(['/marketing/couponCreate'].includes(pathName)){
+      return [pre,'/marketing/couponList'];
+    }else if(['/marketing/couponSubtractionCreate'].includes(pathName)){
+      return [pre,'/marketing/couponSubtractionList'];
+    }else if(['/marketing/specialList','marketing/specialCreate'].includes(pathName)){
+      return [pre,'/marketing/special'];
+    }else if(['/order/orderDetail'].includes(pathName)){
+      return [pre,'/order/orderList'];
+    }else if(['/data/dataFlowAnalysisSource','/data/dataFlowAnalysisAdvertising','/data/dataFlowAnalysisKeyword'].includes(pathName)){
+      return [pre,'/data/dataFlowAnalysisTime'];
+    }
+    return result;
+  }
+  return result;
+}
 
 export default class SiderMenu extends PureComponent {
   constructor(props) {

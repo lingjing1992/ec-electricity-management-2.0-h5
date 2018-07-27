@@ -166,6 +166,7 @@ export default class Goods extends Component {
     const { produsctShow, productDetail, sliderItemWidth, groupImagesLength, groupIndex, sliderTranslate, sliderIndex } = this.state;
     const {  popLoading } = this.props.distribution;
     const languageForDistribution = this.props.global.languageDetails.goods.distribution;
+    const languageForGlobal = this.props.global.languageDetails.global;
     //轮播长度
     const sliderLength = productDetail.images.length;
     const sliderBoxMaxLength = sliderLength*sliderItemWidth-14;
@@ -174,38 +175,57 @@ export default class Goods extends Component {
       {
         title: languageForDistribution.SKUAttributeSet,
         dataIndex: 'property',
-        classType: 4,
+        classType: 3,
+        render: (text) => {
+          return <div>{text}</div>
+        }
       },
       {
         title: languageForDistribution.SupplyPrice,
         dataIndex: 'supplyPrice',
-        classType: 3,
+        classType: 2,
+        render: (text) => {
+          return <div>{text}</div>
+        }
       },
       {
         title: languageForDistribution.Stock,
         dataIndex: 'storage',
-        classType: 3,
+        classType: 2,
+        render: (text) => {
+          return <div>{text}</div>
+        }
       },
     ];
     return (
       <div className={styles.goodsWrap}>
         {
-          spus.map((item, index) => {
-            const margin = index%4 === 0 ? '0' : '20';
-            const marginTop = index>3 ? '24px' : '0';
-            return (
-              <div className="goods-item" key={item.spuId} style={{marginLeft: margin,marginTop:marginTop}} onClick={()=>{
-                this.handleProductShow(true);
-                this.getProductDetail(item.spuId, item.sellerBrandId, item.isSelfGoods);
-              }}>
-                <img src={item.icon}/>
-                <p className="goods-title">利润：<span style={{color:'#f74d4d'}}>US${item.profit}</span></p>
-                <p className="goods-price">供货成本：{`US\$${item.supplyPrice}`}</p>
-                <span className="view-more">查看更多</span>
-                {item.status ? (<span className="distributed">已领取</span>) : ''}
-              </div>
-            )
-          })
+          spus.length>0 ? (
+            <div>
+              {
+                spus.map((item, index) => {
+                  const margin = index%4 === 0 ? '0' : '20';
+                  const marginTop = index>3 ? '24px' : '0';
+                  return (
+                    <div className="goods-item" key={item.spuId} style={{marginLeft: margin,marginTop:marginTop}} onClick={()=>{
+                      this.handleProductShow(true);
+                      this.getProductDetail(item.spuId, item.sellerBrandId, item.isSelfGoods);
+                    }}>
+                      <img src={item.icon}/>
+                      <p className="goods-title">{languageForDistribution.Profit}：<span style={{color:'#f74d4d'}}>US${item.profit}</span></p>
+                      <p className="goods-price">{languageForDistribution.SupplyCost}：{`US\$${item.supplyPrice}`}</p>
+                      <span className="view-more">{languageForDistribution.ViewMore}</span>
+                      {item.status ? (<span className="distributed">{languageForDistribution.DistributedProducts}</span>) : ''}
+                    </div>
+                  )
+                })
+              }
+            </div>
+            ) : (
+            <div className={styles.null}>
+              {languageForGlobal.noData}
+            </div>
+          )
         }
         <Modal
           visible={produsctShow}

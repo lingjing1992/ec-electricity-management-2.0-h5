@@ -100,27 +100,31 @@ export default class SubSearch extends Component {
 
   }
   render() {
+    let {sortData, checkboxStatus, supplyPriceSection, referencePriceSection} = this.state;
+    const languageForDistribution = this.props.global.languageDetails.goods.distribution;
+    const {searchData} = this.props.distribution
+
+    sortData[0].name = languageForDistribution.SalesVolume;
+    sortData[1].name = languageForDistribution.SupplyCost;
+    sortData[2].name = languageForDistribution.PublishedTime;
     //初始数据，用于数据初始化
     const defSortData = [
       {
-        name: '销量',
+        name: languageForDistribution.SalesVolume,
         selected: false,
         sort: -1
       },{
-        name: '供货价',
+        name: languageForDistribution.SupplyCost,
         selected: false,
         sort: -1
       },{
-        name: '上架时间',
+        name: languageForDistribution.PublishedTime,
         selected: false,
         sort: -1
       }
     ]
 
-    let {sortData, checkboxStatus, supplyPriceSection, referencePriceSection} = this.state
-    let sortIndex = -1
 
-    const {searchData} = this.props.distribution
 
     //是否筛选未领取商品 点击事件
     const onChange = (e) => {
@@ -222,23 +226,13 @@ export default class SubSearch extends Component {
             )
           })}
           <div>
-            <Checkbox value={0} onChange={onChange} defaultChecked={checkboxStatus === 0}>未领取</Checkbox>
+            <Checkbox value={0} onChange={onChange} defaultChecked={checkboxStatus === 0}>{languageForDistribution.Unpick}</Checkbox>
           </div>
         </div>
-        <Button className="reset" onClick = {() => {onResetHandel()}}>重置</Button>
-        <Button type="primary" className="search" onClick={()=>{onSearchHandle()}}>搜索</Button>
-        <div className="ref-setion">
-          <span className={styles.fontsize}>参考售价：</span>
-          <Input className="input" value={supplyPriceSection.min} onChange={(e) => {
-            inputChangeHandle(e, 'supplyPriceSection', 'min')
-          }}></Input>
-          <span> - </span>
-          <Input className="input" value={supplyPriceSection.max} onChange={(e) => {
-            inputChangeHandle(e, 'supplyPriceSection', 'max')
-          }}></Input>
-        </div>
+        <Button className="reset" onClick = {() => {onResetHandel()}}>{languageForDistribution.Reset}</Button>
+        <Button type="primary" className="search" onClick={()=>{onSearchHandle()}}>{languageForDistribution.Search}</Button>
         <div className="spu-setion">
-          <span className={styles.fontsize}>供货成本：</span>
+          <span className={styles.fontsize}>{languageForDistribution.ReferencePrice}：</span>
           <Input className="input" value={referencePriceSection.min} onChange={(e) => {
             inputChangeHandle(e, 'referencePriceSection', 'min')
           }}></Input>
@@ -247,7 +241,16 @@ export default class SubSearch extends Component {
             inputChangeHandle(e, 'referencePriceSection', 'max')
           }}></Input>
         </div>
-
+        <div className="ref-setion">
+          <span className={styles.fontsize}>{languageForDistribution.SupplyCost}：</span>
+          <Input className="input" value={supplyPriceSection.min} onChange={(e) => {
+            inputChangeHandle(e, 'supplyPriceSection', 'min')
+          }}></Input>
+          <span> - </span>
+          <Input className="input" value={supplyPriceSection.max} onChange={(e) => {
+            inputChangeHandle(e, 'supplyPriceSection', 'max')
+          }}></Input>
+        </div>
       </div>
     )
   }

@@ -472,4 +472,9 @@ export function offset(curEle){
   return {left: totalLeft, top: totalTop};
 }
 
+//滚动条返回顶部
+export function scrollToTop(){
+  document.body.scrollTop = document.documentElement.scrollTop = 0;
+}
+
 

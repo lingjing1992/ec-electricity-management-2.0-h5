@@ -55,17 +55,17 @@ const menuData = [
         id: 10001,
         key: 'productManagement',
       },
-      {
-        name: '分销市场',
-        path: 'distribution',
-        id: 10003,
-        key: 'distribution',
-      },
+      // {
+      //   name: '分销市场',
+      //   path: 'distribution',
+      //   id: 10003,
+      //   key: 'distribution',
+      // },
       {
         name: '分销市场',
         path: 'distributionIndex',
         id: 10003,
-        key:'distributionIndex',
+        key:'distribution',
       },
       {
         name: '活动页',
@@ -131,18 +131,18 @@ const menuData = [
         id: 10006,
         key: 'flowAnalysis',
       },
-      // {
-      //   name: '流量分析-来源',
-      //   path: 'dataFlowAnalysisSource',
-      // },
-      // {
-      //   name: '流量分析-广告系列',
-      //   path: 'dataFlowAnalysisAdvertising',
-      // },
-      // {
-      //   name: '流量分析-关键字',
-      //   path: 'dataFlowAnalysisKeyword',
-      // },
+      {
+        name: '流量分析-来源',
+        path: 'dataFlowAnalysisSource',
+      },
+      {
+        name: '流量分析-广告系列',
+        path: 'dataFlowAnalysisAdvertising',
+      },
+      {
+        name: '流量分析-关键字',
+        path: 'dataFlowAnalysisKeyword',
+      },
     ],
   },
   {
@@ -223,6 +223,13 @@ const menuData = [
         disabled: false,
         key: 'returnAddress',
         id: 10023,
+      },
+      {
+        name: '基本设置',
+        path: 'basicSetting',
+        disabled: false,
+        key: 'basicSetting',
+        id: 10024,
       },
     ],
   },

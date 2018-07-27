@@ -131,6 +131,7 @@ export default {
       aNewPromoPage     : 'Promo Page',
       addANewPromoCode  : 'New Promo Code',
       returnAddress       : 'Return Address',
+      BasicInformation: 'Basic Information',
     },
     //导航
     nav    : {
@@ -155,6 +156,7 @@ export default {
       financeSettlement   : 'Finance Settlement',
       setting             : 'Setting',
       returnAddress       : 'Return Address',
+      basicSetting        : 'Basic Setting',
     },
     //通知
     notice: {
@@ -267,6 +269,10 @@ export default {
         PromoteProduct: 'Promote Product',
         copy:'Copy',
         copysuccess: 'Copied successfully',
+        selectSPUAttribute  : 'Please select SPU attribute',
+        publishToShopify    : 'Publish To Shopify',
+        yes : 'Yes',
+        no  : 'No',
       },
       //商品编辑
       productEdit      : {
@@ -346,14 +352,15 @@ export default {
       //分销市场
       distribution     : {
         ProductName          : 'Product Name',
-        Search               : 'Search',
+        SearchContent        : 'Search',
         Distributing         : 'Distributing',
         MyDistributed        : 'My Distributed Products',
         ProductsChange       : 'Distributed Products Change',
         SalesVolume          : 'Sales Volume',
         SupplyPrice          : 'Supply Price',
         PublishedTime        : 'Published Time',
-        DistributedProducts  : 'Distributed Products',
+        DistributedProducts  : 'Distributed',
+        Unpick                : 'Unpick',
         CheckforDetails      : 'Check for Details',
         Operation            : 'Operation',
         Image                : 'Image',
@@ -386,7 +393,14 @@ export default {
         PublishedToTheStore  : 'Successfully Published to the Store.',
         Okay: 'Read',
         StatusChanged: 'Price/Status Changed',
-        InfoChanged: 'Item Info Changed'
+        InfoChanged: 'Item Info Changed',
+        More: 'More',
+        Reset: 'Reset',
+        Search: 'Search',
+        SupplyCost: 'Supply Cost',
+        ReferencePrice: 'Reference Price',
+        Profit: 'Profit',
+        ViewMore: 'View More',
       },
     },
     //订单
@@ -1030,6 +1044,16 @@ export default {
       SetDefault: 'Set as the default return address.',
       ReturnAddress: 'Return Address',
       PleaseSelect : 'Please Select',
+    },
+    //基础设置
+    basicSetting: {
+
+      QuantityInStock: 'Quantity in Stock',
+      NotificationForm: 'Notification Form',
+      InformTheFrequency: 'Inform the Frequency',
+      OnlyOnce: 'Only once',
+      QuantityNotBeEmpty: 'The quantity in stock  should not be empty.',
+      StockAlert: 'Stock Alert',
     }
   }
 }

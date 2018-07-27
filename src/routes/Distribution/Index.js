@@ -3,7 +3,7 @@ import styles from './Index.less';
 import { Redirect, Switch, routerRedux, Link } from 'dva/router';
 import { Radio, Carousel, Spin, Card } from 'antd';
 import { connect } from 'dva';
-import {setGa} from '../../utils/utils';
+import { scrollToTop } from '../../utils/utils';
 import Cookies from 'js-cookie';
 import Header from './Header'
 import Goods from './Goods'
@@ -27,6 +27,9 @@ export default class Index extends Component {
   }
   componentWillMount () {
     this.init()
+  }
+  componentDidMount(){
+    scrollToTop();
   }
   init () {
     console.log(this.props.location)
@@ -57,6 +60,8 @@ export default class Index extends Component {
     // router
     const { activitys, rankings} = this.state;
     const { distribution:{ headerData }  } = this.props;
+    const languageForGlobal = this.props.global.languageDetails.global;
+    const languageForDistribution = this.props.global.languageDetails.goods.distribution;
       // 分销商品详细资料弹窗
     const goodsItemHandle = (id) => {
       console.log(id)
@@ -84,33 +89,43 @@ export default class Index extends Component {
           <Spin spinning={this.props.distribution.loading}>
           {/* 活动页轮播图 */}
           {
-            activitys.length && <Carousel className={styles.slide} autoplay={activitys.length > 1}>
-              {
-                activitys.map((item, i) => {
-                return (
-                  <Link key={item.activityId} to={`/goods/distributionActivity?activityId=${item.activityId}`}>
-                    <img  src={item.bannerUrl} />
-                  </Link>
-                )
-              })}
-            </Carousel>
+            activitys.length ? (
+              <Carousel className={styles.slide} autoplay={activitys.length > 1}>
+                {
+                  activitys.map((item, i) => {
+                    return (
+                      <Link key={item.activityId} to={`/goods/distributionActivity?activityId=${item.activityId}`}>
+                        <img  src={item.bannerUrl} />
+                      </Link>
+                    )
+                  })}
+              </Carousel>
+            ) : null
           }
           {/* 排榜商品 */}
           {
-            rankings.length && rankings.map((item, i) => {
-              return (
-                <div key={i} className="rankItem">
-                  <div className="title">
-                    {item.rankName}
-                    <Link to={`/goods/DistributionSearchList`} className="more" onClick={()=>{moreClick(item.rankType)}}>更多>></Link>
-                  </div>
-                  <Goods
-                    goodsItemHandle={goodsItemHandle}
-                    spus={item.spus}
-                  ></Goods>
-                </div>
-              )
-            })
+            rankings.length ? (<div>
+              {
+                rankings.map((item, i) => {
+                  return (
+                    <div key={i} className="rankItem">
+                      <div className="title">
+                        {item.rankName}
+                        <Link to={`/goods/DistributionSearchList`} className="more" onClick={()=>{moreClick(item.rankType)}}>{languageForDistribution.More}>></Link>
+                      </div>
+                      <Goods
+                        goodsItemHandle={goodsItemHandle}
+                        spus={item.spus}
+                      ></Goods>
+                    </div>
+                  )
+                })
+              }
+            </div>) : (
+              <div className={styles.null}>
+                {languageForGlobal.noData}
+              </div>
+            )
           }
           </Spin>
         </div>

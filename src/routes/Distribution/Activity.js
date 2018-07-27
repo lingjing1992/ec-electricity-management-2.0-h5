@@ -5,7 +5,7 @@ import { Card, Pagination, Spin } from 'antd';
 import { connect } from 'dva';
 import Header from './Header';
 import Goods from './Goods';
-import { getQueryString } from '../../utils/utils';
+import { getQueryString, scrollToTop } from '../../utils/utils';
 
 @connect(state => ({
   global: state.global,
@@ -32,6 +32,7 @@ export default class Activity extends Component {
   componentWillMount() {
     this.init();
   }
+
 
   init() {
     // 头部数据请求
@@ -76,6 +77,9 @@ export default class Activity extends Component {
   }
 
   render() {
+    const { goods, bannerUrl, pagination } = this.state;
+    const { distribution:{ headerData }  } = this.props;
+    const langusgeForGlobal = this.props.global.languageDetails.global;
     /**
      *
      * @param {Number} page  页码
@@ -92,8 +96,18 @@ export default class Activity extends Component {
       });
       this.getData(page);
     };
-    const { goods, bannerUrl, pagination } = this.state;
-    const { distribution:{ headerData }  } = this.props;
+    const listPagination = {
+      total: Number(pagination.total),
+      current: pagination.current,
+      pageSize: pagination.pageSize,
+      showQuickJumper: true,
+      showTotal: (total) => {
+        return `${langusgeForGlobal.total} ${total} ${langusgeForGlobal.items}`;
+      },
+      onChange: (page) => {
+        changePage(page)
+      },
+    };
     return (
       <Card>
         <div>
@@ -103,18 +117,9 @@ export default class Activity extends Component {
               <img src={bannerUrl} className={styles.banner}/>
               <Goods spus={goods}></Goods>
               <Pagination
-                total={pagination.total}
-                pageSize={pagination.pageSize}
-                current={pagination.current}
-                onChange={
-                  (page) => {
-                    changePage(page);
-                  }
+                {
+                  ...listPagination
                 }
-                showTotal={(total) => {
-                  // return `${languageForGlobal.total} ${total} ${languageForGlobal.items}`;
-                  return total;
-                }}
               />
             </Spin>
           </div>

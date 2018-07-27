@@ -224,7 +224,9 @@ class BasicLayout extends React.PureComponent {
   //设置侧边栏权限
   setMenuData = (rolePower) => {
     console.log(rolePower);
+    const lanuageForNav = this.props.global.languageDetails.nav;
     let newData = getMenuData().map((item)=>{
+      item.name = lanuageForNav[item.key];
       if(item.hasOwnProperty('id') && !rolePower.modules[item.id].status || !item.hasOwnProperty('id')){
         item.hideInMenu = true;
         if(item.hasOwnProperty('id')){
@@ -240,6 +242,7 @@ class BasicLayout extends React.PureComponent {
               children.disabled =  rolePower.modules[item.id].moduleSubs[children.id].disabled;
             }
           }
+          children.name = lanuageForNav[children.key];
           return children;
         })
       }
@@ -357,7 +360,7 @@ class BasicLayout extends React.PureComponent {
     else if (locationPathname === '/marketing/couponSubtractionList') {
       result = languageForHeader.specialOffers
     }
-    else if (locationPathname === '/goods/distribution') {
+    else if (['/goods/distributionIndex','/goods/distributionActivity','/goods/distributionSearchList','/goods/distributionCommodityChange'].includes(locationPathname)) {
       result = languageForHeader.distribution
     }
     else if (locationPathname === '/finance/supplierSettlement') {
@@ -376,6 +379,9 @@ class BasicLayout extends React.PureComponent {
       result = languageForHeader.templateDetails;
     }
     else if(locationPathname === '/setting/returnAddress'){
+      result = languageForHeader.returnAddress;
+    }
+    else if(locationPathname==='/setting/basicSetting'){
       result = languageForHeader.returnAddress;
     }
     else {

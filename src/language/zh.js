@@ -128,7 +128,8 @@ export default {
       notificationCenter: '通知中心',
       template          : '模板',
       templateDetails   : '模板详情',
-      returnAddress       : '退货地址',
+      returnAddress     : '退货地址',
+      BasicInformation  : '基本信息',
     },
     //导航
     nav    : {
@@ -153,6 +154,7 @@ export default {
       financeSettlement   : '结算汇总',
       setting             : '设置',
       returnAddress       : '退货地址',
+      basicSetting        : '基本设置',
     },
     //通知
     notice: {
@@ -342,11 +344,14 @@ export default {
         newSPU              : '新增SPU属性值',
         Required            : '必填',
         selectSPUAttribute  : '请勾选SPU属性',
+        publishToShopify    : '发布到Shopify',
+        yes : '是',
+        no  : '否',
       },
       //分销市场
       distribution     : {
         ProductName          : '商品名称',
-        Search               : '请输入搜索内容',
+        SearchContent        : '请输入搜索内容',
         Distributing         : '分销市场',
         MyDistributed        : '我领取的',
         ProductsChange       : '分销商品变更',
@@ -354,6 +359,7 @@ export default {
         SupplyPrice          : '供货价',
         PublishedTime        : '上架时间',
         DistributedProducts  : '已领取',
+        Unpick               : '未领取',
         CheckforDetails      : '查看详情',
         Operation            : '操作',
         Image                : '图片',
@@ -386,7 +392,14 @@ export default {
         PublishedToTheStore  : '已成功上架到店铺',
         Okay: '已读',
         StatusChanged: '价格/状态变更',
-        InfoChanged: '信息描述变更'
+        InfoChanged: '信息描述变更',
+        More: '更多',
+        Reset: '重置',
+        Search: '搜索',
+        SupplyCost: '供货成本',
+        ReferencePrice: '参考价格',
+        Profit: '利润',
+        ViewMore: '查看更多',
       }
     },
     //订单
@@ -1020,6 +1033,15 @@ export default {
       SetDefault: '设为默认退货地址',
       ReturnAddress: '退货地址',
       PleaseSelect : '请选择',
+    },
+    //基础设置
+    basicSetting: {
+      QuantityInStock: '库存数量',
+      NotificationForm: '通知形式',
+      InformTheFrequency: '通知频率',
+      OnlyOnce: '只提醒一次',
+      QuantityNotBeEmpty: '库存数量最低值不能为空',
+      StockAlert: '库存预警',
     }
   }
 }

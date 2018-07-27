@@ -20,7 +20,8 @@ import {
   Spin,
   Popconfirm,
   Modal,
-  Breadcrumb
+  Breadcrumb,
+  Switch
 } from 'antd';
 import Table from '../../components/table';
 import {connect} from 'dva';
@@ -110,12 +111,13 @@ export default class GoodsCreate extends Component {
     refPriceModal: false,
     checkPrice: true,
     productDetailTabKey: 'en',//商品详情tab key
-    sizeTableTabKey: 'en'//尺码表tab key
+    sizeTableTabKey: 'en',//尺码表tab key
+    publishToShopify: false,//同步到shopify
   }
 
   componentDidMount() {
     this.loadData();
-    console.log(this.state.permission)
+    // console.log(this.state.permission)
     this.setState({
       checkPrice: !!this.state.permission['100058'].status
     })
@@ -331,7 +333,7 @@ export default class GoodsCreate extends Component {
     const {type} = this.state;
     const {goodsCreate} = this.props;
     const {getgoods} = goodsCreate;
-    const {setFieldsValue} = this.props.form;
+    const { setFieldsValue } = this.props.form;
     const spuId = getQueryString().spu_id;
 
     this.props.dispatch({
@@ -342,6 +344,7 @@ export default class GoodsCreate extends Component {
       callback: () => {
         this.setState({
           fileList: getgoods.goods_icons,
+          publishToShopify: goodsCreate.getgoods.publishToShopify,
         }, () => {
           // 设置
           // this.handleGoodsType(getgoods.goods_type_id);
@@ -349,13 +352,9 @@ export default class GoodsCreate extends Component {
             this.setState({
               returnAddress: goodsCreate.getgoods.backAddr[0],
             })
-//            setFieldsValue({
-//              returnAddr: {
-//                id:goodsCreate.getgoods.backAddr[0].id
-//              },
-//            })
           }
-          console.log(goodsCreate.getgoods.backAddrId);
+          console.log(goodsCreate);
+          // console.log(goodsCreate.getgoods.backAddrId);
           // 设置SPU回选
           this.setInitSpu();
           // 自定义SPU回选
@@ -1435,6 +1434,7 @@ export default class GoodsCreate extends Component {
             sales_info: commitDataValue.saleInfo, // 多货币设置
             property_config: this.reLoadCreateSkuAttributesBuildData(), // 缓存生成时候的数据
             back_addr_id: returnAddress.id || 0,
+            publishToShopify: this.state.publishToShopify,
           };
           const isValidate = this.isValidate(commitDataValue);
           const isValidateSkuCommon = this.isValidateSkuCommon(commitDataValue);
@@ -2173,6 +2173,18 @@ export default class GoodsCreate extends Component {
                       <ReturnAddrForm returnAddress={this.state.returnAddress}
                                       onSetReturnAddress={this.setReturnAddress}/>
                     )}
+                  </FormItem>
+                  <FormItem label={languageForProductEdit.publishToShopify}>
+                    <Switch
+                      checkedChildren={languageForProductEdit.yes}
+                      unCheckedChildren={languageForProductEdit.no}
+                      checked={this.state.publishToShopify}
+                      onChange={(boolean) => {
+                        this.setState({
+                          publishToShopify: boolean,
+                        })
+                      }}
+                    />
                   </FormItem>
                 </div>
               </Card>

@@ -78,26 +78,10 @@ export default class Home extends Component {
   render() {
     const languageForData = this.props.global.languageDetails.data.flowAnalysis;//流量分析多语言
     const navTapDatas = [
-      {
-        title: languageForData.Date,
-        key: 1,
-        tempalte: DataFlowAnalysisTime,
-      },
-      {
-        title: languageForData.Source,
-        key: 2,
-        tempalte: DataFlowAnalysisSource,
-      },
-      {
-        title: languageForData.AdsCampaign,
-        key: 3,
-        tempalte: DataFlowAnalysisAdvertising,
-      },
-      {
-        title: languageForData.KeyWords,
-        key: 4,
-        tempalte: DataFlowAnalysisKeyword,
-      },
+      { title: languageForData.Date, key: 1 },
+      { title: languageForData.Source, key: 2 },
+      { title: languageForData.AdsCampaign, key: 3 },
+      { title: languageForData.KeyWords, key: 4 },
     ];
     return (
       <div className={styles.flowAnalysisTab}>
@@ -109,11 +93,7 @@ export default class Home extends Component {
           {
             navTapDatas.map((items) => {
               return (
-                <TabPane tab={items.title} key={items.key} >
-                  {
-                    items.tempalte
-                  }
-                </TabPane>
+                <TabPane tab={items.title} key={items.key} ></TabPane>
               )
             })
           }

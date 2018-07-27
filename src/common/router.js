@@ -100,9 +100,6 @@ export const getRouterData = app => {
     '/goods/goodsCreate': {
       component: dynamicWrapper(app, ['goods', 'shop', 'goodsCreate','setting', 'orders'], () => import('../routes/Goods/GoodsCreate_old')),
     },
-    '/goods/distribution': {
-      component: dynamicWrapper(app, ['distribution'], () => import('../routes/Distribution/DistributionMarket')),
-    },
     '/goods/distributionIndex': {
       component: dynamicWrapper(app, ['distribution','goods'], () => import('../routes/Distribution/Index')),
     },
@@ -125,7 +122,16 @@ export const getRouterData = app => {
       component: dynamicWrapper(app, ['dataGoodsSales'], () => import('../routes/Data/DataGoodsSalesList')),
     },
     '/data/dataFlowAnalysisTime': {
-      component: dynamicWrapper(app, ['dataFlowAnalysis'], () => import('../routes/Data/DataFlowAnalysisTabs')),
+      component: dynamicWrapper(app, ['dataFlowAnalysis'], () => import('../routes/Data/DataFlowAnalysisTime')),
+    },
+    '/data/dataFlowAnalysisSource': {
+      component: dynamicWrapper(app, ['dataFlowAnalysis'], () => import('../routes/Data/DataFlowAnalysisSource')),
+    },
+    '/data/dataFlowAnalysisAdvertising': {
+      component: dynamicWrapper(app, ['dataFlowAnalysis'], () => import('../routes/Data/DataFlowAnalysisAdvertising')),
+    },
+    '/data/dataFlowAnalysisKeyword': {
+      component: dynamicWrapper(app, ['dataFlowAnalysis'], () => import('../routes/Data/DataFlowAnalysisKeyword')),
     },
     '/marketing/marketingList': {
       component: dynamicWrapper(app, ['marketing'], () => import('../routes/Marketing/MarketingList')),
@@ -159,6 +165,9 @@ export const getRouterData = app => {
     },
     '/setting/returnAddress': {
       component: dynamicWrapper(app, ['orders','shop'], () => import('../routes/ReturnAddress/ReturnAddress')),
+    },
+    '/setting/basicSetting': {
+      component: dynamicWrapper(app, ['setting'], () => import('../routes/Setting/BasicSetting')),
     },
     '/user': {
       component: dynamicWrapper(app, [], () => import('../layouts/UserLayout')),

@@ -15,3 +15,19 @@ export async function setExchangeRate(params) {
     body: params,
   });
 }
+
+// 预警获取接口
+export async function getWarning(params) {
+  return request('/api/merchant/v1/settings/getWarning', {
+    method: 'POST',
+    body: params,
+  });
+}
+
+// 预警设置接口
+export async function setWarning(params) {
+  return request('/api/merchant/v1/settings/setWarning', {
+    method: 'POST',
+    body: params,
+  });
+}

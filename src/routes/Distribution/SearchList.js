@@ -6,7 +6,7 @@ import { connect } from 'dva';
 import Header from './Header'
 import Goods from './Goods'
 import SubSearch from './SubSearch'
-import {getQueryString} from '../../utils/utils';
+import {  scrollToTop } from '../../utils/utils';
 
 @connect(state => ({
   global: state.global,
@@ -29,7 +29,8 @@ export default class SearchList extends Component {
     url: ''
   }
   componentDidMount () {
-    this.init()
+    this.init();
+    scrollToTop();
   }
 
   componentWillReceiveProps (nextProps) {
@@ -98,7 +99,7 @@ export default class SearchList extends Component {
     const langusgeForGlobal = this.props.global.languageDetails.global;
 
     const listPagination = {
-      total: pagination.total,
+      total: Number(pagination.total),
       current: pagination.current,
       pageSize: pagination.pageSize,
       showQuickJumper: true,

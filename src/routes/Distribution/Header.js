@@ -43,6 +43,10 @@ export default class Header extends Component {
   }
 
   render() {
+    const languageForDistribution = this.props.global.languageDetails.goods.distribution;
+    const { headerData  } = this.props;
+    const { searchData } = this.props.distribution
+    const tabId = this.state.tabId;
     /**
      * 头部搜索按钮、关键字点击事件
      * @param {string} value  搜索关键词
@@ -50,8 +54,8 @@ export default class Header extends Component {
     const searchHandle = (value) => {
       const { defSearchData } = this.props.distribution;
       const { location } = this.props;
-      if(location.pathname !== '/goods/DistributionSearchList'){
-        this.props.dispatch(routerRedux.push('/goods/DistributionSearchList'));
+      if(location.pathname !== '/goods/distributionSearchList'){
+        this.props.dispatch(routerRedux.push('/goods/distributionSearchList'));
       }
       this.props.dispatch({
         type: 'distribution/changeSearchData',
@@ -70,9 +74,10 @@ export default class Header extends Component {
       const { defSearchData } = this.props.distribution;
       const { location } = this.props;
       const val = e.target.value;
+      const searchPathName = '/goods/distributionSearchList';
       if(val == 0){
         this.props.dispatch(routerRedux.push({
-          pathname: '/goods/DistributionIndex'
+          pathname: '/goods/distributionIndex'
         }))
       }else {
 
@@ -85,18 +90,20 @@ export default class Header extends Component {
         })
         console.log(location);
         //在搜索页切换tab,在其他页则跳转搜索页
-        if(location.pathname === '/goods/DistributionSearchList'){
+
+        if(location.pathname === searchPathName){
           this.setState({
             tabId: e.target.value,
           });
+          this.props.dispatch(routerRedux.replace({
+            pathname: searchPathName,
+            search: '?tabId='+val
+          }))
         }else {
-          this.props.dispatch(routerRedux.push('/goods/DistributionSearchList?tabId='+val))
+          this.props.dispatch(routerRedux.push(searchPathName + '?tabId='+val))
         }
       }
     };
-    const { headerData  } = this.props;
-    const { searchData } = this.props.distribution
-    const tabId = this.state.tabId;
     return (
       <div>
         {/* logo  全局搜索框  商品变更 */}
@@ -106,11 +113,11 @@ export default class Header extends Component {
               <div className={styles.disHeader}>
                 <div className="logo"></div>
                 <div className="search">
-                  <span className="search-title">商品名称</span>
+                  <span className="search-title">{languageForDistribution.ProductName}</span>
                   <Search
                     className="search-input"
                     value={searchData.keyword}
-                    placeholder="请输入搜索内容"
+                    placeholder={languageForDistribution.SearchContent}
                     onChange={e => this.handleSearchChange(e)}
                     onSearch={value => searchHandle(value)}
                     enterButton
@@ -127,24 +134,32 @@ export default class Header extends Component {
                   <Badge count={headerData.changeQuantity}>
                     <Link className="changeTips" to="/goods/distributionCommodityChange">
                       <Icon type="mail" style={{ width: 24, marginRight: '5px' }}/>
-                      <span>分销商品变更</span>
+                      <span>{languageForDistribution.ProductsChange}</span>
                     </Link>
                   </Badge>
                 </div>
               </div>
               {/* 分类渲染 */}
               {
-                !this.props.hideTab && <RadioGroup onChange={(e) => {
-                  categoryChangeHangle(e);
-                }} value={Number(tabId)} className={styles.tab}>
-                  {
-                    headerData.column.map(item => {
-                      return (
-                        <RadioButton key={item.categoryId} value={item.categoryId}>{item.name}</RadioButton>
-                      );
-                    })
-                  }
-                </RadioGroup>
+                !this.props.hideTab && (
+                  <RadioGroup
+                    onChange={(e) => {
+                      categoryChangeHangle(e);
+                    }}
+                    onClick={()=>{
+                      console.log(1);
+                    }}
+                    value={Number(tabId)}
+                    className={styles.tab}>
+                    {
+                      headerData.column.map(item => {
+                        return (
+                          <RadioButton key={item.categoryId} value={item.categoryId}>{item.name}</RadioButton>
+                        );
+                      })
+                    }
+                  </RadioGroup>
+                )
               }
             </div>
           ) : null
