@@ -2174,18 +2174,22 @@ export default class GoodsCreate extends Component {
                                       onSetReturnAddress={this.setReturnAddress}/>
                     )}
                   </FormItem>
-                  <FormItem label={languageForProductEdit.publishToShopify}>
-                    <Switch
-                      checkedChildren={languageForProductEdit.yes}
-                      unCheckedChildren={languageForProductEdit.no}
-                      checked={this.state.publishToShopify}
-                      onChange={(boolean) => {
-                        this.setState({
-                          publishToShopify: boolean,
-                        })
-                      }}
-                    />
-                  </FormItem>
+                  {
+                    permission['100059'].status ? (
+                      <FormItem label={languageForProductEdit.publishToShopify}>
+                        <Switch
+                          checkedChildren={languageForProductEdit.yes}
+                          unCheckedChildren={languageForProductEdit.no}
+                          checked={this.state.publishToShopify}
+                          onChange={(boolean) => {
+                            this.setState({
+                              publishToShopify: boolean,
+                            })
+                          }}
+                        />
+                      </FormItem>
+                    ) : null
+                  }
                 </div>
               </Card>
             </Form>

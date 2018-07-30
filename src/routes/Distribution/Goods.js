@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import styles from './Goods.less';
 import { Link } from 'dva/router';
-import { Modal, Spin, Carousel,  Table, Icon, Button } from 'antd';
+import { Modal, Spin, Carousel, Icon, Button } from 'antd';
 import { connect } from 'dva';
+import Table from '../../components/table';
 
 @connect(state => ({
   global: state.global,
@@ -298,8 +299,8 @@ export default class Goods extends Component {
                   <span className={styles.productDetailNumberItem}>{languageForDistribution.ShippingFee}：
                       <span style={{color:'red'}}>US${productDetail.shipPrice.toFixed(2)}</span>
                     </span><br/>
-                  <span className={styles.productDetailNumberItem}>{languageForDistribution.TotalSalesVolume}：{productDetail.salesCount} {languageForDistribution.piece}</span>
-                  <span className={styles.productDetailNumberItem}>{languageForDistribution.TotalStock}：{ productDetail.storage } {languageForDistribution.piece}</span>
+                  <span className={styles.productDetailNumberItem}>{languageForDistribution.TotalSalesVolume}：{productDetail.salesCount}</span>
+                  <span className={styles.productDetailNumberItem}>{languageForDistribution.TotalStock}：{ productDetail.storage } </span>
                 </div>
                 <Table
                   rowKey={ (record,index)=> {

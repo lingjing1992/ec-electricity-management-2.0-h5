@@ -194,6 +194,7 @@ export default class SubSearch extends Component {
           referencePriceSection
         }
       })
+      this.props.changeHandle();
     }
 
     //重置点击事件
@@ -233,21 +234,21 @@ export default class SubSearch extends Component {
         <Button type="primary" className="search" onClick={()=>{onSearchHandle()}}>{languageForDistribution.Search}</Button>
         <div className="spu-setion">
           <span className={styles.fontsize}>{languageForDistribution.ReferencePrice}：</span>
-          <Input className="input" value={referencePriceSection.min} onChange={(e) => {
+          <Input type="number" className="input" value={referencePriceSection.min} onChange={(e) => {
             inputChangeHandle(e, 'referencePriceSection', 'min')
           }}></Input>
           <span> - </span>
-          <Input className="input" value={referencePriceSection.max} onChange={(e) => {
+          <Input type="number" className="input" value={referencePriceSection.max} onChange={(e) => {
             inputChangeHandle(e, 'referencePriceSection', 'max')
           }}></Input>
         </div>
         <div className="ref-setion">
           <span className={styles.fontsize}>{languageForDistribution.SupplyCost}：</span>
-          <Input className="input" value={supplyPriceSection.min} onChange={(e) => {
+          <Input type="number" className="input" value={supplyPriceSection.min} onChange={(e) => {
             inputChangeHandle(e, 'supplyPriceSection', 'min')
           }}></Input>
           <span> - </span>
-          <Input className="input" value={supplyPriceSection.max} onChange={(e) => {
+          <Input type="number" className="input" value={supplyPriceSection.max} onChange={(e) => {
             inputChangeHandle(e, 'supplyPriceSection', 'max')
           }}></Input>
         </div>

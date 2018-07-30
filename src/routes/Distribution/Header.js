@@ -4,6 +4,7 @@ import { routerRedux, Link } from 'dva/router';
 import { Input, Icon, Radio, Badge } from 'antd';
 import { connect } from 'dva';
 import { getQueryString } from '../../utils/utils';
+import pearlgoLogo from '../../assets/pearlgo-logo.svg';
 import Cookies from 'js-cookie';
 
 const { Search } = Input;
@@ -16,6 +17,11 @@ const RadioGroup = Radio.Group;
 }))
 
 export default class Header extends Component {
+
+  static defaultProps = {
+    onSearch: () => {}
+  }
+
   state = {
     tabId: 0,
   };
@@ -44,6 +50,7 @@ export default class Header extends Component {
 
   render() {
     const languageForDistribution = this.props.global.languageDetails.goods.distribution;
+    const language = this.props.global.language;
     const { headerData  } = this.props;
     const { searchData } = this.props.distribution
     const tabId = this.state.tabId;
@@ -64,6 +71,7 @@ export default class Header extends Component {
           keyword: value,
         },
       });
+      this.props.onSearch();
     };
     /**
      *
@@ -110,9 +118,11 @@ export default class Header extends Component {
         {
           headerData.hasOwnProperty('hotWords') ? (
             <div>
-              <div className={styles.disHeader}>
-                <div className="logo"></div>
-                <div className="search">
+              <div className={`${styles.disHeader} clearfix`}>
+                <div className="logo">
+                  <Link to={`/goods/distributionIndex`}><img src={pearlgoLogo}/></Link>
+                </div>
+                <div className={`search ${language=== 'en' ? 'English' : ''}`}>
                   <span className="search-title">{languageForDistribution.ProductName}</span>
                   <Search
                     className="search-input"

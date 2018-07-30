@@ -112,7 +112,7 @@ export default class Activity extends Component {
       <Card>
         <div>
           <div className={styles.distributionContent}>
-            <Header headerData={headerData} hideTab></Header>
+            <Header onSearch={this.getData} headerData={headerData} hideTab></Header>
             <Spin spinning={this.props.distribution.loading}>
               <img src={bannerUrl} className={styles.banner}/>
               <Goods spus={goods}></Goods>

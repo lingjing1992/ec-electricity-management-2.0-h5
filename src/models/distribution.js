@@ -118,13 +118,13 @@ export default {
         callback(response);
       }
     },
-    // 更新分销搜索条件
-    * changeSearchData({payload, callback}, {call, put}) {
-      yield put({
-        type   : 'changesearchData',
-        payload: payload
-      });
-    },
+    // // 更新分销搜索条件
+    // * changeSearchData({payload, callback}, {call, put}) {
+    //   yield put({
+    //     type   : 'changesearchData',
+    //     payload: payload
+    //   });
+    // },
     // 分销搜索
     * getDistributionSpus({payload, callback}, {call, put}) {
 
@@ -211,7 +211,7 @@ export default {
         popLoading: action.payload,
       };
     },
-    changesearchData (state, action) {
+    changeSearchData (state, action) {
       return {
         ...state,
         searchData: {

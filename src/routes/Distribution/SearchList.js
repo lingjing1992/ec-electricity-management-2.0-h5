@@ -34,10 +34,10 @@ export default class SearchList extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-    if (JSON.stringify(nextProps.distribution.searchData) !== JSON.stringify(this.props.distribution.searchData)) {
-      // console.log('条件变更')
-      this.getData(nextProps.distribution.searchData)
-    }
+    // if (JSON.stringify(nextProps.distribution.searchData) !== JSON.stringify(this.props.distribution.searchData)) {
+    //   // console.log('条件变更')
+    //   this.getData(nextProps.distribution.searchData)
+    // }
   }
 
   init () {
@@ -54,13 +54,11 @@ export default class SearchList extends Component {
    *
    * @param {obj} param 搜索改变的参数
    */
-  getData (param = {}) {
-    const {pagination} = this.state
+  getData =  () => {
+    const { searchData } = this.props.distribution
     this.props.dispatch({
       type:'distribution/getDistributionSpus',
-      payload:{
-        ...param
-      },
+      payload: searchData,
       callback: (data) => {
         const _this = this;
         if(data.status === 200){
@@ -113,7 +111,7 @@ export default class SearchList extends Component {
     return (
       <Card>
         <div className={styles.distributionContent}>
-          <Header location={this.props.location} headerData={headerData}></Header>
+          <Header onSearch={this.getData} location={this.props.location} headerData={headerData}></Header>
           <SubSearch changeHandle={
             () => {
               this.getData()
