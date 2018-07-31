@@ -273,6 +273,7 @@ export default {
         publishToShopify    : 'Publish To Shopify',
         yes : 'Yes',
         no  : 'No',
+        ProductAttribute: 'Product Attribute',
       },
       //商品编辑
       productEdit      : {

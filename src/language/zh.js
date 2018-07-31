@@ -347,6 +347,7 @@ export default {
         publishToShopify    : '发布到Shopify',
         yes : '是',
         no  : '否',
+        ProductAttribute: '商品属性',
       },
       //分销市场
       distribution     : {

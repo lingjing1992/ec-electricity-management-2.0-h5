@@ -1118,8 +1118,7 @@ export default class GoodsCreate extends Component {
       getFieldsError,
       getFieldError,
     } = this.props.form;
-    const languageForProductEdit = this.props.global.languageDetails.goods.productEdit;
-    const languageForProductMessage = this.props.global.languageDetails.goods.message;
+
     const fieldLabels = {
       goodsCategory: languageForProductEdit.productType,
     };
@@ -1127,6 +1126,10 @@ export default class GoodsCreate extends Component {
     const {goodsCreate} = this.props;
     const {goodsCreate: {loading, createRequest}} = this.props;
     const {rateLoading} = this.props.setting;
+    //多语言
+    const languageDetails = this.props.global.languageDetails;
+    const languageForProductEdit = this.props.global.languageDetails.goods.productEdit;
+    const languageForProductMessage = this.props.global.languageDetails.goods.message;
     const languageForMessage = this.props.global.languageDetails.message;
     const languageForGlobal = this.props.global.languageDetails.global;
     const languageForNav = this.props.global.languageDetails.nav;
@@ -1645,8 +1648,7 @@ export default class GoodsCreate extends Component {
                           {
                             language.map((item) => {
                               return (
-                                <RadioButton value={item}
-                                             key={item}>{goodsEditorLanguage(item, languageForGlobal)}</RadioButton>
+                                <RadioButton value={item} key={item}>{goodsEditorLanguage(item, languageForGlobal)}</RadioButton>
                               )
                             })
                           }
@@ -1676,7 +1678,12 @@ export default class GoodsCreate extends Component {
                         {...formItemLayout}
                       >
                         {getFieldDecorator('promotionCountry', {
-                          rules: [{required: true, message: languageForProductEdit.selectCountry}],
+                          rules: [
+                              {
+                                required: true,
+                                message:
+                                languageForProductEdit.selectCountry
+                              }],
                           initialValue: (
                             (this.state.spuId === 0)
                               ?
@@ -1728,7 +1735,7 @@ export default class GoodsCreate extends Component {
               </Card>
               <Card
                 className="ant-card-head-900"
-                title={"商品属性"}
+                title={languageForProductEdit.ProductAttribute}
               >
                 <div className="ant-card-900">
                   {

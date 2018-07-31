@@ -22,6 +22,9 @@ export default {
     // 初始化数据
     createRequest: {
       country: [],
+      goods_type: [],
+      language: [],
+      currency: [],
     },
     // 获取SPU属性列表
     spuAttributesList: [],
