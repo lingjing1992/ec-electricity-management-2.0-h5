@@ -88,12 +88,12 @@ export default class Header extends Component {
           pathname: '/goods/distributionIndex'
         }))
       }else {
-
+        const tabId = parseInt(val);
         this.props.dispatch({
           type: 'distribution/changeSearchData',
           payload: {
             ...defSearchData,
-            categoryId: parseInt(val)
+            categoryId: tabId
           }
         })
         console.log(location);
@@ -105,11 +105,14 @@ export default class Header extends Component {
           });
           this.props.dispatch(routerRedux.replace({
             pathname: searchPathName,
-            search: '?tabId='+val
+            search: '?tabId='+tabId
           }))
         }else {
-          this.props.dispatch(routerRedux.push(searchPathName + '?tabId='+val))
+          this.props.dispatch(routerRedux.push(searchPathName + '?tabId='+tabId))
         }
+        setTimeout( () => {
+          this.props.onSearch();
+        },0)
       }
     };
     return (
