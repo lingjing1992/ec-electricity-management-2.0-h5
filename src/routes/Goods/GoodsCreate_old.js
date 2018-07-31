@@ -2175,7 +2175,7 @@ export default class GoodsCreate extends Component {
                     )}
                   </FormItem>
                   {
-                    permission['100059'].status ? (
+                    permission['100060'].status ? (
                       <FormItem label={languageForProductEdit.publishToShopify}>
                         <Switch
                           checkedChildren={languageForProductEdit.yes}
