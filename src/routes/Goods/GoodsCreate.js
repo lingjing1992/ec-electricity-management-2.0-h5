@@ -83,28 +83,6 @@ export default class GoodsCreate extends Component {
     const { language, goodsType, country } = this.state;
     //表单对象
     const { getFieldDecorator, validateFieldsAndScroll, getFieldsError, getFieldError } = this.props.form;
-    // formLayout  短表单布局
-    const formItemLayout = {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 3 },
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 16 },
-      },
-    };
-    // 长表单布局
-    const longFormItemLayout = {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 1 },
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 16 },
-      },
-    };
     // 商品图片
     const goodsPicProps = {
       name: 'upload_img',
@@ -130,7 +108,6 @@ export default class GoodsCreate extends Component {
         const className = item === 'en' ? '' : styles.otherLanguageInput;
         return(
           <FormItem
-            {...formItemLayout}
             label={label}
             key={index}
             className={`${styles.inputFormItem} ${className} ${styles.languageInput}`}
@@ -166,7 +143,6 @@ export default class GoodsCreate extends Component {
 
               <FormItem
                 label="品牌名称"
-                {...formItemLayout}
                 className={ styles.inputFormItem }
               >
                 {getFieldDecorator('brandName', {
@@ -189,7 +165,6 @@ export default class GoodsCreate extends Component {
               <FormItem
                 label="商品详情"
                 className={styles.inputFormItem}
-                {...formItemLayout}
               >
                 <Tabs defaultActiveKey="1">
                   {
@@ -227,7 +202,6 @@ export default class GoodsCreate extends Component {
 
               <FormItem
                 label="商品图片"
-                {...formItemLayout}
                 className={styles.inputFormItem}
               >
                 {getFieldDecorator('goodsIcon', {
@@ -255,7 +229,6 @@ export default class GoodsCreate extends Component {
               <FormItem
                 label="商品类目"
                 className={styles.inputFormItem}
-                {...formItemLayout}
               >
                 {getFieldDecorator('goodsType', {
                   rules: [{ required: true, message: '请选择一个商品类目' }],
@@ -295,11 +268,9 @@ export default class GoodsCreate extends Component {
 
               <FormItem
                 label="SPU属性"
-                {...longFormItemLayout}
               >
                 <FormItem
                   label="属性名称"
-                  {...longFormItemLayout}
                   className={styles.spuTitleName}
                 >
                   属性值
@@ -312,7 +283,6 @@ export default class GoodsCreate extends Component {
               <FormItem
                 label="推广国家"
                 className={styles.inputFormItem}
-                {...formItemLayout}
               >
                 {getFieldDecorator('promotionCountry', {
                   rules: [{ required: true, message: '请选择至少一个推广国家' }],
@@ -341,7 +311,6 @@ export default class GoodsCreate extends Component {
               <FormItem
                 label="是否分销"
                 className={styles.inputFormItem}
-                {...formItemLayout}
               >
                 {getFieldDecorator('isDistribution', {
                   rules: [{ required: true, message: '请输入是否分销' }],
