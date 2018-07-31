@@ -155,19 +155,12 @@ export default class SkuTableForm extends PureComponent {
   }
   handleBatchFillingChange = (target, e) => {
     const { handleBatchFilling } = this.state;
-    const newData = [...this.state.handleBatchFilling];
-
-    // this.state.handleBatchFilling[target]=e.target.value
-
-    // console.log('this.state.handleBatchFilling',this.state.handleBatchFilling)
     this.setState({
       handleBatchFilling: Object.assign({ ...handleBatchFilling }, { [target]: e.target.value }),
     });
   }
   handleBatchFilling = () => {
-    // let { handleBatchFilling } = this.state;
     const newData = [...this.state.data];
-    const { handleBatchFilling } = this.state;
 
     newData.map((item) => {
       if (this.state.handleBatchFilling.quantity) {
