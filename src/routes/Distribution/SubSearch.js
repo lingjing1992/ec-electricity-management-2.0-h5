@@ -142,6 +142,9 @@ export default class SubSearch extends Component {
           status
         }
       })
+      setTimeout(()=>{
+        this.props.changeHandle();
+      },0)
     }
 
     //排序点击事件
@@ -167,6 +170,9 @@ export default class SubSearch extends Component {
           rankType: null
         }
       })
+      setTimeout(()=>{
+        this.props.changeHandle();
+      },0)
     }
 
     //价格区间更新事件
