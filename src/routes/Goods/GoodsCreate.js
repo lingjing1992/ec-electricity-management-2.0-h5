@@ -11,6 +11,10 @@ import ProductName from './ProductName';
 import ProductDetail from './ProductDetail';
 import Country from './Country';
 import Distribution from './Distribution';
+import ProductCategory from './ProductCategory';
+import SpuAttribute from './SpuAttribute';
+import DefineAttribute from './DefineAttribute';
+import SpuTableForm from './SpuTableForm'; // SPU自定义属性
 import FooterToolbar from '../../components/FooterToolbar';
 
 
@@ -49,6 +53,8 @@ export default class GoodsCreate extends Component {
     country:[],
     //权限值
     permission: this.props.global.rolePower.modules['1001'].moduleSubs['10019'].moduleFunctions,
+    //spu自定义属性编辑弹窗
+    visibleSpuTableForm: false,
   }
 
   // ------------------------------------react周期*-------------------------------------
@@ -79,6 +85,104 @@ export default class GoodsCreate extends Component {
     })
   }
 
+  // 设置商品类目详情
+  handleGoodsType = (value) => {
+    const {type} = this.state;
+    this.props.dispatch({
+      type: `goodsCreate/goodsCreateSpuAttributesList`,
+      payload: {
+        goods_type_id: value,
+      },
+      callback: () => {
+
+      },
+    });
+  }
+
+  // 添加自定仪SPU属性
+  showModalSpuTableForm = () => {
+    const {setFieldsValue} = this.props.form;
+    const languageForProductEdit = this.props.global.languageDetails.goods.productEdit;
+    setFieldsValue({
+      spuTableForm: [{
+        key: 'spuTableForm1',
+        name: languageForProductEdit.attributeName,
+        en: '',
+        'zh-tw': '',
+        editable: true,
+      }, {
+        key: 'spuTableForm2',
+        name: languageForProductEdit.attributeValue,
+        en: '',
+        'zh-tw': '',
+        editable: true,
+      }],
+    });
+
+    this.setState({
+      visibleSpuTableForm: true,
+    });
+  }
+  //spu自定义属性编辑提交
+  handleOkSpuTableForm = (e) => {
+    const {getFieldValue} = this.props.form;
+    const {type} = this.state;
+    const languageForMessage = this.props.global.languageDetails.message;
+    const {goodsCreate} = this.props;
+    const {
+      language = [], // 语言
+      goods_type = [], // 商品类目
+      currency = [], // 货币
+      country = [], // 国家
+    } = goodsCreate.createRequest;
+
+    // 获取modal的值
+    const spuTableForm = getFieldValue('spuTableForm');
+    let result = true;
+    const definedAttrs = spuTableForm.map((item) => {
+      const langItem = item;
+      // if (!item.en && !item['zh-tw']) {
+      if (!item.en) {
+        result = false;
+      }
+      return {
+        lang: {
+          ...langItem,
+        },
+      };
+    });
+
+
+    if (result) {
+      this.props.dispatch({
+        type: `goodsCreate/goodsCreateCreateDefinedAttr`,
+        payload: {
+          definedAttrs,
+          language,
+        },
+        callback: () => {
+          this.setState({
+            visibleSpuTableForm: false,
+          });
+        },
+      });
+    } else {
+      notification.error({
+        message: languageForMessage.KindlyReminder,
+        description: languageForMessage.required,
+      });
+    }
+
+  }
+
+  //spu自定义属性编辑关闭
+  handleCancelSpuTableForm = (e) => {
+    this.setState({
+      visibleSpuTableForm: false,
+    });
+  }
+
+
   // 取消的时候，返回列表页面
   handleLinkList = () => {
     this.props.dispatch(routerRedux.go(-1));
@@ -96,7 +200,7 @@ export default class GoodsCreate extends Component {
 
     // -------------------------------------变量定义获取*--------------------------------------
 
-    const { loading } = this.props.goodsCreate;
+    const { loading, spuAttributesList, createDefinedAttr } = this.props.goodsCreate;
     const { goodsType,  permission } = this.state;
     const form = this.props.form;
     //表单对象
@@ -222,73 +326,69 @@ export default class GoodsCreate extends Component {
               >
                 <div className="ant-card-900">
 
+                  {/*@------------------------------------商品类目*-------------------------------------@*/}
+
+                  {
+                    permission['100036'].status ? (
+                      <ProductCategory
+                        form={form}
+                        languageDetails={languageDetails}
+                        permission={permission}
+                        goodsType={goods_type}
+                        onGoodsType={this.handleGoodsType}
+                      />
+                    ) : null
+                  }
+
+                  {/*@------------------------------------SPU属性*-------------------------------------@*/}
+
+                  {
+                    permission['100037'].status ? (
+                      <SpuAttribute
+                        form={form}
+                        languageDetails={languageDetails}
+                        spuAttributesList={spuAttributesList}
+                      />
+                    ) : null
+                  }
+
+                  {/*@------------------------------------自定义属性*-------------------------------------@*/}
+
+                  <DefineAttribute
+                    form={form}
+                    languageDetails={languageDetails}
+                    createDefinedAttr={createDefinedAttr}
+                    showModalSpuTableForm={this.showModalSpuTableForm}
+                  />
+
                 </div>
               </Card>
                 {/*@------------------------------------商品图片*-------------------------------------@*/}
 
-                <FormItem
-                  label="商品图片"
-                  className={styles.inputFormItem}
-                >
-                  {getFieldDecorator('goodsIcon', {
-                    rules: [
-                      {
-                        required: true,
-                        message: '请上传至少6张主图，至多20张主图',
-                      },
-                    ],
-                    getValueFromEvent: this.normFile,
-                  })(
-                    <Upload {...goodsPicProps}>
-                      <Button>
-                        <Icon type="upload" /> 上传商品图片
-                      </Button>
-                    </Upload>
-                  )}
-                  <div className={styles.gooodsPicDesc}>
-                    商品图片上传要求：尺寸：750x625；格式：jpg,png；数量：6≤n≤20
-                  </div>
-                </FormItem>
+                {/*<FormItem*/}
+                  {/*label="商品图片"*/}
+                  {/*className={styles.inputFormItem}*/}
+                {/*>*/}
+                  {/*{getFieldDecorator('goodsIcon', {*/}
+                    {/*rules: [*/}
+                      {/*{*/}
+                        {/*required: true,*/}
+                        {/*message: '请上传至少6张主图，至多20张主图',*/}
+                      {/*},*/}
+                    {/*],*/}
+                    {/*getValueFromEvent: this.normFile,*/}
+                  {/*})(*/}
+                    {/*<Upload {...goodsPicProps}>*/}
+                      {/*<Button>*/}
+                        {/*<Icon type="upload" /> 上传商品图片*/}
+                      {/*</Button>*/}
+                    {/*</Upload>*/}
+                  {/*)}*/}
+                  {/*<div className={styles.gooodsPicDesc}>*/}
+                    {/*商品图片上传要求：尺寸：750x625；格式：jpg,png；数量：6≤n≤20*/}
+                  {/*</div>*/}
+                {/*</FormItem>*/}
 
-                {/*@------------------------------------商品类目*-------------------------------------@*/}
-
-                <FormItem
-                  label="商品类目"
-                  className={styles.inputFormItem}
-                >
-                  {getFieldDecorator('goodsType', {
-                    rules: [{ required: true, message: '请选择一个商品类目' }],
-                    initialValue: [],
-                    onChange: (value) => {
-                      {/*this.handleGoodsType(value);*/}
-                    },
-                  })(
-                    <Select
-                      placeholder="请选择商品类目"
-                      notFoundContent="请选择商品类目"
-                    >
-                      {
-                        goodsType.map((item,index) => {
-                          return (
-                            <OptGroup key={index} label={item.name_zh}>
-                              {
-                                item.child_type.map((childTypeItem) => {
-                                  return (
-                                    <Option
-                                      key={childTypeItem.id}
-                                    >
-                                      {childTypeItem.name_zh}
-                                    </Option>
-                                  );
-                                })
-                              }
-                            </OptGroup>
-                          );
-                        })
-                      }
-                    </Select>
-                  )}
-                </FormItem>
 
                 {/*@------------------------------------SPU属性*-------------------------------------@*/}
 
@@ -340,6 +440,23 @@ export default class GoodsCreate extends Component {
             </Form>
           </Spin>
         </div>
+        {/* 自定义SPU属性 */}
+        <Modal
+          title={languageForProductEdit.customSPU}
+          visible={this.state.visibleSpuTableForm}
+          onOk={this.handleOkSpuTableForm}
+          onCancel={this.handleCancelSpuTableForm}
+          width="972px"
+          className={styles.spuTableFormModal}
+        >
+          <FormItem>
+            {
+              getFieldDecorator('spuTableForm', {
+                // initialValue: spuTableFormInitValue,
+              })(<SpuTableForm goodsCreate={this.props.goodsCreate}/>)
+            }
+          </FormItem>
+        </Modal>
       </div>
     );
   }

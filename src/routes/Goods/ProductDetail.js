@@ -28,17 +28,17 @@ class ProductDetail extends React.Component {
             })
           }}>
           {
-            language.map((item) => {
+            language.map((item,index) => {
               return (
-                <RadioButton value={item} key={item}>{goodsEditorLanguage(item, languageForGlobal)}</RadioButton>
+                <RadioButton value={item} key={index}>{goodsEditorLanguage(item, languageForGlobal)}</RadioButton>
               )
             })
           }
         </RadioGroup>
         {
-          language.map((item) => {
+          language.map((item,index) => {
             return (
-              <div style={{display: item === this.state.productDetailTabKey ? 'block' : 'none'}}>
+              <div key={index} style={{display: item === this.state.productDetailTabKey ? 'block' : 'none'}}>
                 <Ueditor
                   getContent={this.getContent}
                   language={item}
