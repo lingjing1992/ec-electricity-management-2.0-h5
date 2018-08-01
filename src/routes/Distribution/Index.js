@@ -49,7 +49,11 @@ export default class Index extends Component {
       callback: (data) => {
         if(data.status === 200){
           this.setState({
-            activitys: data.data.activitys,
+            // activitys: data.data.activitys,
+            activitys: [{
+              bannerUrl:'//img1.360buyimg.com/pop/jfs/t24181/337/1413953680/175854/a52b2fd1/5b5fc564N7a40e506.jpg',
+              activityId:1001,
+            }],
             rankings: data.data.rankings
           })
         }
