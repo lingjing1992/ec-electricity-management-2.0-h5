@@ -199,10 +199,10 @@ export default class Goods extends Component {
       },
     ];
     return (
-      <div className={styles.goodsWrap}>
+      <div>
         {
           spus.length>0 ? (
-            <div>
+            <div className={styles.goodsWrap}>
               {
                 spus.map((item, index) => {
                   const margin = index%4 === 0 ? '0' : '20';
@@ -222,11 +222,7 @@ export default class Goods extends Component {
                 })
               }
             </div>
-            ) : (
-            <div className={styles.null}>
-              {languageForGlobal.noData}
-            </div>
-          )
+            ) : null
         }
         <Modal
           visible={produsctShow}

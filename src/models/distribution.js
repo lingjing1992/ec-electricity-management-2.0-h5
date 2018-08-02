@@ -22,7 +22,7 @@ export default {
       pageSize: 20,
       categoryId: null,
       rankType: null,
-      sort: null,
+      sort: -1,
       orderBy: -1,
       status: null,
       supplyPriceSection: {

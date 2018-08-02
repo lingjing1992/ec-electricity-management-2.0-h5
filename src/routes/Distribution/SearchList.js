@@ -47,18 +47,22 @@ export default class SearchList extends Component {
       payload:{},
     })
 
-    const {searchData} = this.props.distribution
-    this.getData (searchData);
+    // const {searchData} = this.props.distribution
+    this.getData ();
   }
   /**
    *
    * @param {obj} param 搜索改变的参数
    */
-  getData =  () => {
+  getData =  (pageNum) => {
     const { searchData } = this.props.distribution
+    pageNum = pageNum ? pageNum : 1;
     this.props.dispatch({
       type:'distribution/getDistributionSpus',
-      payload: searchData,
+      payload: {
+        ...searchData,
+        pageNum: pageNum,
+      },
       callback: (data) => {
         const _this = this;
         if(data.status === 200){
@@ -80,16 +84,22 @@ export default class SearchList extends Component {
      * @param {Number} page  页码
      * 更换页码
      */
-    const changePage = (page) => {
+    const changePage = (pageNum) => {
       const {pagination} = this.state
-      const {searchData} = this.props.distribution
+      pageNum = pageNum ? pageNum : 1;
+      this.props.dispatch({
+        type: 'distribution/changeSearchData',
+        payload: {
+          pageNum: pageNum,
+        },
+      });
       this.setState({
         pagination: {
           ...pagination,
-          current: page
+          current: pageNum
         }
       })
-      this.getData({...searchData, page})
+      this.getData(pageNum)
     }
 
     const { goods, pagination, url} = this.state;
@@ -118,7 +128,15 @@ export default class SearchList extends Component {
             }
           }></SubSearch>
           <Spin spinning={this.props.distribution.loading}>
-            <Goods spus={goods}></Goods>
+            {
+              goods.length>0 ? (
+                <Goods spus={goods}></Goods>
+              ) : (
+                <div className={styles.null}>
+                  {langusgeForGlobal.noData}
+                </div>
+              )
+            }
           </Spin>
           <Pagination
             {

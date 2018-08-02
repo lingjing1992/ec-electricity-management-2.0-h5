@@ -49,11 +49,11 @@ export default class Index extends Component {
       callback: (data) => {
         if(data.status === 200){
           this.setState({
-            // activitys: data.data.activitys,
-            activitys: [{
-              bannerUrl:'//img1.360buyimg.com/pop/jfs/t24181/337/1413953680/175854/a52b2fd1/5b5fc564N7a40e506.jpg',
-              activityId:1001,
-            }],
+            activitys: data.data.activitys,
+            // activitys: [{
+            //   bannerUrl:'//img1.360buyimg.com/pop/jfs/t24181/337/1413953680/175854/a52b2fd1/5b5fc564N7a40e506.jpg',
+            //   activityId:1001,
+            // }],
             rankings: data.data.rankings
           })
         }
@@ -113,14 +113,21 @@ export default class Index extends Component {
                 rankings.map((item, i) => {
                   return (
                     <div key={i} className="rankItem">
-                      <div className="title">
-                        {item.rankName}
-                        <Link to={`/goods/DistributionSearchList`} className="more" onClick={()=>{moreClick(item.rankType)}}>{languageForDistribution.More}>></Link>
-                      </div>
-                      <Goods
-                        goodsItemHandle={goodsItemHandle}
-                        spus={item.spus}
-                      ></Goods>
+                      {
+                        item.spus.length>0 ? (
+                          <div>
+                            <div className="title">
+                              {item.rankName}
+                              <Link to={`/goods/DistributionSearchList`} className="more" onClick={()=>{moreClick(item.rankType)}}>{languageForDistribution.More}>></Link>
+                            </div>
+                            <Goods
+                              goodsItemHandle={goodsItemHandle}
+                              spus={item.spus}
+                            ></Goods>
+                          </div>
+                        ) : null
+                      }
+
                     </div>
                   )
                 })
