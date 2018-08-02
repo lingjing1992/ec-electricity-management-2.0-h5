@@ -83,10 +83,10 @@ export default class Header extends Component {
      * @param {*} e 事件e
      * 分类选择事件
      */
-    const categoryChangeHangle = (e) => {
+    const categoryChangeHangle = (val) => {
       const { defSearchData } = this.props.distribution;
       const { location } = this.props;
-      const val = e.target.value;
+      // const val = e.target.value;
       const searchPathName = '/goods/distributionSearchList';
       if(val == '-100'){
         this.props.dispatch(routerRedux.push({
@@ -106,7 +106,7 @@ export default class Header extends Component {
 
         if(location.pathname === searchPathName){
           this.setState({
-            tabId: e.target.value,
+            tabId: val,
           });
           this.props.dispatch(routerRedux.replace({
             pathname: searchPathName,
@@ -158,23 +158,25 @@ export default class Header extends Component {
               {/* 分类渲染 */}
               {
                 !this.props.hideTab && (
-                  <RadioGroup
-                    onChange={(e) => {
-                      categoryChangeHangle(e);
-                    }}
-                    onClick={()=>{
-                      console.log(1);
-                    }}
-                    value={Number(tabId)}
+                  <div
                     className={styles.tab}>
                     {
                       headerData.column.map(item => {
                         return (
-                          <RadioButton key={item.categoryId} value={item.categoryId}>{item.name}</RadioButton>
+                          <label
+                            className={`${ Number(tabId) === item.categoryId ? 'ant-radio-button-wrapper-checked' : null} ant-radio-button-wrapper`}
+                            key={item.categoryId}
+                            value={item.categoryId}
+                            onClick={()=>{
+                              categoryChangeHangle(item.categoryId);
+                            }}
+                          >
+                            {item.name}
+                            </label>
                         );
                       })
                     }
-                  </RadioGroup>
+                  </div>
                 )
               }
             </div>
