@@ -944,7 +944,7 @@ export default class OrderList extends Component {
               result = [
                 operation.details,
                 // { title: '编辑', key: 2 },
-                operation.cancel,
+                // operation.cancel,
               ];
               break;
             case '1':

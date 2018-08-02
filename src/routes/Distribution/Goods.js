@@ -227,7 +227,7 @@ export default class Goods extends Component {
         <Modal
           visible={produsctShow}
           footer={null}
-          title={languageForDistribution.productDetails}
+          title={`${languageForDistribution.productDetails}-${productDetail.spuId}`}
           onCancel={this.handleProductShow.bind(this,false)}
           width={684}
         >

@@ -6,7 +6,7 @@ import { connect } from 'dva';
 import Header from './Header'
 import Goods from './Goods'
 import SubSearch from './SubSearch'
-import {  scrollToTop } from '../../utils/utils';
+import {  scrollToTop, getQueryString } from '../../utils/utils';
 
 @connect(state => ({
   global: state.global,
@@ -57,11 +57,13 @@ export default class SearchList extends Component {
   getData =  (pageNum) => {
     const { searchData } = this.props.distribution
     pageNum = pageNum ? pageNum : 1;
+    const tabId = getQueryString().tabId;
     this.props.dispatch({
       type:'distribution/getDistributionSpus',
       payload: {
         ...searchData,
         pageNum: pageNum,
+        categoryId: parseInt(tabId),
       },
       callback: (data) => {
         const _this = this;
