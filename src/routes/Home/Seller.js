@@ -201,7 +201,7 @@ export default class Supplier extends Component {
         },
         {
           name: languageForIndex.distribution,
-          link: '/goods/distribution'
+          link: '/goods/distributionIndex'
         },
         {
           name: languageForIndex.shopDesign,
