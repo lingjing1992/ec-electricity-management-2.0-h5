@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import { Form, Card, Input, Icon, Checkbox, Button, Select, Upload, Radio, Tabs, Popover, message, notification, Spin, Popconfirm, Modal, Breadcrumb } from 'antd';
 import { routerRedux, Link } from 'dva/router';
-import { goodsEditorLanguage, getLanguageParams, setApiHost } from '../../utils/utils';
+import { goodsEditorLanguage, getLanguageParams, setApiHost, getQueryString } from '../../utils/utils';
 import styles from './GoodsCreate.less';
 import BrandName from './BrandName';
 import ProductName from './ProductName';
@@ -81,9 +81,29 @@ export default class GoodsCreate extends Component {
           goodsType: result.goods_type,
           country: result.country
         })
+        this.getProduDetail();
       }
     })
   }
+  //获取商品详情
+  getProduDetail = () =>{
+    const spuId = getQueryString().spu_id;
+    if(spuId){
+      this.props.dispatch({
+        type: `goodsCreate/goodsCreateGetgoods`,
+        payload: {
+          spu_id: spuId,
+        },
+        callback: (data) => {
+          if(data.status===200){
+            const goodsDetail = data.data;
+            this.setState(goodsDetail);
+          }
+        }
+      })
+    }
+  }
+  //编辑回选
 
   // 设置商品类目详情
   handleGoodsType = (value) => {
@@ -182,7 +202,6 @@ export default class GoodsCreate extends Component {
     });
   }
 
-
   // 取消的时候，返回列表页面
   handleLinkList = () => {
     this.props.dispatch(routerRedux.go(-1));
@@ -201,7 +220,7 @@ export default class GoodsCreate extends Component {
     // -------------------------------------变量定义获取*--------------------------------------
 
     const { loading, spuAttributesList, createDefinedAttr } = this.props.goodsCreate;
-    const { goodsType,  permission } = this.state;
+    const { goodsType,  permission, language, country } = this.state;
     const form = this.props.form;
     //表单对象
     const { getFieldDecorator, validateFieldsAndScroll, getFieldsError, getFieldError } = this.props.form;
@@ -214,12 +233,12 @@ export default class GoodsCreate extends Component {
     const languageForNav = this.props.global.languageDetails.nav;
     const languageForHeader = this.props.global.languageDetails.header;
     const languageForRturnAddr = this.props.global.languageDetails.returnAddress;
-    const {
-      language = [], // 语言
-      goods_type = [], // 商品类目
-      currency = [], // 货币
-      country = [], // 国家
-    } = this.props.goodsCreate.createRequest;
+    // const {
+      // language = [], // 语言
+      // goods_type = [], // 商品类目
+      // currency = [], // 货币
+      // country = [], // 国家
+    // } = this.props.goodsCreate.createRequest;
     // 商品图片
     const goodsPicProps = {
       name: 'upload_img',
@@ -334,7 +353,7 @@ export default class GoodsCreate extends Component {
                         form={form}
                         languageDetails={languageDetails}
                         permission={permission}
-                        goodsType={goods_type}
+                        goodsType={goodsType}
                         onGoodsType={this.handleGoodsType}
                       />
                     ) : null
