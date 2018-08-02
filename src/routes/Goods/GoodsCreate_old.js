@@ -2162,18 +2162,23 @@ export default class GoodsCreate extends Component {
                       </FormItem>
                     ) : ''
                   }
-                  <FormItem
-                    label={languageForRturnAddr.ReturnAddress}
-                    {...formItemLayout}
-                  >
-                    {getFieldDecorator('returnAddr', {
-                      initialValue: {},
-                      rules: [{required: !permission['100054'].disabled ? true : false}],
-                    })(
-                      <ReturnAddrForm returnAddress={this.state.returnAddress}
-                                      onSetReturnAddress={this.setReturnAddress}/>
-                    )}
-                  </FormItem>
+                  {
+                    permission['100054'].status ? (
+                      <FormItem
+                        label={languageForRturnAddr.ReturnAddress}
+                        {...formItemLayout}
+                      >
+                        {getFieldDecorator('returnAddr', {
+                          initialValue: {},
+                          rules: [{required: !permission['100054'].disabled ? true : false}],
+                        })(
+                          <ReturnAddrForm returnAddress={this.state.returnAddress}
+                                          onSetReturnAddress={this.setReturnAddress}/>
+                        )}
+                      </FormItem>
+                    ) : null
+
+                  }
                   {
                     permission['100060'].status ? (
                       <FormItem label={languageForProductEdit.publishToShopify}>

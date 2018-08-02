@@ -151,7 +151,7 @@ export default class SubSearch extends Component {
     const sortClick = (e,index) => {
       let data = sortData[index]
       // 改变顺序状态, 若无状态则默认正序，若有状态取反状态
-      data.sort = data.sort === 0 ? 1 : 0
+      data.sort = data.sort === -1 ? 1 : data.sort === 1 ? 0 : 1
       data.selected = true
 
       sortData = [...defSortData]
@@ -221,8 +221,8 @@ export default class SubSearch extends Component {
         <div className="sort">
           {sortData.map((item, index) => {
             const selected = item.selected ? 'selected' : ''
-            const up = item.sort === 0 ? 'up' : ''
-            const down = item.sort === 1 ? 'down' : ''
+            const up = item.sort === 0 ? 'down' : ''
+            const down = item.sort === 1 ? 'up' : ''
             const tdClassName = `${selected} ${up} ${down}`
             return (
               <div key={index} className={tdClassName} onClick={(e) => {sortClick(e, index)}}>

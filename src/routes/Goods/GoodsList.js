@@ -816,10 +816,17 @@ export default class GoodsList extends Component {
         dataIndex: 'storage',
         // className: styles.goodsTd9,
         classType: 1,
-        render: (text) => {
+        render: (text,record) => {
           return (
             <div className={`${styles.shuxing} ${styles.goodsTd9}`} >
-              <span onClick={this.stopProgation}>{text}</span>
+              <span onClick={this.stopProgation}>
+                {text}
+                {
+                  record.isWarning ? (
+                    <span className={styles.isWarning}>!</span>
+                  ) : null
+                }
+              </span>
             </div>
           );
         },
