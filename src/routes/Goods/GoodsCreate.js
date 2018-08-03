@@ -44,7 +44,7 @@ export default class GoodsCreate extends Component {
   // -------------------------------------state*--------------------------------------
   state = {
     //商品详情
-    GoodsDetail:{},
+    goodsDetail:{},
     //新建信息
     language:[],
     //商品类目
@@ -97,7 +97,10 @@ export default class GoodsCreate extends Component {
         callback: (data) => {
           if(data.status===200){
             const goodsDetail = data.data;
-            this.setState(goodsDetail);
+            this.setState({
+              goodsDetail: goodsDetail
+            });
+            this.editReselection();
           }
         }
       })
@@ -105,8 +108,22 @@ export default class GoodsCreate extends Component {
   }
   //编辑回选
   editReselection = () => {
-    const { goodsDetail } = this.goodsDetail;
+    const { goodsDetail, language } = this.state;
+    const {setFieldsValue, getFieldsValue} = this.props.form;
+    console.log(getFieldsValue())
+    // language.forEach((item) => {
+    //   const goodsNameKey = `goodsName[${item}]`;
+    //   setFieldsValue({
+    //     goodsName: {
+    //       [goodsNameKey]: goodsDetail.goods_name
+    //     }
+    //   })
+    // })
 
+    setFieldsValue({
+      brandName: goodsDetail.brand_name,
+      goodsName: goodsDetail.goods_name,
+    })
   }
   // 设置商品类目详情
   handleGoodsType = (value) => {
@@ -149,15 +166,15 @@ export default class GoodsCreate extends Component {
   //spu自定义属性编辑提交
   handleOkSpuTableForm = (e) => {
     const {getFieldValue} = this.props.form;
-    const {type} = this.state;
+    const {type, language} = this.state;
     const languageForMessage = this.props.global.languageDetails.message;
     const {goodsCreate} = this.props;
-    const {
-      language = [], // 语言
-      goods_type = [], // 商品类目
-      currency = [], // 货币
-      country = [], // 国家
-    } = goodsCreate.createRequest;
+    // const {
+    //   language = [], // 语言
+    //   goods_type = [], // 商品类目
+    //   currency = [], // 货币
+    //   country = [], // 国家
+    // } = goodsCreate.createRequest;
 
     // 获取modal的值
     const spuTableForm = getFieldValue('spuTableForm');

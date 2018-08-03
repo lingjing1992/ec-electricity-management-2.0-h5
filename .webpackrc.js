@@ -8,8 +8,8 @@ export default {
       extraBabelPlugins: ['dva-hmr'],
       proxy:{
         "/api": {
-          "target": "http://dev-ecmc.batmobi.net/",
-          // "target": "http://test-ecmc.batmobi.net/",
+          // "target": "http://dev-ecmc.batmobi.net/",
+          "target": "http://test-ecmc.batmobi.net/",
           // "target": "http://merchant.pearlgo.com/",
           "changeOrigin": true,
           "secure": false

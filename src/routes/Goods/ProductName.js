@@ -3,7 +3,7 @@ import { goodsEditorLanguage } from '../../utils/utils';
 import styles from './GoodsCreate.less'
 import { Form, Input } from 'antd';
 
-const ProducName = ({form, language, languageDetails}) => {
+const ProductName = ({form, language, languageDetails}) => {
   const { getFieldDecorator } = form;
   const languageForGlobal = languageDetails.global;
   const languageForMessage = languageDetails.message;
@@ -21,7 +21,7 @@ const ProducName = ({form, language, languageDetails}) => {
             <Form.Item
               key={item}
             >
-              {getFieldDecorator(`goodsName[${item}]`, {
+              {getFieldDecorator(`goodsName.${item}`, {
                 rules: [
                   {
                     required: isEnglish,
@@ -49,4 +49,4 @@ const ProducName = ({form, language, languageDetails}) => {
   )
 }
 
-export default ProducName;
+export default ProductName;
