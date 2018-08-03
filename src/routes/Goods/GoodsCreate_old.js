@@ -1506,6 +1506,11 @@ export default class GoodsCreate extends Component {
               }
             });
           }
+        } else {
+          //解决跳转到错误地方时被顶部遮盖问题
+          const scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+          document.body.scrollTop = document.documentElement.scrollTop = scrollTop-100;
+          console.log(scrollTop);
         }
       });
     };
