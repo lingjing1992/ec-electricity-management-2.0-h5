@@ -73,7 +73,8 @@ export default class Header extends Component {
         payload: {
           ...defSearchData,
           keyword: value,
-          categoryId: null
+          categoryId: null,
+          rankType: null
         },
       });
       this.onSearch();
@@ -98,7 +99,8 @@ export default class Header extends Component {
           type: 'distribution/changeSearchData',
           payload: {
             ...defSearchData,
-            categoryId: tabId
+            categoryId: tabId,
+            rankType: null,
           }
         })
         console.log(location);

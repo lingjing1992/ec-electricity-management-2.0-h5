@@ -118,7 +118,7 @@ export default class Index extends Component {
                           <div>
                             <div className="title">
                               {item.rankName}
-                              <Link to={`/goods/DistributionSearchList`} className="more" onClick={()=>{moreClick(item.rankType)}}>{languageForDistribution.More}>></Link>
+                              <Link to={`/goods/DistributionSearchList?rankType=${item.rankType}`} className="more" onClick={()=>{moreClick(item.rankType)}}>{languageForDistribution.More}>></Link>
                             </div>
                             <Goods
                               goodsItemHandle={goodsItemHandle}

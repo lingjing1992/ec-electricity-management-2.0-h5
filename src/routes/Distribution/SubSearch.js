@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import styles from './SubSearch.less';
-import { Redirect, Switch, routerRedux } from 'dva/router';
+// import { Redirect, Switch, routerRedux } from 'dva/router';
 import {Input, Icon, Checkbox, Button} from 'antd';
 import { connect } from 'dva';
+import { getQueryString } from '../../utils/utils'
 
 @connect(state => ({
   global: state.global,
@@ -40,25 +41,51 @@ export default class SubSearch extends Component {
     this.init()
   }
   componentWillReceiveProps (nextProps) {
-    const {rankType, orderBy} = nextProps.distribution.searchData
-    // console.log(nextProps.distribution)
-    if (rankType !== this.props.distribution.searchData.rankType) {
-      const {sortData} = this.state
+    const {rankType} = nextProps.distribution.searchData
+    if (rankType !== this.props.distribution.searchData.rankType || !rankType) {
+      this.rankTypeInit();
+    }
+  }
+  init () {
+    //根据搜索条件判断初始排序选择的状态
+    const searchData =  this.props.distribution.searchData;
+    const {sort, orderBy, status, rankType} = searchData
+    const {sortData} = this.state;
+
+    if (orderBy !== -1) {
+      sortData[orderBy].selected = true
+      sortData[orderBy].sort= sort
+      this.setState({
+        sortData
+      })
+    }
+
+    if (status !== '') {
+      this.setState({
+        checkboxStatus: status
+      })
+    }
+    this.rankTypeInit();
+  }
+  //排行类型初始化
+  rankTypeInit = () => {
+    // const { rankType } = this.props.distribution.searchData;
+    const { sortData } = this.state;
+    const rankType = getQueryString().rankType || this.props.distribution.searchData.rankType;
+    if(rankType){
       let index = -1;
       if (rankType == 101) {
         index = 0
       } else if (rankType == 102) {
         index = 2
       }
-      if (rankType !== null) {
-        let data = sortData[index]
-        data.selected = true
-        data.sort = 1
-        this.setState({
-          sortData: sortData
-        })
-      }
-    } else if(rankType === '' && orderBy === -1){
+      let data = sortData[index]
+      data.selected = true
+      data.sort = 1
+      this.setState({
+        sortData: sortData
+      })
+    }else {
       this.setState({
         sortData: [
           {
@@ -78,26 +105,12 @@ export default class SubSearch extends Component {
       })
     }
   }
-  init () {
-    //根据搜索条件判断初始排序选择的状态
-    const {sort, orderBy, status, rankType} = this.props.distribution.searchData
-    const {sortData} = this.state
 
-    if (orderBy !== -1) {
-      sortData[orderBy].selected = true
-      sortData[orderBy].sort= sort
-      this.setState({
-        sortData
-      })
-    }
-
-    if (status !== '') {
-      this.setState({
-        checkboxStatus: status
-      })
-    }
-
-
+  //请求
+  changeHandle = () => {
+    setTimeout(()=>{
+      this.props.changeHandle();
+    },0)
   }
   render() {
     let {sortData, checkboxStatus, supplyPriceSection, referencePriceSection} = this.state;
@@ -128,7 +141,7 @@ export default class SubSearch extends Component {
 
     //是否筛选未领取商品 点击事件
     const onChange = (e) => {
-      const status = e.target.checked ? 0 : 1
+      const status = e.target.checked ? 0 : null;
 
       this.setState({
         checkboxStatus: status
@@ -142,9 +155,7 @@ export default class SubSearch extends Component {
           status
         }
       })
-      setTimeout(()=>{
-        this.props.changeHandle();
-      },0)
+      this.changeHandle();
     }
 
     //排序点击事件
@@ -167,14 +178,11 @@ export default class SubSearch extends Component {
           ...searchData,
           orderBy: index,
           sort: data.sort,
-          rankType: null
+          // rankType: null
         }
       })
-      setTimeout(()=>{
-        this.props.changeHandle();
-      },0)
+      this.changeHandle();
     }
-
     //价格区间更新事件
     const inputChangeHandle = (e, x, y) => {
       const val = e.target.value
@@ -200,7 +208,7 @@ export default class SubSearch extends Component {
           referencePriceSection
         }
       })
-      this.props.changeHandle();
+      this.changeHandle();
     }
 
     //重置点击事件

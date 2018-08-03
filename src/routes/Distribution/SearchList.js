@@ -41,14 +41,28 @@ export default class SearchList extends Component {
   }
 
   init () {
+    const rankType = getQueryString().rankType;
+    const searchData =  this.props.distribution.searchData;
     // 头部数据请求
     this.props.dispatch({
       type:'distribution/common',
       payload:{},
     })
+    //如果存在rankType则设置参数rankType
+    if(rankType){
+      this.props.dispatch({
+        type: 'distribution/changeSearchData',
+        payload: {
+          ...searchData,
+          rankType: parseInt(rankType)
+        }
+      })
+    }
 
     // const {searchData} = this.props.distribution
-    this.getData ();
+    setTimeout(() => {
+      this.getData();
+    },0)
   }
   /**
    *
