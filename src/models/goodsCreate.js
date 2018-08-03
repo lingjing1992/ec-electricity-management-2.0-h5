@@ -200,13 +200,13 @@ export default {
         type: 'getgoods',
         payload: response,
       });
+      if (callback) {
+        callback(response);
+      }
       yield put({
         type: 'changeLoading',
         payload: false,
       });
-      if (callback) {
-        callback();
-      }
     },
   },
 

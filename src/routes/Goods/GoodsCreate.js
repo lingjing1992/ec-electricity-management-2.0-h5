@@ -104,7 +104,10 @@ export default class GoodsCreate extends Component {
     }
   }
   //编辑回选
+  editReselection = () => {
+    const { goodsDetail } = this.goodsDetail;
 
+  }
   // 设置商品类目详情
   handleGoodsType = (value) => {
     const {type} = this.state;
