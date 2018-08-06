@@ -55,40 +55,27 @@ export default class SearchList extends Component {
       payload:{},
     })
     //如果存在rankType则设置参数rankType
-    if(rankType){
+    if(rankType) {
       this.props.dispatch({
         type: 'distribution/changeSearchData',
         payload: {
-          ...searchData,
+          // ...searchData,
           rankType: parseInt(rankType),
           orderBy: index,
           sort: 1,
         }
       })
-    }else{
+    }else {
       this.props.dispatch({
         type: 'distribution/changeSearchData',
         payload: {
-          ...searchData,
+          // ...searchData,
           orderBy: -1,
           sort: null,
         }
       })
     }
-    this.props.dispatch({
-      type: 'distribution/changeSearchData',
-      payload: {
-        ...searchData,
-        supplyPriceSection: {
-          min: null,
-          max: null
-        },
-        referencePriceSection: {
-          min: null,
-          max: null
-        }
-      }
-    })
+
     // const {searchData} = this.props.distribution
     setTimeout(() => {
       this.getData();

@@ -52,7 +52,7 @@ export default class Header extends Component {
   onSearch = () => {
     setTimeout( () => {
       this.props.onSearch();
-    },0)
+    },10)
   }
 
   render() {
@@ -75,7 +75,7 @@ export default class Header extends Component {
           ...defSearchData,
           keyword: value,
           categoryId: null,
-          rankType: null,
+          rankType: null
         },
       });
       this.onSearch();
@@ -89,7 +89,7 @@ export default class Header extends Component {
       const { searchData } = this.props.distribution;
 
       const { location } = this.props;
-      const { preTabId } = this.state;
+      // const { preTabId } = this.state;
       // const val = e.target.value;
       const searchPathName = '/goods/distributionSearchList';
       const tabId = parseInt(val);
@@ -98,10 +98,29 @@ export default class Header extends Component {
           pathname: '/goods/distributionIndex'
         }))
       }else {
+
+        if(!searchData.categoryId){
+          this.props.dispatch({
+            type: 'distribution/changeSearchData',
+            payload: {
+              // ...searchData,
+              orderBy: -1,
+              sort: null,
+              supplyPriceSection: {
+                min: null,
+                max: null
+              },
+              referencePriceSection: {
+                min: null,
+                max: null
+              }
+            }
+          })
+        }
         this.props.dispatch({
           type: 'distribution/changeSearchData',
           payload: {
-            ...searchData,
+            // ...searchData,
             categoryId: tabId,
             rankType: null,
             keyword: null
@@ -124,9 +143,9 @@ export default class Header extends Component {
         }
         this.onSearch();
       }
-      this.setState({
-        preTabId :searchData.categoryId,
-      })
+      // this.setState({
+      //   preTabId :searchData.categoryId,
+      // })
     };
     return (
       <div>
