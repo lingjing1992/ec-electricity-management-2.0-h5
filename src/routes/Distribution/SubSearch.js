@@ -41,8 +41,10 @@ export default class SubSearch extends Component {
     this.init()
   }
   componentWillReceiveProps (nextProps) {
-    const {rankType} = nextProps.distribution.searchData
-    if (rankType !== this.props.distribution.searchData.rankType || !rankType) {
+    const {rankType} = nextProps.distribution.searchData;
+    const tabId = getQueryString().tabId;
+    //非分类，排序类型改变，或者不存在排序类型
+    if ((rankType !== this.props.distribution.searchData.rankType || !rankType) && !tabId) {
       this.rankTypeInit();
     }
   }
@@ -168,7 +170,7 @@ export default class SubSearch extends Component {
       sortData = [...defSortData]
       sortData.splice(index,1,data)
       this.setState({
-        sortData
+        sortData: sortData
       })
 
       //在原搜索条件基础上增加排序搜索条件

@@ -140,7 +140,7 @@ export default class SearchList extends Component {
           <Header onSearch={this.getData} location={this.props.location} headerData={headerData}></Header>
           <SubSearch changeHandle={
             () => {
-              this.getData()
+              this.getData(pagination.current)
             }
           }></SubSearch>
           <Spin spinning={this.props.distribution.loading}>
