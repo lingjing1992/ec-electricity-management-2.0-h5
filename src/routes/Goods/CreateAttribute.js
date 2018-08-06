@@ -4,7 +4,7 @@ import { Form, Checkbox } from 'antd';
 const CheckboxGroup = Checkbox.Group;
 const CreateAttribute = ({form, spuAttributesList, type}) => {
   const { getFieldDecorator } = form;
-  console.log(spuAttributesList);
+  // console.log(spuAttributesList);
   return (
     <div>
       {
