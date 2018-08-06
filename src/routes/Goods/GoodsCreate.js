@@ -5,6 +5,7 @@ import { connect } from 'dva';
 import { Form, Card, Input, Icon, Checkbox, Button, Select, Upload, Radio, Tabs, Popover, message, notification, Spin, Popconfirm, Modal, Breadcrumb } from 'antd';
 import { routerRedux, Link } from 'dva/router';
 import { goodsEditorLanguage, getLanguageParams, setApiHost, getQueryString } from '../../utils/utils';
+import Cookie from 'js-cookie';
 import styles from './GoodsCreate.less';
 import BrandName from './BrandName';
 import ProductName from './ProductName';
@@ -14,8 +15,9 @@ import Distribution from './Distribution';
 import ProductCategory from './ProductCategory';
 import SpuAttribute from './SpuAttribute';
 import DefineAttribute from './DefineAttribute';
-import ProductImages from './ProductImages';
 import SpuTableForm from './SpuTableForm'; // SPU自定义属性
+import ProductImages from './ProductImages';
+import SkuAttribute from './SkuAttribute';
 import FooterToolbar from '../../components/FooterToolbar';
 
 
@@ -62,12 +64,15 @@ export default class GoodsCreate extends Component {
     imageAddSuccess: false,
     //图片列表
     fileList: [],
+    //sku属性列表组
+    createSkuAttributesArr: [],
   }
 
   // ------------------------------------react周期*-------------------------------------
 
   componentWillMount() {
     this.init();
+    console.log(Cookie.get('utm_campaign'));
   }
 
   // -------------------------------------页面初始化*--------------------------------------
@@ -134,7 +139,7 @@ export default class GoodsCreate extends Component {
       promotionCountry: goodsDetail.promote_country,
       goodsType: goodsDetail.goods_type_id,
       spuAttributesList: this.getSpuReselectionArray(goodsDetail.spu_attr),
-      // goodsIcon: goodsDetail.goods_icons
+      isDistribution: goodsDetail.is_distribution
     })
   }
   // 设置商品类目详情
@@ -323,13 +328,24 @@ export default class GoodsCreate extends Component {
     console.log(result);
   }
 
+  //编辑sku
+  handleEditorSkuAttributes = () => {
 
+  }
+  //创建sku属性
+  handleCreateSkuAttributes = () => {
+
+  }
+  //创建新的sku
+  handleCreateSkuAttributesBuildData = () => {
+
+  }
   render(){
 
     // -------------------------------------变量定义获取*--------------------------------------
 
     const { loading, spuAttributesList, createDefinedAttr } = this.props.goodsCreate;
-    const { goodsType,  permission, language, country, goodsDetail, imageAddSuccess } = this.state;
+    const { goodsType,  permission, language, country, goodsDetail, imageAddSuccess, createSkuAttributesArr } = this.state;
     const form = this.props.form;
     //表单对象
     const { getFieldDecorator, validateFieldsAndScroll, getFieldsError, getFieldError } = this.props.form;
@@ -498,6 +514,7 @@ export default class GoodsCreate extends Component {
                     className="ant-card-head-900"
                   >
                     {/*@------------------------------------商品图片*-------------------------------------@*/}
+
                     <div className="ant-card-900">
                       <ProductImages
                         goodsPicProps={goodsPicProps}
@@ -506,22 +523,36 @@ export default class GoodsCreate extends Component {
                         imageAddSuccess={imageAddSuccess}
                         closeAddStatus={this.closeUploadStatus}
                         styles={styles}
-                      >
-                      </ProductImages>
+                      />
+
                     </div>
                   </Card>
                 ) : ''
               }
 
-                {/*@------------------------------------SPU属性*-------------------------------------@*/}
-
-
-
-
-
-
               {/*-------------------------------------SKU信息*--------------------------------------*/}
 
+              <Card
+                title={languageForProductEdit.SKUInformation}
+                className={`${styles.card} ${styles.skuInfoCard}`}
+                bordered={false}
+              >
+                <div className={styles.skuInfo}>
+
+                  {/*@------------------------------------SKU属性*-------------------------------------@*/}
+
+                  <SkuAttribute
+                    form={form}
+                    languageDetails={languageDetails}
+                    createSkuAttributesArr={createSkuAttributesArr}
+                    onEdit={this.handleEditorSkuAttributes}
+                    onCreateValue={this.handleEditorSkuAttributes}
+                    onCreateAttribute={this.handleEditorSkuAttributes}
+                    permission={permission}
+                  />
+
+                </div>
+              </Card>
               <Card
                 title="SKU信息"
                 className={styles.card}

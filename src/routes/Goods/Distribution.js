@@ -10,11 +10,11 @@ const Distribution = ({form, languageDetails, permission}) => {
     >
       {getFieldDecorator('isDistribution', {
         rules: [{required: true}],
-        // initialValue: `${getgoods.is_distribution}`,
+        initialValue: 1,
       })(
         <RadioGroup disabled={permission['100040'].disabled}>
-          <Radio value="1">{languageForProductEdit.Yes}</Radio>
-          <Radio value="0">{languageForProductEdit.No}</Radio>
+          <Radio value={1}>{languageForProductEdit.Yes}</Radio>
+          <Radio value={0}>{languageForProductEdit.No}</Radio>
         </RadioGroup>
       )}
     </Form.Item>
