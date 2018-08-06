@@ -62,7 +62,7 @@ export default class Index extends Component {
   }
   render() {
     // router
-    const { activitys, rankings} = this.state;
+    const { activitys, rankings } = this.state;
     const { distribution:{ headerData }  } = this.props;
     const languageForGlobal = this.props.global.languageDetails.global;
     const languageForDistribution = this.props.global.languageDetails.goods.distribution;

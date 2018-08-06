@@ -41,26 +41,12 @@ export default class SubSearch extends Component {
     this.init()
   }
   componentWillReceiveProps (nextProps) {
-    const {rankType} = nextProps.distribution.searchData;
-    const tabId = getQueryString().tabId;
-    //非分类，排序类型改变，或者不存在排序类型
-    if ((rankType !== this.props.distribution.searchData.rankType || !rankType) && !tabId) {
-      this.rankTypeInit();
-    }
+
   }
   init () {
     //根据搜索条件判断初始排序选择的状态
     const searchData =  this.props.distribution.searchData;
-    const {sort, orderBy, status, rankType} = searchData
-    const {sortData} = this.state;
-
-    if (orderBy !== -1) {
-      sortData[orderBy].selected = true
-      sortData[orderBy].sort= sort
-      this.setState({
-        sortData
-      })
-    }
+    const { status} = searchData
 
     if (status !== '') {
       this.setState({
@@ -72,40 +58,22 @@ export default class SubSearch extends Component {
   //排行类型初始化
   rankTypeInit = () => {
     // const { rankType } = this.props.distribution.searchData;
-    const { sortData } = this.state;
+    const {searchData} = this.props.distribution
     const rankType = getQueryString().rankType || this.props.distribution.searchData.rankType;
-    if(rankType){
-      let index = -1;
-      if (rankType == 101) {
-        index = 0
-      } else if (rankType == 102) {
-        index = 2
-      }
-      let data = sortData[index]
-      data.selected = true
-      data.sort = 1
-      this.setState({
-        sortData: sortData
-      })
-    }else {
-      this.setState({
-        sortData: [
-          {
-            name: '销量',
-            selected: false,
-            sort: -1
-          },{
-            name: '供货价',
-            selected: false,
-            sort: -1
-          },{
-            name: '上架时间',
-            selected: false,
-            sort: -1
-          }
-        ]
-      })
-    }
+    // let index = -1;
+    // if (rankType == 101) {
+    //   index = 0
+    // } else if (rankType == 102) {
+    //   index = 2
+    // }
+    // this.props.dispatch({
+    //   type: 'distribution/changeSearchData',
+    //   payload: {
+    //     ...searchData,
+    //     orderBy: index,
+    //     sort: 1,
+    //   }
+    // })
   }
 
   //请求
@@ -115,9 +83,10 @@ export default class SubSearch extends Component {
     },0)
   }
   render() {
-    let {sortData, checkboxStatus, supplyPriceSection, referencePriceSection} = this.state;
+    let {sortData, checkboxStatus} = this.state;
     const languageForDistribution = this.props.global.languageDetails.goods.distribution;
-    const {searchData} = this.props.distribution
+    const { searchData } = this.props.distribution
+    const { referencePriceSection, supplyPriceSection } = searchData
 
     sortData[0].name = languageForDistribution.SalesVolume;
     sortData[1].name = languageForDistribution.SupplyCost;
@@ -162,24 +131,30 @@ export default class SubSearch extends Component {
 
     //排序点击事件
     const sortClick = (e,index) => {
-      let data = sortData[index]
-      // 改变顺序状态, 若无状态则默认正序，若有状态取反状态
-      data.sort = data.sort === -1 ? 1 : data.sort === 1 ? 0 : 1
-      data.selected = true
-
-      sortData = [...defSortData]
-      sortData.splice(index,1,data)
-      this.setState({
-        sortData: sortData
-      })
-
+      // let data = sortData[index]
+      // // 改变顺序状态, 若无状态则默认正序，若有状态取反状态
+      // data.sort = data.sort === -1 ? 1 : data.sort === 1 ? 0 : 1
+      // data.selected = true
+      //
+      // sortData = [...defSortData]
+      // sortData.splice(index,1,data)
+      // this.setState({
+      //   sortData: sortData
+      // })
+      let sort;
+      if(searchData.orderBy === index){
+        sort = searchData.sort===1 ? 0 : 1;
+      }else {
+        sort = 1;
+      }
       //在原搜索条件基础上增加排序搜索条件
       this.props.dispatch({
         type: 'distribution/changeSearchData',
         payload: {
           ...searchData,
           orderBy: index,
-          sort: data.sort,
+          sort: sort,
+          pageNum: 1
           // rankType: null
         }
       })
@@ -230,9 +205,10 @@ export default class SubSearch extends Component {
       <div className={`${styles.subSearch} clearfix`}>
         <div className="sort">
           {sortData.map((item, index) => {
-            const selected = item.selected ? 'selected' : ''
-            const up = item.sort === 0 ? 'down' : ''
-            const down = item.sort === 1 ? 'up' : ''
+            const isCurrent = searchData.orderBy === index;
+            const selected = isCurrent ? 'selected' : ''
+            const up = isCurrent && searchData.sort === 0 ? 'down' : ''
+            const down = isCurrent && searchData.sort === 1 ? 'up' : ''
             const tdClassName = `${selected} ${up} ${down}`
             return (
               <div key={index} className={tdClassName} onClick={(e) => {sortClick(e, index)}}>

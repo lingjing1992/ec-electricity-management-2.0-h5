@@ -24,6 +24,7 @@ export default class Header extends Component {
 
   state = {
     tabId: -100,
+    preTabId: null,
   };
 
   componentWillMount() {
@@ -74,7 +75,7 @@ export default class Header extends Component {
           ...defSearchData,
           keyword: value,
           categoryId: null,
-          rankType: null
+          rankType: null,
         },
       });
       this.onSearch();
@@ -85,24 +86,28 @@ export default class Header extends Component {
      * 分类选择事件
      */
     const categoryChangeHangle = (val) => {
-      const { defSearchData } = this.props.distribution;
+      const { searchData } = this.props.distribution;
+
       const { location } = this.props;
+      const { preTabId } = this.state;
       // const val = e.target.value;
       const searchPathName = '/goods/distributionSearchList';
+      const tabId = parseInt(val);
       if(val == '-100'){
         this.props.dispatch(routerRedux.push({
           pathname: '/goods/distributionIndex'
         }))
       }else {
-        const tabId = parseInt(val);
         this.props.dispatch({
           type: 'distribution/changeSearchData',
           payload: {
-            ...defSearchData,
+            ...searchData,
             categoryId: tabId,
             rankType: null,
+            keyword: null
           }
         })
+
         console.log(location);
         //在搜索页切换tab,在其他页则跳转搜索页
 
@@ -119,6 +124,9 @@ export default class Header extends Component {
         }
         this.onSearch();
       }
+      this.setState({
+        preTabId :searchData.categoryId,
+      })
     };
     return (
       <div>

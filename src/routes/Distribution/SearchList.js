@@ -43,6 +43,12 @@ export default class SearchList extends Component {
   init () {
     const rankType = getQueryString().rankType;
     const searchData =  this.props.distribution.searchData;
+    let index = -1;
+    if (rankType == 101) {
+      index = 0
+    } else if (rankType == 102) {
+      index = 2
+    }
     // 头部数据请求
     this.props.dispatch({
       type:'distribution/common',
@@ -54,11 +60,35 @@ export default class SearchList extends Component {
         type: 'distribution/changeSearchData',
         payload: {
           ...searchData,
-          rankType: parseInt(rankType)
+          rankType: parseInt(rankType),
+          orderBy: index,
+          sort: 1,
+        }
+      })
+    }else{
+      this.props.dispatch({
+        type: 'distribution/changeSearchData',
+        payload: {
+          ...searchData,
+          orderBy: -1,
+          sort: null,
         }
       })
     }
-
+    this.props.dispatch({
+      type: 'distribution/changeSearchData',
+      payload: {
+        ...searchData,
+        supplyPriceSection: {
+          min: null,
+          max: null
+        },
+        referencePriceSection: {
+          min: null,
+          max: null
+        }
+      }
+    })
     // const {searchData} = this.props.distribution
     setTimeout(() => {
       this.getData();
