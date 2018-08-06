@@ -10,7 +10,7 @@ class ProductDetail extends React.Component {
     productDetailTabKey: 'en',//商品详情tab key
   }
   render(){
-    const { form, language, languageDetails } = this.props;
+    const { language, languageDetails, getContent, value } = this.props;
     const languageForProductEdit = languageDetails.goods.productEdit;
     const languageForGlobal = languageDetails.global;
     return (
@@ -40,11 +40,11 @@ class ProductDetail extends React.Component {
             return (
               <div key={index} style={{display: item === this.state.productDetailTabKey ? 'block' : 'none'}}>
                 <Ueditor
-                  getContent={this.getContent}
+                  getContent={getContent}
                   language={item}
                   id={`${item}GoodsDetail`}
                   height="400"
-                  // value={getgoods.goods_details && getgoods.goods_details[item]}
+                  value={value.goods_details && value.goods_details[item]}
                 />
               </div>
             )

@@ -30,6 +30,7 @@ const ProductCategory = ({form, languageDetails, goodsType, permission, onGoodsT
                       return (
                         <Option
                           key={childTypeItem.id}
+                          value={childTypeItem.id}
                         >
                           {childTypeItem.name_zh}
                         </Option>

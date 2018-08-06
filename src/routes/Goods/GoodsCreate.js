@@ -14,6 +14,7 @@ import Distribution from './Distribution';
 import ProductCategory from './ProductCategory';
 import SpuAttribute from './SpuAttribute';
 import DefineAttribute from './DefineAttribute';
+import ProductImages from './ProductImages';
 import SpuTableForm from './SpuTableForm'; // SPU自定义属性
 import FooterToolbar from '../../components/FooterToolbar';
 
@@ -55,6 +56,12 @@ export default class GoodsCreate extends Component {
     permission: this.props.global.rolePower.modules['1001'].moduleSubs['10019'].moduleFunctions,
     //spu自定义属性编辑弹窗
     visibleSpuTableForm: false,
+    //商品介绍详情
+    productIntroDetails: {},
+    //图片上传成功标记
+    imageAddSuccess: false,
+    //图片列表
+    fileList: [],
   }
 
   // ------------------------------------react周期*-------------------------------------
@@ -97,8 +104,18 @@ export default class GoodsCreate extends Component {
         callback: (data) => {
           if(data.status===200){
             const goodsDetail = data.data;
+            //图片回选
             this.setState({
-              goodsDetail: goodsDetail
+              goodsDetail: goodsDetail,
+              fileList: goodsDetail.goods_icons.map((item,index) => {
+                return {
+                  uid: -(index + 1),
+                  name: `${index + 1}`,
+                  status: 'done',
+                  url: item,
+                  thumbUrl: item,
+                }
+              }),
             });
             this.editReselection();
           }
@@ -108,21 +125,16 @@ export default class GoodsCreate extends Component {
   }
   //编辑回选
   editReselection = () => {
-    const { goodsDetail, language } = this.state;
-    const {setFieldsValue, getFieldsValue} = this.props.form;
-    console.log(getFieldsValue())
-    // language.forEach((item) => {
-    //   const goodsNameKey = `goodsName[${item}]`;
-    //   setFieldsValue({
-    //     goodsName: {
-    //       [goodsNameKey]: goodsDetail.goods_name
-    //     }
-    //   })
-    // })
+    const { goodsDetail } = this.state;
+    const { setFieldsValue } = this.props.form;
 
     setFieldsValue({
       brandName: goodsDetail.brand_name,
       goodsName: goodsDetail.goods_name,
+      promotionCountry: goodsDetail.promote_country,
+      goodsType: goodsDetail.goods_type_id,
+      spuAttributesList: this.getSpuReselectionArray(goodsDetail.spu_attr),
+      // goodsIcon: goodsDetail.goods_icons
     })
   }
   // 设置商品类目详情
@@ -138,7 +150,15 @@ export default class GoodsCreate extends Component {
       },
     });
   }
+  //获取商品详情编辑的结果
+  getProductContent = (editor, key) => {
+    const { productIntroDetails } = this.state;
+    productIntroDetails[key] = editor.getContent();
+    this.setState({
+      productIntroDetails: productIntroDetails,
+    });
 
+  }
   // 添加自定仪SPU属性
   showModalSpuTableForm = () => {
     const {setFieldsValue} = this.props.form;
@@ -214,14 +234,83 @@ export default class GoodsCreate extends Component {
     }
 
   }
-
   //spu自定义属性编辑关闭
   handleCancelSpuTableForm = (e) => {
     this.setState({
       visibleSpuTableForm: false,
     });
   }
-
+  //spu属性回选处理成数组
+  getSpuReselectionArray = (spuAttr) => {
+    return spuAttr.map((item) => {
+      return item.attr_value.filter((attrValue)=>{
+        return attrValue.selected
+      }).map(result => result.id);
+    })
+  }
+  // 图片上传
+  handleUpload = (info) => {
+    const languageForMessage = this.props.global.languageDetails.message;
+    let fileList = info.fileList;
+    // if (fileList.length <= 20) {
+    // 2. read from response and show file link
+    fileList = fileList.map((file) => {
+      // if (info.file.status === 'done') {
+      if (file.response && file.response.status === 200) {
+        // file.url = info.file.response.data.image_url;
+        file.url = file.response.data.image_url;
+        '' +
+        this.setState({
+          imageAddSuccess: true,
+        })
+      }
+      // }
+      return file;
+    });
+    if (info.file.status === 'done') {
+      if (info.file.response.status === 200) {
+        notification.success({
+          message: languageForMessage.KindlyReminder,
+          description: info.file.response.msg,
+        });
+      } else {
+        notification.error({
+          message: languageForMessage.KindlyReminder,
+          description: info.file.response.msg,
+        });
+      }
+    }
+    // 3. filter successfully uploaded files according to response from server
+    fileList = fileList.filter((file) => {
+      if (file.response) {
+        return file.response.status === 200;
+      }
+      return true;
+    });
+    this.setState({fileList});
+    // }
+  }
+  //关闭上传状态
+  closeUploadStatus = () => {
+    this.setState({
+      imageAddSuccess: false,
+    })
+  }
+  //图片切换位置
+  imagePositionExchange = (startIndex, finishIndex) => {
+    const {fileList} = this.state;
+    const preImage = fileList[startIndex];
+    const currentImage = fileList[finishIndex];
+    if (preImage && currentImage) {
+      // fileList.splice(startIndex, 1, currentImage);
+      // fileList.splice(finishIndex, 1, preImage);
+      fileList.splice(startIndex,1)
+      fileList.splice(finishIndex,0,preImage);
+      this.setState({
+        fileList: fileList,
+      })
+    }
+  }
   // 取消的时候，返回列表页面
   handleLinkList = () => {
     this.props.dispatch(routerRedux.go(-1));
@@ -240,7 +329,7 @@ export default class GoodsCreate extends Component {
     // -------------------------------------变量定义获取*--------------------------------------
 
     const { loading, spuAttributesList, createDefinedAttr } = this.props.goodsCreate;
-    const { goodsType,  permission, language, country } = this.state;
+    const { goodsType,  permission, language, country, goodsDetail, imageAddSuccess } = this.state;
     const form = this.props.form;
     //表单对象
     const { getFieldDecorator, validateFieldsAndScroll, getFieldsError, getFieldError } = this.props.form;
@@ -253,12 +342,6 @@ export default class GoodsCreate extends Component {
     const languageForNav = this.props.global.languageDetails.nav;
     const languageForHeader = this.props.global.languageDetails.header;
     const languageForRturnAddr = this.props.global.languageDetails.returnAddress;
-    // const {
-      // language = [], // 语言
-      // goods_type = [], // 商品类目
-      // currency = [], // 货币
-      // country = [], // 国家
-    // } = this.props.goodsCreate.createRequest;
     // 商品图片
     const goodsPicProps = {
       name: 'upload_img',
@@ -268,7 +351,7 @@ export default class GoodsCreate extends Component {
       className: 'upload-list-inline',
       fileList: this.state.fileList,
       multiple: true,
-      onChange: this.handleChange,
+      onChange: this.handleUpload,
       data: {
         img_type: 0,
       },
@@ -326,6 +409,8 @@ export default class GoodsCreate extends Component {
                         form={form}
                         language={language}
                         languageDetails={languageDetails}
+                        getContent={this.getProductContent}
+                        value={goodsDetail}
                       />
                     ) : null
                   }
@@ -393,55 +478,42 @@ export default class GoodsCreate extends Component {
 
                   {/*@------------------------------------自定义属性*-------------------------------------@*/}
 
-                  <DefineAttribute
-                    form={form}
-                    languageDetails={languageDetails}
-                    createDefinedAttr={createDefinedAttr}
-                    showModalSpuTableForm={this.showModalSpuTableForm}
-                  />
+                  {
+                    permission['100038'].status ? (
+                      <DefineAttribute
+                        form={form}
+                        languageDetails={languageDetails}
+                        createDefinedAttr={createDefinedAttr}
+                        showModalSpuTableForm={this.showModalSpuTableForm}
+                      />
+                    ) : null
+                  }
 
                 </div>
               </Card>
-                {/*@------------------------------------商品图片*-------------------------------------@*/}
-
-                {/*<FormItem*/}
-                  {/*label="商品图片"*/}
-                  {/*className={styles.inputFormItem}*/}
-                {/*>*/}
-                  {/*{getFieldDecorator('goodsIcon', {*/}
-                    {/*rules: [*/}
-                      {/*{*/}
-                        {/*required: true,*/}
-                        {/*message: '请上传至少6张主图，至多20张主图',*/}
-                      {/*},*/}
-                    {/*],*/}
-                    {/*getValueFromEvent: this.normFile,*/}
-                  {/*})(*/}
-                    {/*<Upload {...goodsPicProps}>*/}
-                      {/*<Button>*/}
-                        {/*<Icon type="upload" /> 上传商品图片*/}
-                      {/*</Button>*/}
-                    {/*</Upload>*/}
-                  {/*)}*/}
-                  {/*<div className={styles.gooodsPicDesc}>*/}
-                    {/*商品图片上传要求：尺寸：750x625；格式：jpg,png；数量：6≤n≤20*/}
-                  {/*</div>*/}
-                {/*</FormItem>*/}
-
+              {
+                permission['100035'].status ? (
+                  <Card
+                    title={languageForProductEdit.productImage}
+                    className="ant-card-head-900"
+                  >
+                    {/*@------------------------------------商品图片*-------------------------------------@*/}
+                    <div className="ant-card-900">
+                      <ProductImages
+                        goodsPicProps={goodsPicProps}
+                        positionExchange={this.imagePositionExchange}
+                        getFieldDecorator={getFieldDecorator}
+                        imageAddSuccess={imageAddSuccess}
+                        closeAddStatus={this.closeUploadStatus}
+                        styles={styles}
+                      >
+                      </ProductImages>
+                    </div>
+                  </Card>
+                ) : ''
+              }
 
                 {/*@------------------------------------SPU属性*-------------------------------------@*/}
-
-                <FormItem
-                  label="SPU属性"
-                >
-                  <FormItem
-                    label="属性名称"
-                    className={styles.spuTitleName}
-                  >
-                    属性值
-                  </FormItem>
-                  {/*{this.templateGoodsTypeAttr(this.props.goodsCreate.spuAttributesList)}*/}
-                </FormItem>
 
 
 

@@ -13,7 +13,7 @@ const CreateAttribute = ({form, spuAttributesList, type}) => {
           const attrValue = item.attr_value || item.attrValue;
           const attrName = item.attr_name || item.attrName;
           //如果是spu属性则特殊处理
-          const fieldKey = type==='spuAttr' ? `spuAttributesList[${index}][attr_value]` : type;
+          const fieldKey = type==='spuAttr' ? `spuAttributesList[${index}]` : type;
           const options = attrValue.map(attr => {
             return {
               label: attr.value,

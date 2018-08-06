@@ -1118,10 +1118,6 @@ export default class GoodsCreate extends Component {
       getFieldsError,
       getFieldError,
     } = this.props.form;
-
-    const fieldLabels = {
-      goodsCategory: languageForProductEdit.productType,
-    };
     // goodsCreate
     const {goodsCreate} = this.props;
     const {goodsCreate: {loading, createRequest}} = this.props;
@@ -1135,6 +1131,10 @@ export default class GoodsCreate extends Component {
     const languageForNav = this.props.global.languageDetails.nav;
     const languageForHeader = this.props.global.languageDetails.header;
     const languageForRturnAddr = this.props.global.languageDetails.returnAddress;
+
+    const fieldLabels = {
+      goodsCategory: languageForProductEdit.productType,
+    };
 
     const {
       language = [], // 语言
