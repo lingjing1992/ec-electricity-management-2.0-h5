@@ -91,22 +91,6 @@ export default class SubSearch extends Component {
     sortData[0].name = languageForDistribution.SalesVolume;
     sortData[1].name = languageForDistribution.SupplyCost;
     sortData[2].name = languageForDistribution.PublishedTime;
-    //初始数据，用于数据初始化
-    const defSortData = [
-      {
-        name: languageForDistribution.SalesVolume,
-        selected: false,
-        sort: -1
-      },{
-        name: languageForDistribution.SupplyCost,
-        selected: false,
-        sort: -1
-      },{
-        name: languageForDistribution.PublishedTime,
-        selected: false,
-        sort: -1
-      }
-    ]
 
 
 
@@ -145,7 +129,7 @@ export default class SubSearch extends Component {
       if(searchData.orderBy === index){
         sort = searchData.sort===1 ? 0 : 1;
       }else {
-        sort = 1;
+        sort = 0;
       }
       //在原搜索条件基础上增加排序搜索条件
       this.props.dispatch({
