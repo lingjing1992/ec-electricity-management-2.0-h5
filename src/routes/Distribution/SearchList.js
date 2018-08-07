@@ -62,7 +62,7 @@ export default class SearchList extends Component {
           // ...searchData,
           rankType: parseInt(rankType),
           orderBy: index,
-          sort: 1,
+          sort: 0,
         }
       })
     }else {
