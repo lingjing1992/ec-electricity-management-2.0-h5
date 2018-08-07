@@ -276,7 +276,7 @@ export default class OrderDetail extends Component {
     const pageId = getQueryString().page_num;
     const pageSize = getQueryString().page_size;
     this.props.dispatch(routerRedux.push({
-      pathname: '/order/order-list',
+      pathname: '/order/orderList',
       search: `?tab_id=${tapId}&page_num=${pageId}&page_size=${pageSize}`,
     }));
   }

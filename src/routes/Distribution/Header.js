@@ -23,7 +23,8 @@ export default class Header extends Component {
   }
 
   state = {
-    tabId: 0,
+    tabId: -100,
+    preTabId: null,
   };
 
   componentWillMount() {
@@ -32,7 +33,7 @@ export default class Header extends Component {
 
   //获取tabId
   getTabId = () => {
-    const tabId = getQueryString().tabId || 0;
+    const tabId = getQueryString().tabId || -100;
     this.setState({
       tabId: parseInt(tabId)
     })
@@ -48,12 +49,18 @@ export default class Header extends Component {
     });
   }
 
+  onSearch = () => {
+    setTimeout( () => {
+      this.props.onSearch();
+    },10)
+  }
+
   render() {
     const languageForDistribution = this.props.global.languageDetails.goods.distribution;
     const language = this.props.global.language;
     const { headerData  } = this.props;
     const { searchData } = this.props.distribution
-    const tabId = this.state.tabId;
+    const tabId = getQueryString().tabId || -100;
     /**
      * 头部搜索按钮、关键字点击事件
      * @param {string} value  搜索关键词
@@ -61,47 +68,71 @@ export default class Header extends Component {
     const searchHandle = (value) => {
       const { defSearchData } = this.props.distribution;
       const { location } = this.props;
-      if(location.pathname !== '/goods/distributionSearchList'){
-        this.props.dispatch(routerRedux.push('/goods/distributionSearchList'));
-      }
+      this.props.dispatch(routerRedux.push('/goods/distributionSearchList'));
       this.props.dispatch({
         type: 'distribution/changeSearchData',
         payload: {
           ...defSearchData,
           keyword: value,
+          categoryId: null,
+          rankType: null
         },
       });
-      this.props.onSearch();
+      this.onSearch();
     };
     /**
      *
      * @param {*} e 事件e
      * 分类选择事件
      */
-    const categoryChangeHangle = (e) => {
-      const { defSearchData } = this.props.distribution;
+    const categoryChangeHangle = (val) => {
+      const { searchData } = this.props.distribution;
+
       const { location } = this.props;
-      const val = e.target.value;
+      // const { preTabId } = this.state;
+      // const val = e.target.value;
       const searchPathName = '/goods/distributionSearchList';
-      if(val == 0){
+      const tabId = parseInt(val);
+      if(val == '-100'){
         this.props.dispatch(routerRedux.push({
           pathname: '/goods/distributionIndex'
         }))
       }else {
-        const tabId = parseInt(val);
+
+        if(!searchData.categoryId){
+          this.props.dispatch({
+            type: 'distribution/changeSearchData',
+            payload: {
+              // ...searchData,
+              orderBy: -1,
+              sort: null,
+              supplyPriceSection: {
+                min: null,
+                max: null
+              },
+              referencePriceSection: {
+                min: null,
+                max: null
+              }
+            }
+          })
+        }
         this.props.dispatch({
           type: 'distribution/changeSearchData',
           payload: {
-            ...defSearchData,
-            categoryId: tabId
+            // ...searchData,
+            categoryId: tabId,
+            rankType: null,
+            keyword: null
           }
         })
+
         console.log(location);
         //在搜索页切换tab,在其他页则跳转搜索页
 
         if(location.pathname === searchPathName){
           this.setState({
-            tabId: e.target.value,
+            tabId: val,
           });
           this.props.dispatch(routerRedux.replace({
             pathname: searchPathName,
@@ -110,10 +141,11 @@ export default class Header extends Component {
         }else {
           this.props.dispatch(routerRedux.push(searchPathName + '?tabId='+tabId))
         }
-        setTimeout( () => {
-          this.props.onSearch();
-        },0)
+        this.onSearch();
       }
+      // this.setState({
+      //   preTabId :searchData.categoryId,
+      // })
     };
     return (
       <div>
@@ -155,23 +187,25 @@ export default class Header extends Component {
               {/* 分类渲染 */}
               {
                 !this.props.hideTab && (
-                  <RadioGroup
-                    onChange={(e) => {
-                      categoryChangeHangle(e);
-                    }}
-                    onClick={()=>{
-                      console.log(1);
-                    }}
-                    value={Number(tabId)}
+                  <div
                     className={styles.tab}>
                     {
                       headerData.column.map(item => {
                         return (
-                          <RadioButton key={item.categoryId} value={item.categoryId}>{item.name}</RadioButton>
+                          <label
+                            className={`${ Number(tabId) === item.categoryId ? 'ant-radio-button-wrapper-checked' : null} ant-radio-button-wrapper`}
+                            key={item.categoryId}
+                            value={item.categoryId}
+                            onClick={()=>{
+                              categoryChangeHangle(item.categoryId);
+                            }}
+                          >
+                            {item.name}
+                            </label>
                         );
                       })
                     }
-                  </RadioGroup>
+                  </div>
                 )
               }
             </div>

@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Layout, Icon, message, Menu, Dropdown, Avatar } from 'antd';
+import { Layout, Icon, message, Menu, Dropdown, Avatar, LocaleProvider } from 'antd';
 import DocumentTitle from 'react-document-title';
 import { connect } from 'dva';
 import Cookies from 'js-cookie'
@@ -21,6 +21,8 @@ import NoticeIcon from '../components/NoticeIcon';
 import styles from './BasicLayout.less';
 import logo from '../assets/logo.png';
 import moment from 'moment';
+import zhCN from 'antd/lib/locale-provider/zh_CN';
+import enUS from 'antd/lib/locale-provider/en_US';
 
 const { Content, Header, Footer } = Layout;
 const { AuthorizedRoute, check } = Authorized;
@@ -519,6 +521,7 @@ class BasicLayout extends React.PureComponent {
     const permission = rolePower.hasOwnProperty('modules') ? true : false;//权限是都加载完成
     const noticePermission = permission ? rolePower.modules['1010'].moduleSubs : '';
     const bashRedirect = this.getBaseRedirect();
+    const languageSlected = this.props.global.language == 'en' ? enUS : zhCN;
     let noticeData = this.getNoticeData(noticeTargetData);
     //公告底部清除文案
     const locale = {
@@ -548,7 +551,7 @@ class BasicLayout extends React.PureComponent {
     const layout = (
       <Layout id={styles.layout} className={`${collapsed ? styles.collapsed : styles.normal} layout`}>
         {
-          permission ? (<div style={{width:'100%',minWidth: contentWidth+96}}>
+          permission ? (<div className={styles.basiclayoutContent} style={{minWidth: contentWidth+96}}>
             {
               MenuData.length>0 ? (
                 <SiderMenu
@@ -710,11 +713,13 @@ class BasicLayout extends React.PureComponent {
     );
 
     return (
-      <DocumentTitle title={this.getPageTitle()}>
-        <ContainerQuery query={query}>
-          {params => <div className={classNames(params)}>{layout}</div>}
-        </ContainerQuery>
-      </DocumentTitle>
+      <LocaleProvider locale={languageSlected}>
+        <DocumentTitle title={this.getPageTitle()}>
+          <ContainerQuery query={query}>
+            {params => <div className={classNames(params)}>{layout}</div>}
+          </ContainerQuery>
+        </DocumentTitle>
+      </LocaleProvider>
     );
   }
 }

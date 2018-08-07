@@ -742,7 +742,7 @@ export default class GoodsList extends Component {
                     <div className={styles.supplierChangesPromit}>
                       <Popover content={(
                         <p>
-                          {langusgeForProduct.supplierChangedBefore}{` '${record.syncContent}' `}{langusgeForProduct.supplierChangedAfter} <Link to={`/goods/distribution?tab=3&tabId=${record.syncTabId}`}>{langusgeForProduct.check}</Link>
+                          {langusgeForProduct.supplierChangedBefore}{` '${record.syncContent}' `}{langusgeForProduct.supplierChangedAfter} <Link to={`/goods/distributionIndex?tab=3&tabId=${record.syncTabId}`}>{langusgeForProduct.check}</Link>
                         </p>)} trigger="hover">
                         <Icon className={styles.icon} type="exclamation-circle" />
                       </Popover>
@@ -816,10 +816,17 @@ export default class GoodsList extends Component {
         dataIndex: 'storage',
         // className: styles.goodsTd9,
         classType: 1,
-        render: (text) => {
+        render: (text,record) => {
           return (
             <div className={`${styles.shuxing} ${styles.goodsTd9}`} >
-              <span onClick={this.stopProgation}>{text}</span>
+              <span onClick={this.stopProgation}>
+                {text}
+                {
+                  record.isWarning ? (
+                    <span className={styles.isWarning}>!</span>
+                  ) : null
+                }
+              </span>
             </div>
           );
         },

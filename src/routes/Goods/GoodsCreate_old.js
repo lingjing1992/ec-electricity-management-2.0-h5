@@ -1509,6 +1509,11 @@ export default class GoodsCreate extends Component {
               }
             });
           }
+        } else {
+          //解决跳转到错误地方时被顶部遮盖问题
+          const scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+          document.body.scrollTop = document.documentElement.scrollTop = scrollTop-100;
+          console.log(scrollTop);
         }
       });
     };
@@ -2169,18 +2174,23 @@ export default class GoodsCreate extends Component {
                       </FormItem>
                     ) : ''
                   }
-                  <FormItem
-                    label={languageForRturnAddr.ReturnAddress}
-                    {...formItemLayout}
-                  >
-                    {getFieldDecorator('returnAddr', {
-                      initialValue: {},
-                      rules: [{required: !permission['100054'].disabled ? true : false}],
-                    })(
-                      <ReturnAddrForm returnAddress={this.state.returnAddress}
-                                      onSetReturnAddress={this.setReturnAddress}/>
-                    )}
-                  </FormItem>
+                  {
+                    permission['100054'].status ? (
+                      <FormItem
+                        label={languageForRturnAddr.ReturnAddress}
+                        {...formItemLayout}
+                      >
+                        {getFieldDecorator('returnAddr', {
+                          initialValue: {},
+                          rules: [{required: !permission['100054'].disabled ? true : false}],
+                        })(
+                          <ReturnAddrForm returnAddress={this.state.returnAddress}
+                                          onSetReturnAddress={this.setReturnAddress}/>
+                        )}
+                      </FormItem>
+                    ) : null
+
+                  }
                   {
                     permission['100060'].status ? (
                       <FormItem label={languageForProductEdit.publishToShopify}>

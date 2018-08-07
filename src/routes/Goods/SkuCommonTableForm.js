@@ -94,17 +94,17 @@ export default class SkuTableForm extends PureComponent {
   //   }
   // }
   handleFieldChange(e, fieldName, key) {
-    if (fieldName == 'quantity' || fieldName == 'weight') {
+    // if (fieldName == 'quantity' || fieldName == 'weight') {
       // if (!(/^[0-9]{0}([0-9]|[.])+$/.test(e.target.value))) {
-      const languageForMessage = this.props.global.languageDetails.message;
-      if (!(/^\d+(\.\d{1,2})?$/.test(e.target.value))) {
-        notification.error({
-          message: languageForMessage.KindlyReminder,
-          description: languageForMessage.enterValueOfNumber,
-        });
-        return false;
-      }
-    }
+      // const languageForMessage = this.props.global.languageDetails.message;
+      // if (!(/^\d+(\.\d{1,2})?$/.test(e.target.value))) {
+      //   notification.error({
+      //     message: languageForMessage.KindlyReminder,
+      //     description: languageForMessage.enterValueOfNumber,
+      //   });
+      //   return false;
+      // }
+    // }
     const newData = [...this.state.data];
     const target = this.getRowByKey(key);
     if (target) {

@@ -6,7 +6,7 @@ import { connect } from 'dva';
 import Header from './Header'
 import Goods from './Goods'
 import SubSearch from './SubSearch'
-import {  scrollToTop } from '../../utils/utils';
+import {  scrollToTop, getQueryString } from '../../utils/utils';
 
 @connect(state => ({
   global: state.global,
@@ -41,24 +41,61 @@ export default class SearchList extends Component {
   }
 
   init () {
+    const rankType = getQueryString().rankType;
+    const searchData =  this.props.distribution.searchData;
+    let index = -1;
+    if (rankType == 101) {
+      index = 0
+    } else if (rankType == 102) {
+      index = 2
+    }
     // 头部数据请求
     this.props.dispatch({
       type:'distribution/common',
       payload:{},
     })
+    //如果存在rankType则设置参数rankType
+    if(rankType) {
+      this.props.dispatch({
+        type: 'distribution/changeSearchData',
+        payload: {
+          // ...searchData,
+          rankType: parseInt(rankType),
+          orderBy: index,
+          sort: 0,
+        }
+      })
+    }else {
+      this.props.dispatch({
+        type: 'distribution/changeSearchData',
+        payload: {
+          // ...searchData,
+          orderBy: -1,
+          sort: null,
+        }
+      })
+    }
 
-    const {searchData} = this.props.distribution
-    this.getData (searchData);
+    // const {searchData} = this.props.distribution
+    setTimeout(() => {
+      this.getData();
+    },0)
   }
   /**
    *
    * @param {obj} param 搜索改变的参数
    */
-  getData =  () => {
+  getData =  (pageNum) => {
     const { searchData } = this.props.distribution
+    pageNum = pageNum ? pageNum : 1;
+    const tabId = getQueryString().tabId;
     this.props.dispatch({
       type:'distribution/getDistributionSpus',
-      payload: searchData,
+      payload: {
+        ...searchData,
+        pageNum: pageNum,
+        categoryId: parseInt(tabId),
+      },
       callback: (data) => {
         const _this = this;
         if(data.status === 200){
@@ -80,16 +117,22 @@ export default class SearchList extends Component {
      * @param {Number} page  页码
      * 更换页码
      */
-    const changePage = (page) => {
+    const changePage = (pageNum) => {
       const {pagination} = this.state
-      const {searchData} = this.props.distribution
+      pageNum = pageNum ? pageNum : 1;
+      this.props.dispatch({
+        type: 'distribution/changeSearchData',
+        payload: {
+          pageNum: pageNum,
+        },
+      });
       this.setState({
         pagination: {
           ...pagination,
-          current: page
+          current: pageNum
         }
       })
-      this.getData({...searchData, page})
+      this.getData(pageNum)
     }
 
     const { goods, pagination, url} = this.state;
@@ -114,11 +157,19 @@ export default class SearchList extends Component {
           <Header onSearch={this.getData} location={this.props.location} headerData={headerData}></Header>
           <SubSearch changeHandle={
             () => {
-              this.getData()
+              this.getData(pagination.current)
             }
           }></SubSearch>
           <Spin spinning={this.props.distribution.loading}>
-            <Goods spus={goods}></Goods>
+            {
+              goods.length>0 ? (
+                <Goods spus={goods}></Goods>
+              ) : (
+                <div className={styles.null}>
+                  {langusgeForGlobal.noData}
+                </div>
+              )
+            }
           </Spin>
           <Pagination
             {

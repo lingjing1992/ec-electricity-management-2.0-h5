@@ -944,7 +944,7 @@ export default class OrderList extends Component {
               result = [
                 operation.details,
                 // { title: '编辑', key: 2 },
-                operation.cancel,
+                // operation.cancel,
               ];
               break;
             case '1':
@@ -977,7 +977,7 @@ export default class OrderList extends Component {
               // 已收货
               result = [
                 operation.details,
-                { title: languageForOrder.Refundeding, key: 6 },
+                // { title: languageForOrder.Refundeding, key: 6 },
               ];
               break;
             case '5':

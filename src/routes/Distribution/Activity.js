@@ -50,7 +50,7 @@ export default class Activity extends Component {
    * @param {number} page  页码, def: 1
    * 获取活动页信息
    */
-  getData(page = 1) {
+  getData = (page = 1) => {
     const { pagination } = this.state;
 
     this.props.dispatch({
@@ -112,10 +112,23 @@ export default class Activity extends Component {
       <Card>
         <div>
           <div className={styles.distributionContent}>
-            <Header onSearch={this.getData} headerData={headerData} hideTab></Header>
+            <Header
+              onSearch={this.getData}
+              headerData={headerData}
+              location={this.props.location}
+              hideTab>
+            </Header>
             <Spin spinning={this.props.distribution.loading}>
               <img src={bannerUrl} className={styles.banner}/>
-              <Goods spus={goods}></Goods>
+              {
+                goods.length>0 ? (
+                  <Goods spus={goods}></Goods>
+                ) : (
+                  <div className={styles.null}>
+                    {langusgeForGlobal.noData}
+                  </div>
+                )
+              }
               <Pagination
                 {
                   ...listPagination

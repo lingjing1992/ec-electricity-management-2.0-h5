@@ -73,7 +73,7 @@ export default class Home extends Component {
         eventAction: '首次登录弹窗关闭',
         eventLabel: '商户后台首次登录弹窗关闭',
       });
-      
+
     }
     const GoProductManagement = () => {
       closeModle()
@@ -82,8 +82,8 @@ export default class Home extends Component {
         eventAction: '首次登录弹窗点击“去选品”',
         eventLabel: '商户后台首次登录弹窗点击“去选品”',
       });
-      
-      this.props.dispatch(routerRedux.push('/goods/distribution'));
+
+      this.props.dispatch(routerRedux.push('/goods/distributionIndex'));
     }
     return (
       <div style={{minWidth: 1010, padding:0}}>

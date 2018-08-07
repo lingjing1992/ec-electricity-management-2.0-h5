@@ -206,14 +206,20 @@ export default class CommodityChange extends Component {
           <Breadcrumb>
             <Breadcrumb.Item>
               <a onClick={this.goBack}>
-                分销市场
+                {
+                  languageForDistribution.Distributing
+                }
               </a>
             </Breadcrumb.Item>
-            <Breadcrumb.Item>分销商品变更</Breadcrumb.Item>
+            <Breadcrumb.Item>
+              {
+                languageForDistribution.ProductsChange
+              }
+            </Breadcrumb.Item>
           </Breadcrumb>
         </Card>
-        <Card>
-          <Tabs type="card" defaultActiveKey={supplierChangesParams.tabId.toString()} style={{marginTop: '24px'}} onChange={(key)=>{
+        <Card className={styles.distributionChanges}>
+          <Tabs type="card" defaultActiveKey={supplierChangesParams.tabId.toString()} onChange={(key)=>{
             this.setState(Object.assign(supplierChangesParams,{
               currentPage: 1,
               pageSize: 20,
