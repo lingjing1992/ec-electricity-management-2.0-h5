@@ -2,12 +2,14 @@ import React from 'react';
 import { Button, Popconfirm } from 'antd';
 import { getQueryString } from '../../utils/utils';
 import styles from './GoodsCreate.less';
+import SkuAttributeTable from './SkuAttributeTable';
 
-const SkuAttribute = ({ form, languageDetails, permission, createSkuAttributesArr, onCreateAttribute, onCreateValue,  }) => {
+const SkuAttribute = ({ form, languageDetails, permission, onCreateAttribute, onCreateValue, goodsDetail }) => {
   const { getFieldDecorator } = form;
   const languageForProductEdit = languageDetails.goods.productEdit;
   const languageForMessage = languageDetails.message;
-  const isAdd = getQueryString().action == 'add';
+  const propertyConfig =  goodsDetail.property_config || [];
+  const isAdd = getQueryString().action == 'create';
   return (
     <div
       className={styles.card}
@@ -41,7 +43,7 @@ const SkuAttribute = ({ form, languageDetails, permission, createSkuAttributesAr
                 <span>
                   {
                     //sku属性的长度大于1才能删除
-                    createSkuAttributesArr.length > 1 ? (
+                    propertyConfig.length > 1 ? (
                       <Popconfirm
                         title={ languageForMessage.deleteTheTast }
                         onConfirm={ onCreateValue }
@@ -62,9 +64,15 @@ const SkuAttribute = ({ form, languageDetails, permission, createSkuAttributesAr
       <div>
       </div>
       {
-        createSkuAttributesArr.map((item, index) => {
+        propertyConfig.map((item, index) => {
           return (
-            <div key={ index }>{ item }</div>
+            <div key={ index }>{
+              <SkuAttributeTable
+                dataSource={item}
+                languageDetails={languageDetails}
+                isAdd={isAdd}
+              />
+            }</div>
           );
         })
       }

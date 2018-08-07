@@ -531,7 +531,8 @@ export default class TableForm extends PureComponent {
           </span>
         );
       },
-    }];
+    }
+    ];
     // 操作多少个
     const resultLanguage = [];
     for (let i = 0; i < language.length; i++) {

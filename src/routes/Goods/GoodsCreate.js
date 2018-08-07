@@ -544,10 +544,10 @@ export default class GoodsCreate extends Component {
                   <SkuAttribute
                     form={form}
                     languageDetails={languageDetails}
-                    createSkuAttributesArr={createSkuAttributesArr}
                     onEdit={this.handleEditorSkuAttributes}
                     onCreateValue={this.handleEditorSkuAttributes}
                     onCreateAttribute={this.handleEditorSkuAttributes}
+                    goodsDetail={goodsDetail}
                     permission={permission}
                   />
 

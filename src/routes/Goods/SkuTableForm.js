@@ -19,6 +19,7 @@ export default class SkuTableForm extends PureComponent {
       },
     };
   }
+
   componentWillReceiveProps(nextProps) {
     if ('value' in nextProps) {
       this.setState({
@@ -26,9 +27,11 @@ export default class SkuTableForm extends PureComponent {
       });
     }
   }
+
   getRowByKey(key) {
     return this.state.data.filter(item => item.sku_property_ids === key)[0];
   }
+
   index = 0;
   cacheOriginData = {};
   handleSubmit = (e) => {
@@ -41,7 +44,8 @@ export default class SkuTableForm extends PureComponent {
         });
       }
     });
-  }
+  };
+
   toggleEditable(e, key) {
     e.preventDefault();
     const target = this.getRowByKey(key);
@@ -54,11 +58,13 @@ export default class SkuTableForm extends PureComponent {
       this.setState({ data: [...this.state.data] });
     }
   }
+
   remove(key) {
     const newData = this.state.data.filter(item => item.key !== key);
     this.setState({ data: newData });
     this.props.onChange(newData);
   }
+
   newMember = () => {
     const newData = [...this.state.data];
     const languageForProductEdit = this.props.global.languageDetails.goods.productEdit;
@@ -73,12 +79,14 @@ export default class SkuTableForm extends PureComponent {
     });
     this.index += 1;
     this.setState({ data: newData });
-  }
+  };
+
   handleKeyPress(e, key) {
     if (e.key === 'Enter') {
       this.saveRow(e, key);
     }
   }
+
   handleFieldChange(e, fieldName, key) {
     // if (!(/^[0-9]{0}([0-9]|[.])+$/.test(e.target.value))) {
     const languageForMessage = this.props.global.languageDetails.message;
@@ -97,13 +105,14 @@ export default class SkuTableForm extends PureComponent {
       this.setState({ data: newData });
     }
   }
+
   saveRow(e, key) {
     e.persist();
     // save field when blur input
     const languageForMessage = this.props.global.languageDetails.message;
     setTimeout(() => {
       if (document.activeElement.tagName === 'INPUT' &&
-          document.activeElement !== e.target) {
+        document.activeElement !== e.target) {
         return;
       }
       if (this.clickedCancel) {
@@ -127,6 +136,7 @@ export default class SkuTableForm extends PureComponent {
       this.props.onChange(this.state.data);
     }, 10);
   }
+
   cancel(e, key) {
     this.clickedCancel = true;
     e.preventDefault();
@@ -138,6 +148,7 @@ export default class SkuTableForm extends PureComponent {
     }
     this.setState({ data: [...this.state.data] });
   }
+
   handleBatchFillingChange = (target, e) => {
     const { handleBatchFilling } = this.state;
     const newData = [...this.state.handleBatchFilling];
@@ -151,7 +162,7 @@ export default class SkuTableForm extends PureComponent {
     this.setState({
       handleBatchFilling: Object.assign({ ...handleBatchFilling }, { [target]: e.target.value }),
     });
-  }
+  };
   handleBatchFilling = () => {
     // let { handleBatchFilling } = this.state;
     const newData = [...this.state.data];
@@ -176,73 +187,77 @@ export default class SkuTableForm extends PureComponent {
     });
 
     this.setState({ data: newData });
-  }
+  };
+
   render() {
     const languageForProductEdit = this.props.global.languageDetails.goods.productEdit;
-    const columns = [{
-      title: languageForProductEdit.SKUAttribute,
-      dataIndex: 'name',
-      key: 'name',
-      width: '20%',
-      render: (text, record) => {
-        const result = record.sku_property_names.split(',') || '';
-        return (
-          <div>{`${result[0] || ''}${result[1] ? '-' : ''}${result[1] || ''}`}</div>
-        );
+    const columns = [
+      {
+        title: languageForProductEdit.SKUAttribute,
+        dataIndex: 'name',
+        key: 'name',
+        width: '20%',
+        render: (text, record) => {
+          const result = record.sku_property_names.split(',') || '';
+          return (
+            <div>{`${result[0] || ''}${result[1] ? '-' : ''}${result[1] || ''}`}</div>
+          );
+        },
       },
-    }, {
-      title: languageForProductEdit.OriginalPrice,
-      dataIndex: 'price',
-      key: 'price',
-      width: '20%',
-      render: (text, record) => {
-        return (
-          <Input
-            value={text}
-            type='number'
-            onChange={e => this.handleFieldChange(e, 'price', record.sku_property_ids)}
-            onBlur={e => this.saveRow(e, record.sku_property_ids)}
-            onKeyPress={e => this.handleKeyPress(e, record.sku_property_ids)}
-            placeholder={languageForProductEdit.Operation}
-          />
-        );
+      {
+        title: languageForProductEdit.OriginalPrice,
+        dataIndex: 'price',
+        key: 'price',
+        width: '20%',
+        render: (text, record) => {
+          return (
+            <Input
+              value={text}
+              type='number'
+              onChange={e => this.handleFieldChange(e, 'price', record.sku_property_ids)}
+              onBlur={e => this.saveRow(e, record.sku_property_ids)}
+              onKeyPress={e => this.handleKeyPress(e, record.sku_property_ids)}
+              placeholder={languageForProductEdit.Operation}
+            />
+          );
+        },
       },
-    }, {
-      title: languageForProductEdit.salesPrice,
-      dataIndex: 'discount_price',
-      key: 'discount_price',
-      width: '20%',
-      render: (text, record) => {
-        return (
-          <Input
-            value={text}
-            type='number'
-            onChange={e => this.handleFieldChange(e, 'discount_price', record.sku_property_ids)}
-            onBlur={e => this.saveRow(e, record.sku_property_ids)}
-            onKeyPress={e => this.handleKeyPress(e, record.sku_property_ids)}
-            placeholder={languageForProductEdit.salesPrice}
-          />
-        );
+      {
+        title: languageForProductEdit.salesPrice,
+        dataIndex: 'discount_price',
+        key: 'discount_price',
+        width: '20%',
+        render: (text, record) => {
+          return (
+            <Input
+              value={text}
+              type='number'
+              onChange={e => this.handleFieldChange(e, 'discount_price', record.sku_property_ids)}
+              onBlur={e => this.saveRow(e, record.sku_property_ids)}
+              onKeyPress={e => this.handleKeyPress(e, record.sku_property_ids)}
+              placeholder={languageForProductEdit.salesPrice}
+            />
+          );
+        },
       },
-    }, {
-      title: languageForProductEdit.ShippingFee,
-      dataIndex: 'ship_price',
-      key: 'ship_price',
-      width: '30%',
-      render: (text, record) => {
-        return (
-          <Input
-            value={text}
-            type='number'
-            onChange={e => this.handleFieldChange(e, 'ship_price', record.sku_property_ids)}
-            onBlur={e => this.saveRow(e, record.sku_property_ids)}
-            onKeyPress={e => this.handleKeyPress(e, record.sku_property_ids)}
-            placeholder={languageForProductEdit.ShippingFee}
-          />
-        );
-      },
-    },
-    ];
+      {
+        title: languageForProductEdit.ShippingFee,
+        dataIndex: 'ship_price',
+        key: 'ship_price',
+        width: '30%',
+        render: (text, record) => {
+          return (
+            <Input
+              value={text}
+              type='number'
+              onChange={e => this.handleFieldChange(e, 'ship_price', record.sku_property_ids)}
+              onBlur={e => this.saveRow(e, record.sku_property_ids)}
+              onKeyPress={e => this.handleKeyPress(e, record.sku_property_ids)}
+              placeholder={languageForProductEdit.ShippingFee}
+            />
+          );
+        },
+      }];
     console.log('this=>', this);
 
     console.log('props', this.props.value);
