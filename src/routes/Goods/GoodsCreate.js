@@ -549,6 +549,7 @@ export default class GoodsCreate extends Component {
                     onCreateAttribute={this.handleEditorSkuAttributes}
                     goodsDetail={goodsDetail}
                     permission={permission}
+                    language={language}
                   />
 
                 </div>

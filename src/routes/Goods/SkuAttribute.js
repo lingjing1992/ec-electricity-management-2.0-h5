@@ -4,8 +4,8 @@ import { getQueryString } from '../../utils/utils';
 import styles from './GoodsCreate.less';
 import SkuAttributeTable from './SkuAttributeTable';
 
-const SkuAttribute = ({ form, languageDetails, permission, onCreateAttribute, onCreateValue, goodsDetail }) => {
-  const { getFieldDecorator } = form;
+const SkuAttribute = ({ form, languageDetails, permission, onCreateAttribute, onCreateValue, goodsDetail, language }) => {
+
   const languageForProductEdit = languageDetails.goods.productEdit;
   const languageForMessage = languageDetails.message;
   const propertyConfig =  goodsDetail.property_config || [];
@@ -71,6 +71,8 @@ const SkuAttribute = ({ form, languageDetails, permission, onCreateAttribute, on
                 dataSource={item}
                 languageDetails={languageDetails}
                 isAdd={isAdd}
+                language={language}
+                form={form}
               />
             }</div>
           );

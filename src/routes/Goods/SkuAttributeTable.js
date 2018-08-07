@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
 import Table from '../../components/table';
 import styles from './GoodsCreate.less';
-import { Input, Button, Icon, Radio, Tooltip, Upload, Divider, Popconfirm, Checkbox } from 'antd';
-import { setApiHost } from '../../utils/utils';
+import { Input, Button, Icon, Radio, Tooltip, Upload, Divider, Popconfirm, Checkbox, Form } from 'antd';
+import { goodsEditorLanguage, setApiHost } from '../../utils/utils';
 import { notification } from 'antd/lib/index';
 
 const RadioGroup = Radio.Group;
@@ -21,10 +21,11 @@ export default class SkuAttributeTable extends PureComponent {
   };
 
   render() {
-
-    const { dataSource, languageDetails, isAdd } = this.props;
+    const { dataSource, languageDetails, isAdd, language, form } = this.props;
+    const { getFieldDecorator } = form;
     const languageForProductEdit = languageDetails.goods.productEdit;
     const languageForMessage = languageDetails.message;
+    const languageForGlobal = languageDetails.global;
     //表格属性
     const columns = [
       {
@@ -276,6 +277,28 @@ export default class SkuAttributeTable extends PureComponent {
         },
       },
     ];
+    const languageInput = language.map((item,index) => {
+      return {
+        title: goodsEditorLanguage(item,languageForGlobal),
+        dataIndex: item,
+        key: item,
+        classType: 3,
+        render: (text) => {
+          return (
+            <Form.Item>
+              {
+                getFieldDecorator(`propertyConfig.lang.${item}`,{
+
+                })(
+                  <Input />
+                )
+              }
+            </Form.Item>
+          );
+        },
+      }
+    })
+    columns.splice(2,0,languageInput)
     return (
       <div>
         <Table
