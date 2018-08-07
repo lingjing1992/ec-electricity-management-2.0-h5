@@ -285,7 +285,7 @@ export default class SkuAttributeTable extends PureComponent {
         classType: 3,
         render: (text) => {
           return (
-            <Form.Item>
+            <Form.Item key={index}>
               {
                 getFieldDecorator(`propertyConfig.lang.${item}`,{
 
@@ -298,12 +298,15 @@ export default class SkuAttributeTable extends PureComponent {
         },
       }
     })
-    columns.splice(2,0,languageInput)
+    // languageInput.unshift(2,0);
+    // Array.prototype.splice.apply(columns,languageInput);
+    columns.splice(2,0,...languageInput);
     return (
-      <div>
+      <div className={styles.goodsTable}>
         <Table
           columns={columns}
           dataSource={dataSource}
+          rowKey={`property_id`}
           pagination={false}
           rowClassName={(record) => {
             return record.editable ? styles.editable : '';
