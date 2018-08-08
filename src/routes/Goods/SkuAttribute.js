@@ -4,11 +4,23 @@ import { getQueryString } from '../../utils/utils';
 import styles from './GoodsCreate.less';
 import SkuAttributeTable from './SkuAttributeTable';
 
-const SkuAttribute = ({ form, languageDetails, permission, onCreateAttribute, onCreateValue, goodsDetail, language }) => {
+const SkuAttribute = ({
+    form,
+    languageDetails,
+    permission,
+    onCreateAttribute,
+    onCreateValue,
+    propertyConfig,
+    language,
+    onAddNewProperty,
+    onDeleteProperty,
+    onAddNewPropertyGroup,
+    onDeletePropertyGroup
+  }) => {
 
   const languageForProductEdit = languageDetails.goods.productEdit;
   const languageForMessage = languageDetails.message;
-  const propertyConfig =  goodsDetail.property_config || [];
+  // propertyConfig =  propertyConfig || [];
   const isAdd = getQueryString().action == 'create';
   return (
     <div
@@ -30,7 +42,7 @@ const SkuAttribute = ({ form, languageDetails, permission, onCreateAttribute, on
             isAdd ? (
               <Button
                 type="primary"
-                onClick={ onCreateAttribute }
+                onClick={ onAddNewPropertyGroup }
                 style={{ marginRight: 8 }}
               >
                 { languageForProductEdit.newSKU }
@@ -46,7 +58,7 @@ const SkuAttribute = ({ form, languageDetails, permission, onCreateAttribute, on
                     propertyConfig.length > 1 ? (
                       <Popconfirm
                         title={ languageForMessage.deleteTheTast }
-                        onConfirm={ onCreateValue }
+                        onConfirm={ onDeletePropertyGroup }
                       >
                         <Button
                         >
@@ -69,10 +81,14 @@ const SkuAttribute = ({ form, languageDetails, permission, onCreateAttribute, on
             <div key={ index }>{
               <SkuAttributeTable
                 dataSource={item}
+                _index={index}
                 languageDetails={languageDetails}
                 isAdd={isAdd}
                 language={language}
                 form={form}
+                permission={permission}
+                onAddNewProperty={onAddNewProperty}
+                onDeleteProperty={onDeleteProperty}
               />
             }</div>
           );

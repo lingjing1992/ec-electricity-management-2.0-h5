@@ -225,7 +225,7 @@ class BasicLayout extends React.PureComponent {
 
   //设置侧边栏权限
   setMenuData = (rolePower) => {
-    console.log(rolePower);
+    // console.log(rolePower);
     const lanuageForNav = this.props.global.languageDetails.nav;
     let newData = getMenuData().map((item)=>{
       item.name = lanuageForNav[item.key];

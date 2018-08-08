@@ -47,7 +47,9 @@ export default class GoodsCreate extends Component {
   // -------------------------------------state*--------------------------------------
   state = {
     //商品详情
-    goodsDetail:{},
+    goodsDetail:{
+      property_config: [],
+    },
     //新建信息
     language:[],
     //商品类目
@@ -66,13 +68,14 @@ export default class GoodsCreate extends Component {
     fileList: [],
     //sku属性列表组
     createSkuAttributesArr: [],
+    //sku属性自增id
+    num:0,
   }
 
   // ------------------------------------react周期*-------------------------------------
 
   componentWillMount() {
     this.init();
-    console.log(Cookie.get('utm_campaign'));
   }
 
   // -------------------------------------页面初始化*--------------------------------------
@@ -126,6 +129,9 @@ export default class GoodsCreate extends Component {
           }
         }
       })
+    }else {
+      //如果是新建则需要初始化
+      this.addNewPropertyGroup();
     }
   }
   //编辑回选
@@ -139,7 +145,8 @@ export default class GoodsCreate extends Component {
       promotionCountry: goodsDetail.promote_country,
       goodsType: goodsDetail.goods_type_id,
       spuAttributesList: this.getSpuReselectionArray(goodsDetail.spu_attr),
-      isDistribution: goodsDetail.is_distribution
+      isDistribution: goodsDetail.is_distribution,
+      propertyConfig: goodsDetail.property_config
     })
   }
   // 设置商品类目详情
@@ -194,12 +201,6 @@ export default class GoodsCreate extends Component {
     const {type, language} = this.state;
     const languageForMessage = this.props.global.languageDetails.message;
     const {goodsCreate} = this.props;
-    // const {
-    //   language = [], // 语言
-    //   goods_type = [], // 商品类目
-    //   currency = [], // 货币
-    //   country = [], // 国家
-    // } = goodsCreate.createRequest;
 
     // 获取modal的值
     const spuTableForm = getFieldValue('spuTableForm');
@@ -340,6 +341,84 @@ export default class GoodsCreate extends Component {
   handleCreateSkuAttributesBuildData = () => {
 
   }
+  //新增属性组
+  addNewPropertyGroup = () => {
+    let { num, goodsDetail, language } = this.state;
+    const lang = this.parseArr(language);
+    // goodsDetail.property_config = goodsDetail.hasOwnProperty('property_config') ?  goodsDetail.property_config : [];
+    const group = [
+      {
+        imp_type: 1,
+        property_id: num++,
+        lang: lang,
+      },
+      {
+        status: 1,
+        property_id: num++,
+        lang: lang,
+      }
+    ]
+    goodsDetail.property_config.push(group);
+    this.setState({
+      goodsDetail: Object.assign({}, goodsDetail),
+      num: num
+    })
+  }
+  //删除属性组
+  deletePropertyGroup = (index) => {
+    let { goodsDetail } = this.state;'' +
+    goodsDetail.property_config.splice(index,1);
+    this.setState({
+      goodsDetail: Object.assign({}, goodsDetail),
+    })
+  }
+  //新增属性
+  addNewProperty = (index) => {
+    let { num, goodsDetail, language } = this.state;
+    const item = {
+      status: 1,
+      property_id: num++,
+      lang: this.parseArr(language),
+    }
+    goodsDetail.property_config[index].push(item)
+
+    this.setState({
+      goodsDetail: Object.assign({},goodsDetail),
+      num: num
+    })
+    console.log(this.state.goodsDetail)
+  }
+  //语言数组解析成对象
+  parseArr = (array) => {
+    return array.reduce((item1,item2) => {
+      const object = {};
+      if(typeof item1 === 'string'){
+        Object.assign(object,{
+          [item1]: ''
+        })
+        if(item2){
+          Object.assign(object,{
+            [item2]: ''
+          })
+        }
+        return object;
+      }else {
+        if(item2){
+          return Object.assign(item1,{
+            [item2]: ''
+          })
+        }
+      }
+    })
+  }
+  //删除属性
+  deleteProperty = (index) => {
+    let { goodsDetail } = this.state;
+    goodsDetail.property_config[index].splice(index,1);
+    this.setState({
+      goodsDetail: Object.assign({}, goodsDetail),
+    })
+  }
   render(){
 
     // -------------------------------------变量定义获取*--------------------------------------
@@ -347,6 +426,7 @@ export default class GoodsCreate extends Component {
     const { loading, spuAttributesList, createDefinedAttr } = this.props.goodsCreate;
     const { goodsType,  permission, language, country, goodsDetail, imageAddSuccess, createSkuAttributesArr } = this.state;
     const form = this.props.form;
+    const { property_config } = goodsDetail
     //表单对象
     const { getFieldDecorator, validateFieldsAndScroll, getFieldsError, getFieldError } = this.props.form;
     //多语言
@@ -534,24 +614,33 @@ export default class GoodsCreate extends Component {
 
               <Card
                 title={languageForProductEdit.SKUInformation}
-                className={`${styles.card} ${styles.skuInfoCard}`}
+                className={`${styles.card} ant-card-head-900`}
                 bordered={false}
               >
-                <div className={styles.skuInfo}>
+                <div className={`ant-card-900 ${styles.skuInfo}`}>
 
                   {/*@------------------------------------SKU属性*-------------------------------------@*/}
+                  {
+                    permission['100041'].status ? (
+                      <SkuAttribute
+                        form={form}
+                        languageDetails={languageDetails}
+                        onEdit={this.handleEditorSkuAttributes}
+                        onCreateValue={this.handleEditorSkuAttributes}
+                        onCreateAttribute={this.handleEditorSkuAttributes}
+                        propertyConfig={property_config}
+                        permission={permission}
+                        language={language}
+                        onAddNewProperty={this.addNewProperty}
+                        onDeleteProperty={this.deleteProperty}
+                        onAddNewPropertyGroup={this.addNewPropertyGroup}
+                        onDeletePropertyGroup={this.deletePropertyGroup}
+                      />
+                    ) : null
+                  }
+                  {/*@------------------------------------SKU供货信息*-------------------------------------@*/}
 
-                  <SkuAttribute
-                    form={form}
-                    languageDetails={languageDetails}
-                    onEdit={this.handleEditorSkuAttributes}
-                    onCreateValue={this.handleEditorSkuAttributes}
-                    onCreateAttribute={this.handleEditorSkuAttributes}
-                    goodsDetail={goodsDetail}
-                    permission={permission}
-                    language={language}
-                  />
-
+                  
                 </div>
               </Card>
               <Card
