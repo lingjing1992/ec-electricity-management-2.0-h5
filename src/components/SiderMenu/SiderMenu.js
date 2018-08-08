@@ -245,7 +245,7 @@ export default class SiderMenu extends PureComponent {
   };
 
   render() {
-    const { logo, collapsed, onCollapse } = this.props;
+    const { logo, collapsed, onCollapse, systemUpdate } = this.props;
     const { openKeys } = this.state;
     // Don't show popup menu when it is been collapsed
     const menuProps = collapsed
@@ -284,6 +284,7 @@ export default class SiderMenu extends PureComponent {
         >
           {this.getNavMenuItems(this.menus)}
         </Menu>
+        <div style={{display: systemUpdate ? 'block' : 'none'}} className={styles.sliderCover}></div>
       </Sider>
     );
   }

@@ -12,6 +12,10 @@ const menuData = [
     // authority:'/',
   },
   {
+    name: 'update',
+    path: 'update',
+  },
+  {
     name: '店铺',
     path: 'shop',
     icon: 'shop',

@@ -513,7 +513,7 @@ class BasicLayout extends React.PureComponent {
   }
 
   render() {
-    const {login, routerData, collapsed, match, location,  global: {rolePower, language, languageDetails, contentWidth}, notice: {noticeTargetData}} = this.props;
+    const {login, routerData, collapsed, match, location,  global: {rolePower, language, languageDetails, contentWidth, systemUpdate}, notice: {noticeTargetData}} = this.props;
     const { isMobile: mb, languageText, languageIconUp, popupVisible, MenuData } = this.state;
     const {brandList = []} = login;
     const languageForHeader = this.props.global.languageDetails.header;//顶部语言
@@ -566,6 +566,7 @@ class BasicLayout extends React.PureComponent {
                   // isMobile={mb}
                   onCollapse={this.handleMenuCollapse}
                   className={styles.slider}
+                  systemUpdate={systemUpdate}
                 />
               ): null
             }
@@ -686,10 +687,14 @@ class BasicLayout extends React.PureComponent {
                   </Dropdown>
 
                 </div>
+                <div style={{display: systemUpdate ? 'block' : 'none'}} className={`${styles.headerCover}`}>
+
+                </div>
               </Header>
               <Content style={{padding: '24px', height: '100%'}}>
                 <Switch>
-                  {redirectData.map(item => (
+                  {
+                    redirectData.map(item => (
                     <Redirect key={item.from} exact from={item.from} to={item.to} />
                   ))}
                   {getRoutes(match.path, routerData).map(item => (

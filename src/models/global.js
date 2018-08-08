@@ -13,6 +13,7 @@ export default {
     language: 'zh-cn',//'zh':简体中文，'en':英文,
     languageDetails: language['zh-cn'],
     contentWidth: 947,
+    systemUpdate: false,
   },
 
   effects: {
@@ -104,6 +105,12 @@ export default {
       return {
         ...state,
         contentWidth: payload
+      }
+    },
+    setSystemUpdate(state,{payload}){
+      return {
+        ...state,
+        systemUpdate: payload
       }
     }
   },
