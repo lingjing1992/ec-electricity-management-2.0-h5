@@ -136,13 +136,13 @@ export default class SearchList extends Component {
     }
 
     const { goods, pagination, url} = this.state;
-    const { distribution:{ headerData }  } = this.props;
+    const { distribution:{ headerData, searchData }  } = this.props;
     const langusgeForGlobal = this.props.global.languageDetails.global;
 
     const listPagination = {
       total: Number(pagination.total),
-      current: pagination.current,
-      pageSize: pagination.pageSize,
+      current: searchData.pageNum,
+      pageSize: searchData.pageSize,
       showQuickJumper: true,
       showTotal: (total) => {
         return `${langusgeForGlobal.total} ${total} ${langusgeForGlobal.items}`;
@@ -157,7 +157,7 @@ export default class SearchList extends Component {
           <Header onSearch={this.getData} location={this.props.location} headerData={headerData}></Header>
           <SubSearch changeHandle={
             () => {
-              this.getData(pagination.current)
+              this.getData(searchData.pageNum)
             }
           }></SubSearch>
           <Spin spinning={this.props.distribution.loading}>

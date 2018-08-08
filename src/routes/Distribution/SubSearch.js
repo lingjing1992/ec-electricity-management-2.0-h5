@@ -106,7 +106,7 @@ export default class SubSearch extends Component {
       this.props.dispatch({
         type: 'distribution/changeSearchData',
         payload: {
-          ...searchData,
+          // ...searchData,
           status
         }
       })
@@ -135,7 +135,7 @@ export default class SubSearch extends Component {
       this.props.dispatch({
         type: 'distribution/changeSearchData',
         payload: {
-          ...searchData,
+          // ...searchData,
           orderBy: index,
           sort: sort,
           pageNum: 1
@@ -164,7 +164,7 @@ export default class SubSearch extends Component {
       this.props.dispatch({
         type: 'distribution/changeSearchData',
         payload: {
-          ...searchData,
+          // ...searchData,
           supplyPriceSection,
           referencePriceSection
         }
@@ -174,14 +174,17 @@ export default class SubSearch extends Component {
 
     //重置点击事件
     const onResetHandel = () => {
-      this.setState({
-        supplyPriceSection: {
-          min: null,
-          max: null
-        },
-        referencePriceSection: {
-          min: null,
-          max: null
+      this.props.dispatch({
+        type: 'distribution/changeSearchData',
+        payload: {
+          supplyPriceSection: {
+            min: null,
+            max: null
+          },
+          referencePriceSection: {
+            min: null,
+            max: null
+          }
         }
       })
     }

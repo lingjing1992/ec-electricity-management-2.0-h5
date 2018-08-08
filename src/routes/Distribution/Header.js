@@ -123,7 +123,8 @@ export default class Header extends Component {
             // ...searchData,
             categoryId: tabId,
             rankType: null,
-            keyword: null
+            keyword: null,
+            pageNum: 1
           }
         })
 
