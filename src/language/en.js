@@ -1055,6 +1055,12 @@ export default {
       OnlyOnce: 'Only once',
       QuantityNotBeEmpty: 'The quantity in stock  should not be empty.',
       StockAlert: 'Stock Alert',
+    },
+    //系统升级页面
+    update: {
+      text: ['Being updated,','please try again later.'],
+      refresh: 'Reload',
+
     }
   }
 }

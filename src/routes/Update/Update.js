@@ -9,6 +9,13 @@ import { connect } from 'dva';
   global: state.global
 }))
 export default class Update extends Component {
+  componentWillMount(){
+    const isUpdate = this.props.global.systemUpdate.isUpdate;
+    console.log(this.props)
+    if(!isUpdate){
+      this.props.history.goBack();
+    }
+  }
 
   refresh = () => {
     this.props.dispatch({
@@ -30,13 +37,14 @@ export default class Update extends Component {
     })
   }
   render(){
+    const languageForUpdate = this.props.global.languageDetails.update;
     return (
       <div className={styles.update}>
         <div className={`${styles.updateContent} clearfix`}>
           <div className={`${styles.icon} left`}></div>
           <div className={`${styles.updatePrimit} right`}>
-            <p>系统升级中,<br/>请稍后再试。</p>
-            <Button onClick={this.refresh} className={styles.updateButton} type="primary">刷新</Button>
+            <p>{languageForUpdate.text[0]}<br/>{languageForUpdate.text[1]}</p>
+            <Button onClick={this.refresh} className={styles.updateButton} type="primary">{languageForUpdate.refresh}</Button>
           </div>
         </div>
       </div>
