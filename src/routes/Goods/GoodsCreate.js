@@ -18,6 +18,7 @@ import DefineAttribute from './DefineAttribute';
 import SpuTableForm from './SpuTableForm'; // SPU自定义属性
 import ProductImages from './ProductImages';
 import SkuAttribute from './SkuAttribute';
+import SkuSupplyInfo from './SkuSupplyInfo';
 import FooterToolbar from '../../components/FooterToolbar';
 
 
@@ -638,9 +639,16 @@ export default class GoodsCreate extends Component {
                       />
                     ) : null
                   }
+
                   {/*@------------------------------------SKU供货信息*-------------------------------------@*/}
 
-                  
+                  <SkuSupplyInfo
+                    form={form}
+                    languageDetails={languageDetails}
+                    permission={permission}
+                  />
+
+
                 </div>
               </Card>
               <Card
@@ -648,6 +656,7 @@ export default class GoodsCreate extends Component {
                 className={styles.card}
                 bordered={false}
               >
+
                 {/*@------------------------------------SKU属性*-------------------------------------@*/}
                 <Card
                   title="SKU属性"
