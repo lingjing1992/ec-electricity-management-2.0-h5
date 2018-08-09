@@ -382,7 +382,7 @@ class BasicLayout extends React.PureComponent {
       result = languageForHeader.returnAddress;
     }
     else if(locationPathname==='/setting/basicSetting'){
-      result = languageForHeader.returnAddress;
+      result = languageForHeader.BasicInformation;
     }
     else {
       result = '';

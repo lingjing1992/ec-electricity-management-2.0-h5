@@ -20,7 +20,7 @@ export default {
       French            : 'French',
       noData            : 'NO data.',
       cancel            : 'Cancel',
-      Confirm           : 'Confirm',
+      Confirm           : 'Save',
       Uploaded          : 'Uploaded',
       PleaseEnter       : 'Please Enter ',
       Pleasechoose      : 'Please choose',
