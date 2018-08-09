@@ -26,3 +26,11 @@ export async function getRolePower(params) {
     body: params,
   });
 }
+
+//获取升级信息
+export async function getUpgradeStatus(params) {
+  return request('/api/merchant/v1/getUpgradeStatus', {
+    method: 'POST',
+    body: params,
+  });
+}

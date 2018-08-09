@@ -135,6 +135,7 @@ class BasicLayout extends React.PureComponent {
     if (nextProps.login.errorSwitchBrand === 200) {
       window.location.reload();
     }
+
   }
   componentDidMount() {
     document.querySelector('#root').addEventListener('click', this.closeNoticePop, false)
@@ -419,7 +420,7 @@ class BasicLayout extends React.PureComponent {
   }
   //公告清除
   noticeClear = (tabTitle) => {
-    const {noticeResoureData} = this.props.notice;
+    const { noticeResoureData } = this.props.notice;
     const languageForProductNotice = this.props.global.languageDetails.notice;
     const languageForProductMessage = this.props.global.languageDetails.message;
     const titleJson = {

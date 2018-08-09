@@ -1,5 +1,5 @@
 import { queryNotices } from '../services/api';
-import { getRolePower } from '../services/utils';
+import { getRolePower, getUpgradeStatus } from '../services/utils';
 import language from '../language/language';
 
 export default {
@@ -45,24 +45,29 @@ export default {
     },
     *rolePower({ payload, callback }, { call, put }) {
       const response = yield call(getRolePower,payload);
+      let powerInfo = {};
+      if(response.status === 200){
+        powerInfo = response.data.powerInfo;
+        //本地存储权限
+        window.localStorage.setItem('powerInfo', JSON.stringify(response.data.powerInfo));
+      }else {
+        //获取本地权限
+        powerInfo = window.localStorage.getItem('powerInfo') ? JSON.parse(window.localStorage.getItem('powerInfo')) : {};
+      }
       yield put({
         type:'setRolePower',
-        payload: response.data.powerInfo,
+        payload: powerInfo,
       })
       if(callback){
-        callback(response.data.powerInfo);
+        callback(powerInfo);
       }
     },
-//    *rolePower({ payload, callback }, { call, put }) {
-//      const response = yield call(getRolePower,payload);
-//      yield put({
-//        type:'setRolePower',
-//        payload: response.data.powerInfo,
-//      })
-//      if(callback){
-//        callback(response.data.powerInfo);
-//      }
-//    },
+   *getUpgradeStatus({ payload, callback }, { call, put }) {
+     const response = yield call(getUpgradeStatus,payload);
+     if(callback){
+       callback(response);
+     }
+   }
   },
 
   reducers: {

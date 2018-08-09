@@ -115,10 +115,18 @@ export default {
     // 品牌列表-权限列表
     * brand({ payload, callback }, { call, put }) {
       const response = yield call(brand, payload);
-
+      let brandResult = {};
+      if(response.status === 200){
+        brandResult = response;
+        //本地存储
+        window.localStorage.setItem('brand', JSON.stringify(brandResult));
+      }else {
+        //获取本地数据
+        brandResult = window.localStorage.getItem('brand') ? JSON.parse(window.localStorage.getItem('brand')) : {};
+      }
       yield put({
         type: 'brandHandle',
-        payload: response,
+        payload: brandResult,
       });
       if (callback) {
         callback();
@@ -162,16 +170,17 @@ export default {
     },
     // 品牌列表-权限列表
     brandHandle(state, { payload }) {
-      if (!Cookies.get('ELE_USERNAME_BRAND')) {
-        Cookies.set('ELE_USERNAME_BRAND', payload.data.sellerBrands[0].name, { expires: 30 });
+      if(payload){
+        if (!Cookies.get('ELE_USERNAME_BRAND')) {
+          Cookies.set('ELE_USERNAME_BRAND', payload.data.sellerBrands[0].name, { expires: 30 });
+        }
+        if (!Cookies.get('ELE_JURISDICTION')) {
+          Cookies.set('ELE_JURISDICTION', payload.data.sellerBrands[0], { expires: 30 });
+        }
       }
-      if (!Cookies.get('ELE_JURISDICTION')) {
-        Cookies.set('ELE_JURISDICTION', payload.data.sellerBrands[0], { expires: 30 });
-      }
-
       return {
         ...state,
-        brandList: payload.data.sellerBrands,
+        brandList: payload ? payload.data.sellerBrands : [],
       };
     },
     // 切换品牌站-权限

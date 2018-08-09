@@ -28,7 +28,9 @@ function toUpdate() {
         pathname: `${window.location.pathname}${window.location.search}`
       }
     })
-    dispatch(routerRedux.push('/update'));
+    if(window.location.pathname !== '/update'){
+      dispatch(routerRedux.push('/update'));
+    }
   }
   console.log(store)
 }
@@ -49,8 +51,10 @@ export default function request(url, options) {
   //如果正在升级则取消其他请求
   const { getState, dispatch } = store;
   const isUpdate = getState().global.systemUpdate.isUpdate;
-  if(isUpdate){
-    dispatch(routerRedux.replace('/update'))
+  if(isUpdate && url.indexOf('getUpgradeStatus')===-1){
+    if(window.location.pathname !== '/update'){
+      dispatch(routerRedux.push('/update'));
+    }
     return;
   }
   //请求处理
@@ -82,12 +86,15 @@ export default function request(url, options) {
         // console.log('location',window.location)
         // 登录页面也不出全局提示
         if (data.status !== 200) {
-          notification.error({
-            message: `${errorTip[lang].RequestError},${errorTip[lang].ErrorCode}${data.status}`,
-            description: data.msg,
-          });
-          if(location.pathname !== '/user/login' && data.status === 502){
-            toUpdate();
+          if(data.status === 502){
+            if(location.pathname !== '/user/login'){
+              toUpdate();
+            }
+          }else{
+            notification.error({
+              message: `${errorTip[lang].RequestError},${errorTip[lang].ErrorCode}${data.status}`,
+              description: data.msg,
+            });
           }
         }
       });

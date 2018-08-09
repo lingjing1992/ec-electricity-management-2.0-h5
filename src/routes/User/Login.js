@@ -136,7 +136,7 @@ export default class Login extends Component {
     const languageForLogin = this.props.global.languageDetails.login;
     return (
       <div className={styles.container}>
-        <div className={styles.loginWrap}> 
+        <div className={styles.loginWrap}>
           <div className={styles.top}>
             <div className={styles.header}>
               <Link to="/">
@@ -165,7 +165,7 @@ export default class Login extends Component {
                     type="text"
                     placeholder={languageForLogin.enterYourAccount}
                   />
-                  
+
                 )}
               </FormItem>
               <FormItem>
@@ -218,7 +218,7 @@ export default class Login extends Component {
             {/* <GlobalFooter className={styles.footer} links={links} copyright={copyright} /> */}
 
           </div>
-        </div>        
+        </div>
       </div>
     );
   }

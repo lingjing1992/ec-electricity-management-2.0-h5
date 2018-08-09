@@ -11,13 +11,21 @@ import { connect } from 'dva';
 export default class Update extends Component {
 
   refresh = () => {
-    const pathname = this.props.global.systemUpdate.pathname;
-    this.props.dispatch(routerRedux.push(pathname));
     this.props.dispatch({
-      type:'global/setSystemUpdate',
-      payload: {
-        isUpdate: false,
-        pathname: `/`
+      type: 'global/getUpgradeStatus',
+      payload: {},
+      callback: (data) => {
+        if(data && data.status===200){
+          this.props.dispatch({
+            type:'global/setSystemUpdate',
+            payload: {
+              isUpdate: false,
+              pathname: `/`
+            }
+          })
+          this.props.dispatch(routerRedux.go(-1));
+          window.location.reload();
+        }
       }
     })
   }

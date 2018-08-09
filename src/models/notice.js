@@ -52,14 +52,21 @@ export default {
         payload: true,
       });
       const response = yield call(getSummaryInfo, payload);
-      if(response.status === 200){
-        yield put({
-          type: 'noticeDataSolve',
-          payload: response.data,
-        });
+      let summaryInfo = {};
+      if(response && response.status === 200){
+        summaryInfo = response.data;
+        //本地存储
+        window.localStorage.setItem('summaryInfo', JSON.stringify(summaryInfo));
+      }else {
+        //获取本地数据
+        summaryInfo = window.localStorage.getItem('summaryInfo') ? JSON.parse(window.localStorage.getItem('summaryInfo')) : {};
       }
+      yield put({
+        type: 'noticeDataSolve',
+        payload: summaryInfo,
+      });
       if (callback) {
-        callback(response);
+        callback(summaryInfo);
       }
       yield put({
         type: 'changeLoading',
@@ -85,7 +92,7 @@ export default {
       const response = yield call(noticeUpdate, {
         ids: payload.ids,
       });
-      if(response.status===200){
+      if(response && response.status===200){
         yield put({
           type: 'setNoticeResoureData',
           payload: payload,
