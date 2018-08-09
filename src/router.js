@@ -21,11 +21,11 @@ function RouterConfig({ history, app }) {
           <AuthorizedRoute
             path="/"
             render={props => <BasicLayout {...props} />}
-            authority={['admin', 'user']}
-            redirectPath={
-              getQueryPath('/user/login', {
-              redirect: window.location.href,
-            })}
+            // authority={['admin', 'user']}
+            // redirectPath={
+            //   getQueryPath('/user/login', {
+            //   redirect: window.location.href,
+            // })}
           />
         </Switch>
       </ConnectedRouter>

@@ -7,10 +7,7 @@ import Cookies from 'js-cookie'
 import { Route, Redirect, Switch, routerRedux,  } from 'dva/router';
 import { ContainerQuery } from 'react-container-query';
 import classNames from 'classnames';
-import pathToRegexp from 'path-to-regexp';
 import { enquireScreen, unenquireScreen } from 'enquire-js';
-import GlobalHeader from '../components/GlobalHeader';
-import GlobalFooter from '../components/GlobalFooter';
 import groupBy from 'lodash/groupBy';
 import SiderMenu from '../components/SiderMenu';
 import NotFound from '../routes/Exception/404';
@@ -566,7 +563,7 @@ class BasicLayout extends React.PureComponent {
                   // isMobile={mb}
                   onCollapse={this.handleMenuCollapse}
                   className={styles.slider}
-                  systemUpdate={systemUpdate}
+                  systemUpdate={systemUpdate.isUpdate}
                 />
               ): null
             }
@@ -687,7 +684,7 @@ class BasicLayout extends React.PureComponent {
                   </Dropdown>
 
                 </div>
-                <div style={{display: systemUpdate ? 'block' : 'none'}} className={`${styles.headerCover}`}>
+                <div style={{display: systemUpdate.isUpdate ? 'block' : 'none'}} className={`${styles.headerCover}`}>
 
                 </div>
               </Header>
@@ -697,16 +694,23 @@ class BasicLayout extends React.PureComponent {
                     redirectData.map(item => (
                     <Redirect key={item.from} exact from={item.from} to={item.to} />
                   ))}
-                  {getRoutes(match.path, routerData).map(item => (
-                    <AuthorizedRoute
-                      key={item.key}
-                      path={item.path}
-                      component={item.component}
-                      exact={item.exact}
-                      authority={item.authority}
-                      redirectPath="/exception/403"
-                    />
-                  ))}
+                  {
+                    getRoutes(match.path, routerData).map(item => {
+                    const authority = item.path === '/update' ? true : !systemUpdate.isUpdate;
+                    // console.log(item.path)
+                    return (
+                      <AuthorizedRoute
+                        key={item.key}
+                        path={item.path}
+                        component={item.component}
+                        exact={item.exact}
+                        authority={() => {
+                          return authority;
+                        }}
+                        redirectPath="/update"
+                      />
+                    )
+                  })}
                   <Redirect exact from="/" to={bashRedirect} />
                   <Route render={NotFound} />
                 </Switch>

@@ -13,7 +13,10 @@ export default {
     language: 'zh-cn',//'zh':简体中文，'en':英文,
     languageDetails: language['zh-cn'],
     contentWidth: 947,
-    systemUpdate: false,
+    systemUpdate: {
+      isUpdate: false,
+      pathname: '/',
+    }
   },
 
   effects: {
@@ -110,7 +113,7 @@ export default {
     setSystemUpdate(state,{payload}){
       return {
         ...state,
-        systemUpdate: payload
+        systemUpdate: Object.assign(state.systemUpdate,payload)
       }
     }
   },

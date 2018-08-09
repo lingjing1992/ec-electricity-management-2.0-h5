@@ -5,6 +5,8 @@ import { setApiHost, getQueryString } from './utils';
 import { routerRedux, } from 'dva/router';
 import store from '../index';
 import Cookies from 'js-cookie';
+import { setAuthority } from '../utils/authority';
+import { reloadAuthorized } from '../utils/Authorized';
 
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
@@ -17,11 +19,14 @@ function checkStatus(response) {
 
 function toUpdate() {
   const { dispatch, getState } = store;
-  const systemUpdate = getState().global.systemUpdate;
-  if(!systemUpdate){
+  const isUpdate = getState().global.systemUpdate.isUpdate;
+  if(!isUpdate){
     dispatch({
       type:'global/setSystemUpdate',
-      payload: true,
+      payload: {
+        isUpdate: true,
+        pathname: `${window.location.pathname}${window.location.search}`
+      }
     })
     dispatch(routerRedux.push('/update'));
   }
@@ -42,9 +47,12 @@ const errorTip = {
 }
 export default function request(url, options) {
   //如果正在升级则取消其他请求
-  const { getState } = store;
-  const systemUpdate = getState().global.systemUpdate;
-  if(systemUpdate)return;
+  const { getState, dispatch } = store;
+  const isUpdate = getState().global.systemUpdate.isUpdate;
+  if(isUpdate){
+    dispatch(routerRedux.replace('/update'))
+    return;
+  }
   //请求处理
   const defaultOptions = {
     credentials: 'include',
@@ -63,20 +71,24 @@ export default function request(url, options) {
     .then(checkStatus)
     // .then(response => response.json())
     .then((response) => {
-      const { dispatch } = store;
+      // const { dispatch } = store;
       const json = response.json();
-      toUpdate();
+      // console.log(window.location.pathname)
+
       json.then((data) => {
         if (data.status === 10001) {
           window.location.href = `//${window.location.host}/user/login`;
         }
         // console.log('location',window.location)
         // 登录页面也不出全局提示
-        if (data.status !== 200 && location.pathname !== '/user/login') {
+        if (data.status !== 200) {
           notification.error({
             message: `${errorTip[lang].RequestError},${errorTip[lang].ErrorCode}${data.status}`,
             description: data.msg,
           });
+          if(location.pathname !== '/user/login' && data.status === 502){
+            toUpdate();
+          }
         }
       });
       return json;
@@ -97,7 +109,7 @@ export default function request(url, options) {
       //   });
       // }
       if(status === 404){
-        dispatch(routerRedux.push('/update'));
+        toUpdate();
       }
       return error;
     });
