@@ -735,9 +735,14 @@ export default class OrderDetail extends Component {
           </div>
           <DescriptionList
             size="large"
-            title={languageForOrder.ShippingInformation}
+            title={(
+              <span>{languageForOrder.ShippingInformation}
+                {
+              permission['100052'].status===0 || orderDetail.riskStatus ? '' : (<a style={{marginLeft:10}} onClick={this.editorReceivingEvent}>{languageForOrder.Edit}</a> )
+                }
+              </span>)}
             style={{ marginBottom: 32 }}
-            editor={permission['100052'].status===0 || orderDetail.riskStatus ? '' : (<a onClick={this.editorReceivingEvent}>{languageForOrder.Edit}</a> )}
+            // editor={}
           >
             <Description term={languageForOrder.Consignee}>{receiverInfo.receiver}</Description>
             <Description term={languageForOrder.ZipCode}>{receiverInfo.zip}</Description>
