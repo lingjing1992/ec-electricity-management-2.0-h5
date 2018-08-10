@@ -182,13 +182,13 @@ export default {
         type: 'propertyAssemble',
         payload: response,
       });
+      if (callback) {
+        callback(response);
+      }
       yield put({
         type: 'changeLoading',
         payload: false,
       });
-      if (callback) {
-        callback();
-      }
     },
     * goodsCreateGetgoods({ payload, callback }, { call, put }) {
       yield put({

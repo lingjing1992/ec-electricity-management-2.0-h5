@@ -21,32 +21,34 @@ export default class SkuTableForm extends PureComponent {
       },
     };
   }
+
   componentWillReceiveProps(nextProps) {
     if ('value' in nextProps) {
       this.setState({
         data: nextProps.value || [],
       });
     }
-    if(nextProps.skuOriginPrice !== this.props.skuOriginPrice || nextProps.skuSalePrice !== this.props.skuSalePrice || nextProps.skuShipping !== this.props.skuShipping){
+    if (nextProps.skuOriginPrice !== this.props.skuOriginPrice || nextProps.skuSalePrice !== this.props.skuSalePrice || nextProps.skuShipping !== this.props.skuShipping) {
       this.handleBatchFilling(nextProps);
     }
   }
+
   componentWillMount() {
 
   }
 
-  handleBatchFillingChange = () =>{
+  handleBatchFillingChange = () => {
 
-  }
+  };
 
   handleBatchFilling = (nextProps) => {
     // let { handleBatchFilling } = this.state;
     const newData = [...this.state.data];
     const { skuOriginPrice, skuSalePrice, skuShipping, currencys, currency } = nextProps;
-    let exchangeRate=1;
+    let exchangeRate = 1;
     //兑率
-    for(let i=0; i<currencys.length; i++){
-      if(currency === currencys[i].currencyCode){
+    for (let i = 0; i < currencys.length; i++) {
+      if (currency === currencys[i].currencyCode) {
         exchangeRate = currencys[i].exchangeRate;
         break;
       }
@@ -55,24 +57,24 @@ export default class SkuTableForm extends PureComponent {
     newData.map((item) => {
 
       if (skuOriginPrice) {
-        if(currency === 'TWD'){
-          item.refPrice = Math.round(parseFloat(skuOriginPrice)*exchangeRate);
-        }else {
-          item.refPrice = toFixed(parseFloat(skuOriginPrice)*exchangeRate,2);
+        if (currency === 'TWD') {
+          item.refPrice = Math.round(parseFloat(skuOriginPrice) * exchangeRate);
+        } else {
+          item.refPrice = toFixed(parseFloat(skuOriginPrice) * exchangeRate, 2);
         }
       }
       if (skuSalePrice) {
-        if(currency === 'TWD'){
-          item.supplyPrice = Math.round(parseFloat(skuSalePrice)*exchangeRate);
-        }else {
-          item.supplyPrice = toFixed(parseFloat(skuSalePrice)*exchangeRate,2);
+        if (currency === 'TWD') {
+          item.supplyPrice = Math.round(parseFloat(skuSalePrice) * exchangeRate);
+        } else {
+          item.supplyPrice = toFixed(parseFloat(skuSalePrice) * exchangeRate, 2);
         }
       }
       if (skuShipping) {
-        if(currency === 'TWD'){
-          item.refShipPrice = Math.round(parseFloat(skuShipping)*exchangeRate);
-        }else {
-          item.refShipPrice = toFixed(parseFloat(skuShipping)*exchangeRate,2);
+        if (currency === 'TWD') {
+          item.refShipPrice = Math.round(parseFloat(skuShipping) * exchangeRate);
+        } else {
+          item.refShipPrice = toFixed(parseFloat(skuShipping) * exchangeRate, 2);
         }
       }
 
@@ -81,10 +83,10 @@ export default class SkuTableForm extends PureComponent {
     });
 
     this.setState({ data: newData });
-  }
+  };
 
   handleFieldChange = (e, fieldName, key) => {
-    if(!this.errorPromit(e.target.value)){
+    if (!this.errorPromit(e.target.value)) {
       return false;
     }
 
@@ -94,9 +96,9 @@ export default class SkuTableForm extends PureComponent {
       target[fieldName] = e.target.value;
       this.setState({ data: newData });
     }
-  }
+  };
 
-  errorPromit  = (value) => {
+  errorPromit = (value) => {
     // const languageForMessage = this.props.global.languageDetails.message;
     // if (!(/^\d+(\.\d{1,2})?$/.test(value))) {
     //   notification.error({
@@ -108,78 +110,81 @@ export default class SkuTableForm extends PureComponent {
     //   return true;
     // }
     return true;
-  }
+  };
 
   saveRow = () => {
 
-  }
+  };
   getRowByKey = (key) => {
     return this.state.data.filter(item => item.sku_property_ids === key)[0];
-  }
+  };
 
   render() {
     const languageForProductEdit = this.props.global.languageDetails.goods.productEdit;
-    const columns = [{
-      title: languageForProductEdit.SKUAttribute,
-      dataIndex: 'name',
-      key: 'name',
-      classType: 2,
-      render: (text, record) => {
-        const result = record.sku_property_names.split(',') || '';
-        return (
-          <div>{`${result[0] || ''}${result[1] ? '-' : ''}${result[1] || ''}`}</div>
-        );
+    const columns = [
+      {
+        title: languageForProductEdit.SKUAttribute,
+        dataIndex: 'name',
+        key: 'name',
+        classType: 2,
+        render: (text, record) => {
+          const result = record.sku_property_names.split(',') || '';
+          return (
+            <div>{`${result[0] || ''}${result[1] ? '-' : ''}${result[1] || ''}`}</div>
+          );
+        },
       },
-    }, {
-      title: languageForProductEdit.OriginalPrice,
-      dataIndex: 'refPrice',
-      key: 'refPrice',
-      classType: 6,
-      render: (text, record) => {
-        return (
-          <Input
-            disabled={this.props.disabled}
-            value={text}
-            type='number'
-            onChange={e => this.handleFieldChange(e, 'refPrice', record.sku_property_ids)}
-            placeholder={languageForProductEdit.OriginalPrice}
-          />
-        );
+      {
+        title: languageForProductEdit.OriginalPrice,
+        dataIndex: 'refPrice',
+        key: 'refPrice',
+        classType: 6,
+        render: (text, record) => {
+          return (
+            <Input
+              disabled={this.props.disabled}
+              value={text}
+              type='number'
+              onChange={e => this.handleFieldChange(e, 'refPrice', record.sku_property_ids)}
+              placeholder={languageForProductEdit.OriginalPrice}
+            />
+          );
+        },
       },
-    }, {
-      title: languageForProductEdit.SupplyPrice,
-      dataIndex: 'supplyPrice',
-      key: 'supplyPrice',
-      classType: 6,
-      render: (text, record) => {
-        return (
-          <Input
-            disabled={this.props.disabled}
-            value={text}
-            type='number'
-            onChange={e => this.handleFieldChange(e, 'supplyPrice', record.sku_property_ids)}
-            placeholder={languageForProductEdit.SupplyPrice}
-          />
-        );
+      {
+        title: languageForProductEdit.SupplyPrice,
+        dataIndex: 'supplyPrice',
+        key: 'supplyPrice',
+        classType: 6,
+        render: (text, record) => {
+          return (
+            <Input
+              disabled={this.props.disabled}
+              value={text}
+              type='number'
+              onChange={e => this.handleFieldChange(e, 'supplyPrice', record.sku_property_ids)}
+              placeholder={languageForProductEdit.SupplyPrice}
+            />
+          );
+        },
       },
-    }, {
-      title: languageForProductEdit.ShippingFee,
-      dataIndex: 'refShipPrice',
-      key: 'refShipPrice',
-      classType: 6,
-      render: (text, record) => {
-        return (
-          <Input
-            disabled={this.props.disabled}
-            value={text}
-            type='number'
-            onChange={e => this.handleFieldChange(e, 'refShipPrice', record.sku_property_ids)}
-            placeholder={languageForProductEdit.ShippingFee}
-          />
-        );
-      },
-    },
-    ];
+      {
+        title: languageForProductEdit.ShippingFee,
+        dataIndex: 'refShipPrice',
+        key: 'refShipPrice',
+        classType: 6,
+        render: (text, record) => {
+          return (
+            <Input
+              disabled={this.props.disabled}
+              value={text}
+              type='number'
+              onChange={e => this.handleFieldChange(e, 'refShipPrice', record.sku_property_ids)}
+              placeholder={languageForProductEdit.ShippingFee}
+            />
+          );
+        },
+      }];
 
     return (
       <div>

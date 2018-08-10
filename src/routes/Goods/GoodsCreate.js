@@ -47,6 +47,8 @@ export default class GoodsCreate extends Component {
 
   // -------------------------------------state*--------------------------------------
   state = {
+    //spuId
+    spuId: getQueryString().spu_id || 0,
     //商品详情
     goodsDetail:{
       property_config: [],
@@ -57,12 +59,16 @@ export default class GoodsCreate extends Component {
     goodsType:[],
     //国家
     country:[],
+    //货币
+    currency:[],
     //权限值
     permission: this.props.global.rolePower.modules['1001'].moduleSubs['10019'].moduleFunctions,
     //spu自定义属性编辑弹窗
     visibleSpuTableForm: false,
     //商品介绍详情
     productIntroDetails: {},
+    //销售信息
+    salesInfo: [],
     //图片上传成功标记
     imageAddSuccess: false,
     //图片列表
@@ -95,7 +101,8 @@ export default class GoodsCreate extends Component {
         this.setState({
           language: result.language,
           goodsType: result.goods_type,
-          country: result.country
+          country: result.country,
+          currency: result.currency
         })
         this.getProduDetail();
       }
@@ -103,7 +110,7 @@ export default class GoodsCreate extends Component {
   }
   //获取商品详情
   getProduDetail = () =>{
-    const spuId = getQueryString().spu_id;
+    const { spuId } = this.state;
     if(spuId){
       this.props.dispatch({
         type: `goodsCreate/goodsCreateGetgoods`,
@@ -127,6 +134,7 @@ export default class GoodsCreate extends Component {
               }),
             });
             this.editReselection();
+            this.getPriceInfo();
           }
         }
       })
@@ -134,6 +142,26 @@ export default class GoodsCreate extends Component {
       //如果是新建则需要初始化
       this.addNewPropertyGroup();
     }
+  }
+  //获取价格信息
+  getPriceInfo = () => {
+    const { goodsDetail, currency, language, spuId } = this.state;
+    this.props.dispatch({
+      type: 'goodsCreate/goodsCreatePropertyAssemble',
+      payload: {
+        currency,
+        language,
+        spu_Id: spuId,
+        property_config: goodsDetail.property_config
+      },
+      callback: (data) => {
+        if(data.status === 200){
+          this.setState({
+            salesInfo: data.sales_info
+          })
+        }
+      }
+    })
   }
   //编辑回选
   editReselection = () => {
@@ -425,7 +453,7 @@ export default class GoodsCreate extends Component {
     // -------------------------------------变量定义获取*--------------------------------------
 
     const { loading, spuAttributesList, createDefinedAttr } = this.props.goodsCreate;
-    const { goodsType,  permission, language, country, goodsDetail, imageAddSuccess, createSkuAttributesArr } = this.state;
+    const { goodsType,  permission, language, country, goodsDetail, imageAddSuccess, createSkuAttributesArr, currency, salesInfo } = this.state;
     const form = this.props.form;
     const { property_config } = goodsDetail
     //表单对象
@@ -646,6 +674,8 @@ export default class GoodsCreate extends Component {
                     form={form}
                     languageDetails={languageDetails}
                     permission={permission}
+                    currency={currency}
+                    salesInfo={salesInfo}
                   />
 
 
