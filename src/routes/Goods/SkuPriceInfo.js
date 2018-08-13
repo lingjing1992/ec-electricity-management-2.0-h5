@@ -3,7 +3,7 @@ import styles from './GoodsCreate.less';
 import SkuInfoTable from './SkuInfoTable';
 import { Input, Form } from 'antd';
 
-const SkuSupplyInfo = ({ form, languageDetails, permission, currency, salesInfo }) => {
+const SkuPriceInfo = ({ form, languageDetails, permission, currency, skuPriceInfo }) => {
   const languageForProductEdit = languageDetails.goods.productEdit;
   const { getFieldDecorator } = form;
   const disabled = permission['100042'].disabled;
@@ -16,20 +16,38 @@ const SkuSupplyInfo = ({ form, languageDetails, permission, currency, salesInfo 
       render: (text, record) => {
         const result = record.sku_property_names.split(',') || '';
         return (
-          <div>{`${result[0] || ''}${result[1] ? '-' : ''}${result[1] || ''}`}</div>
+          <div className={styles.skuPropertyName}>{`${result[0] || ''}${result[1] ? '-' : ''}${result[1] || ''}`}<br/><span>{languageForProductEdit.Stock}：{record.quantity}</span>
+          </div>
         );
       },
     },
     {
-      title: languageForProductEdit.OriginalPrice,
+      title: languageForProductEdit.SupplyCost,
+      dataIndex: 'supplyPrice',
+      key: 'supplyPrice',
+      classType: 3,
+      render: (text, record) => {
+        return (
+          <span>{(text + record.refShipPrice).toFixed(2)}</span>
+        );
+      },
+    },
+    {
+      title: languageForProductEdit.ReferencePrice,
       dataIndex: 'refPrice',
       key: 'refPrice',
-      classType: 6,
-      render: (text, record,index) => {
+      classType: 2,
+    },
+    {
+      title: languageForProductEdit.OriginalPrice,
+      dataIndex: 'price',
+      key: 'price',
+      classType: 3,
+      render: (text, record, index) => {
         return (
           <Form.Item>
             {
-              getFieldDecorator(`salesInfo[${record.index}].skuInfo[${index}].refPrice`,{
+              getFieldDecorator(`salesInfo[${record.index}].skuInfo[${index}].price`,{
                 initialValue: text
               })(
                 <Input
@@ -44,39 +62,38 @@ const SkuSupplyInfo = ({ form, languageDetails, permission, currency, salesInfo 
       },
     },
     {
-      title: languageForProductEdit.SupplyPrice,
-      dataIndex: 'supplyPrice',
-      key: 'supplyPrice',
-      classType: 6,
+      title: languageForProductEdit.salesPrice,
+      dataIndex: 'discount_price',
+      key: 'discount_price',
+      classType: 3,
       render: (text, record, index) => {
         return (
           <Form.Item>
             {
-              getFieldDecorator(`salesInfo[${record.index}].skuInfo[${index}].supplyPrice`,{
+              getFieldDecorator(`salesInfo[${record.index}].skuInfo[${index}].discount_price`,{
                 initialValue: text
               })(
                 <Input
                   disabled={disabled}
                   type='number'
-                  placeholder={languageForProductEdit.SupplyPrice}
+                  placeholder={languageForProductEdit.salesPrice}
                 />
               )
             }
           </Form.Item>
-
         );
       },
     },
     {
       title: languageForProductEdit.ShippingFee,
-      dataIndex: 'refShipPrice',
-      key: 'refShipPrice',
-      classType: 6,
+      dataIndex: 'ship_price',
+      key: 'ship_price',
+      classType: 3,
       render: (text, record, index) => {
         return (
           <Form.Item>
             {
-              getFieldDecorator(`salesInfo[${record.index}].skuInfo[${index}].refShipPrice`, {
+              getFieldDecorator(`salesInfo[${record.index}].skuInfo[${index}].ship_price`,{
                 initialValue: text
               })(
                 <Input
@@ -89,8 +106,20 @@ const SkuSupplyInfo = ({ form, languageDetails, permission, currency, salesInfo 
           </Form.Item>
         );
       },
-    }
-    ];
+    },
+    {
+      title: `${languageForProductEdit.Weight}（g）`,
+      dataIndex: 'weight',
+      key: 'weight',
+      classType: 2,
+    },
+    {
+      title: languageForProductEdit.SupplierSKU,
+      dataIndex: 'seller_sku',
+      key: 'seller_sku',
+      classType: 2,
+    },
+  ];
   return (
     <div
       // title={languageForProductEdit.SKUSupplyInformation}
@@ -105,12 +134,12 @@ const SkuSupplyInfo = ({ form, languageDetails, permission, currency, salesInfo 
         form={form}
         columns={columns}
         currency={currency}
-        dataSource={salesInfo}
         disabled={disabled}
+        dataSource={skuPriceInfo}
         dataKey={'sku_property_ids'}
       />
     </div>
   )
 }
 
-export default SkuSupplyInfo;
+export default SkuPriceInfo;
