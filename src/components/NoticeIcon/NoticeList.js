@@ -53,7 +53,8 @@ export default function NoticeList({
       </List>
       <div className={styles.clear} onClick={onClear}>
         {locale.clear}
-        {title}
+        {locale.title}
+        {/*产品改为每个tap的清空文案一样*/}
       </div>
     </div>
   );
