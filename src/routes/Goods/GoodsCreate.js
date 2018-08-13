@@ -19,6 +19,7 @@ import SpuTableForm from './SpuTableForm'; // SPU自定义属性
 import ProductImages from './ProductImages';
 import SkuAttribute from './SkuAttribute';
 import SkuSupplyInfo from './SkuSupplyInfo';
+import SkuPriceInfo from './SkuPriceInfo';
 import FooterToolbar from '../../components/FooterToolbar';
 
 
@@ -69,12 +70,12 @@ export default class GoodsCreate extends Component {
     productIntroDetails: {},
     //销售信息
     salesInfo: [],
+    //sku价格信息
+    skuOtherInfoArr: [],
     //图片上传成功标记
     imageAddSuccess: false,
     //图片列表
     fileList: [],
-    //sku属性列表组
-    createSkuAttributesArr: [],
     //sku属性自增id
     num:0,
   }
@@ -146,6 +147,7 @@ export default class GoodsCreate extends Component {
   //获取价格信息
   getPriceInfo = () => {
     const { goodsDetail, currency, language, spuId } = this.state;
+    const { form: { setFieldsValue } } = this.props;
     this.props.dispatch({
       type: 'goodsCreate/goodsCreatePropertyAssemble',
       payload: {
@@ -157,7 +159,8 @@ export default class GoodsCreate extends Component {
       callback: (data) => {
         if(data.status === 200){
           this.setState({
-            salesInfo: data.data.sales_info
+            salesInfo: data.data.sales_info,
+            skuOtherInfoArr: data.data.others_info,
           })
         }
       }
@@ -448,14 +451,31 @@ export default class GoodsCreate extends Component {
       goodsDetail: Object.assign({}, goodsDetail),
     })
   }
+  //获取价格信息列表
+  getPriceInfoArr = () => {
+    const { salesInfo, skuOtherInfoArr } = this.state;
+    const result = salesInfo.map((item)=> {
+      return {
+        ...item,
+        sku_info: item.sku_info.map((skuInfo,index) => {
+          return {
+            ...skuInfo,
+            ...skuOtherInfoArr[index],
+          }
+        })
+      }
+    })
+    return result;
+  }
   render(){
 
     // -------------------------------------变量定义获取*--------------------------------------
 
     const { loading, spuAttributesList, createDefinedAttr } = this.props.goodsCreate;
-    const { goodsType,  permission, language, country, goodsDetail, imageAddSuccess, createSkuAttributesArr, currency, salesInfo } = this.state;
+    const { goodsType,  permission, language, country, goodsDetail, imageAddSuccess, currency, salesInfo } = this.state;
     const form = this.props.form;
-    const { property_config } = goodsDetail
+    const { property_config } = goodsDetail;
+    const skuPriceInfo = this.getPriceInfoArr();
     //表单对象
     const { getFieldDecorator, validateFieldsAndScroll, getFieldsError, getFieldError } = this.props.form;
     //多语言
@@ -678,6 +698,15 @@ export default class GoodsCreate extends Component {
                     salesInfo={salesInfo}
                   />
 
+                  {/*@------------------------------------SKU价格信息*-------------------------------------@*/}
+
+                  <SkuPriceInfo
+                    form={form}
+                    languageDetails={languageDetails}
+                    permission={permission}
+                    currency={currency}
+                    skuPriceInfo={skuPriceInfo}
+                  />
 
                 </div>
               </Card>

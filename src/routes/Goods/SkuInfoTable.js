@@ -11,19 +11,35 @@ export default class SkuInfoTable extends PureComponent {
   }
 
   //获取对应货币的值
-  getCurrencyKey = (key) => {
-    const { salesInfo } = this.props;
-    if(salesInfo.length===0)return [];
-    return salesInfo.filter( item => item.currency === key)[0].sku_info;
+  getCurrencyKey = (key, index) => {
+    const { dataSource } = this.props;
+    if(dataSource.length===0)return [];
+    const skuInfo = dataSource.filter( item => item.currency === key)[0].sku_info;
+    return skuInfo.map(item => {
+      return {
+        ...item,
+        index: index
+      }
+    })
   }
   //批量填充
   BatchInput = () => {
-    const { form: { getFieldsValue } } = this.props;
-    const inputValue = getFieldsValue(['refPrice','supplyPrice','refShipPrice']);
-    
+    const { form: { getFieldsValue, setFieldsValue } } = this.props;
+    const inputValue = getFieldsValue(['refPrice','supplyPrice','refShipPrice', 'salesInfo']);
+    setFieldsValue({
+      salesInfo: {
+        skuInfo: inputValue.salesInfo.skuInfo.map(() => {
+          return {
+            refPrice: inputValue.refPrice,
+            supplyPrice: inputValue.supplyPrice,
+            refShipPrice: inputValue.refShipPrice,
+          }
+        })
+      }
+    })
   }
   render(){
-    const { permission, languageDetails, form, columns, dataSource, dataKey, currency, salesInfo, disabled } = this.props;
+    const { languageDetails, form, columns, dataKey, currency, disabled } = this.props;
     const languageForProductEdit = languageDetails.goods.productEdit;
     const { getFieldDecorator } = form;
     return (
@@ -71,7 +87,7 @@ export default class SkuInfoTable extends PureComponent {
           }}>{languageForProductEdit.CurrencyConverter}</a>
           <Button
             type="primary"
-            // onClick={}
+            onClick={this.BatchInput}
             disabled={disabled}
             style={{float:'right'}}
           >
@@ -91,9 +107,19 @@ export default class SkuInfoTable extends PureComponent {
                   tab={item}
                   className={styles.goodsTable}
                 >
+                  {/*货币值绑定，隐藏，无法修改*/}
+                  {
+                    getFieldDecorator(`salesInfo[${index}].currency`,{
+                      initialValue: item
+                    })(
+                      <Input
+                        style={{display: 'none'}}
+                      />
+                    )
+                  }
                   <Table
                     rowKey={dataKey}
-                    dataSource={this.getCurrencyKey(item)}
+                    dataSource={this.getCurrencyKey(item,index)}
                     columns={columns}
                     pagination={false}
                   />
