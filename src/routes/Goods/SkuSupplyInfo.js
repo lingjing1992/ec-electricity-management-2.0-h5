@@ -1,10 +1,12 @@
 import React from 'react';
 import styles from './GoodsCreate.less';
 import SkuInfoTable from './SkuInfoTable';
-import { Input } from 'antd';
+import { Input, Form } from 'antd';
 
 const SkuSupplyInfo = ({ form, languageDetails, permission, currency, salesInfo }) => {
   const languageForProductEdit = languageDetails.goods.productEdit;
+  const { getFieldDecorator } = form;
+  const disabled = permission['100042'].disabled;
   const columns = [
     {
       title: languageForProductEdit.SKUAttribute,
@@ -23,15 +25,21 @@ const SkuSupplyInfo = ({ form, languageDetails, permission, currency, salesInfo 
       dataIndex: 'refPrice',
       key: 'refPrice',
       classType: 6,
-      render: (text, record) => {
+      render: (text, record,index) => {
         return (
-          <Input
-            disabled={this.props.disabled}
-            value={text}
-            type='number'
-            // onChange={e => this.handleFieldChange(e, 'refPrice', record.sku_property_ids)}
-            placeholder={languageForProductEdit.OriginalPrice}
-          />
+          <Form.Item>
+            {
+              getFieldDecorator(`salesInfo[${index}].refPrice`,{
+                initialValue: text
+              })(
+                <Input
+                  disabled={disabled}
+                  type='number'
+                  placeholder={languageForProductEdit.OriginalPrice}
+                />
+              )
+            }
+          </Form.Item>
         );
       },
     },
@@ -40,15 +48,22 @@ const SkuSupplyInfo = ({ form, languageDetails, permission, currency, salesInfo 
       dataIndex: 'supplyPrice',
       key: 'supplyPrice',
       classType: 6,
-      render: (text, record) => {
+      render: (text, record, index) => {
         return (
-          <Input
-            disabled={this.props.disabled}
-            value={text}
-            type='number'
-            // onChange={e => this.handleFieldChange(e, 'supplyPrice', record.sku_property_ids)}
-            placeholder={languageForProductEdit.SupplyPrice}
-          />
+          <Form.Item>
+            {
+              getFieldDecorator(`salesInfo[${index}].supplyPrice`,{
+                initialValue: text
+              })(
+                <Input
+                  disabled={disabled}
+                  type='number'
+                  placeholder={languageForProductEdit.SupplyPrice}
+                />
+              )
+            }
+          </Form.Item>
+
         );
       },
     },
@@ -57,15 +72,21 @@ const SkuSupplyInfo = ({ form, languageDetails, permission, currency, salesInfo 
       dataIndex: 'refShipPrice',
       key: 'refShipPrice',
       classType: 6,
-      render: (text, record) => {
+      render: (text, record, index) => {
         return (
-          <Input
-            disabled={this.props.disabled}
-            value={text}
-            type='number'
-            // onChange={e => this.handleFieldChange(e, 'refShipPrice', record.sku_property_ids)}
-            placeholder={languageForProductEdit.ShippingFee}
-          />
+          <Form.Item>
+            {
+              getFieldDecorator(`salesInfo[${index}].refShipPrice`, {
+                initialValue: text
+              })(
+                <Input
+                  disabled={disabled}
+                  type='number'
+                  placeholder={languageForProductEdit.ShippingFee}
+                />
+              )
+            }
+          </Form.Item>
         );
       },
     }
@@ -85,6 +106,8 @@ const SkuSupplyInfo = ({ form, languageDetails, permission, currency, salesInfo 
         columns={columns}
         currency={currency}
         salesInfo={salesInfo}
+        disabled={disabled}
+        dataKey={'sku_property_ids'}
       />
     </div>
   )

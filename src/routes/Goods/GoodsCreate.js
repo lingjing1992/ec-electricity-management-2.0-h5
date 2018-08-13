@@ -157,7 +157,7 @@ export default class GoodsCreate extends Component {
       callback: (data) => {
         if(data.status === 200){
           this.setState({
-            salesInfo: data.sales_info
+            salesInfo: data.data.sales_info
           })
         }
       }
