@@ -155,7 +155,9 @@ export default class StandardTable extends PureComponent {
     //classType如果设定则所有的列都要设，否则可能导致自动适应不太美观
     const newColumns = columns.map((item) => {
       if(item.classType){
-        item.className = classNames(item.className,classType[item.classType].className);
+        if(!(item.className && item.className.indexOf(classType[item.classType].className)>-1)){
+          item.className = classNames(item.className,classType[item.classType].className);
+        };
       }
       item.className = classNames(item.className,isHalfPadding ? styles.halfPadding : '');
       return item;

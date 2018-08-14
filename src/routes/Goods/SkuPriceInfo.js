@@ -16,7 +16,9 @@ const SkuPriceInfo = ({ form, languageDetails, permission, currency, skuPriceInf
       render: (text, record) => {
         const result = record.sku_property_names.split(',') || '';
         return (
-          <div className={styles.skuPropertyName}>{`${result[0] || ''}${result[1] ? '-' : ''}${result[1] || ''}`}<br/><span>{languageForProductEdit.Stock}：{record.quantity}</span>
+          <div className={styles.skuPropertyName}>]
+            {`${result[0] || ''}${result[1] ? '-' : ''}${result[1] || ''}`}<br/>
+            <span>{languageForProductEdit.Stock}：{record.quantity}</span>
           </div>
         );
       },
@@ -25,7 +27,7 @@ const SkuPriceInfo = ({ form, languageDetails, permission, currency, skuPriceInf
       title: languageForProductEdit.SupplyCost,
       dataIndex: 'supplyPrice',
       key: 'supplyPrice',
-      classType: 3,
+      classType: 2,
       render: (text, record) => {
         return (
           <span>{(text + record.refShipPrice).toFixed(2)}</span>
@@ -42,22 +44,35 @@ const SkuPriceInfo = ({ form, languageDetails, permission, currency, skuPriceInf
       title: languageForProductEdit.OriginalPrice,
       dataIndex: 'price',
       key: 'price',
-      classType: 3,
+      classType: 2,
       render: (text, record, index) => {
         return (
-          <Form.Item>
-            {
-              getFieldDecorator(`salesInfo[${record.index}].skuInfo[${index}].price`,{
-                initialValue: text
-              })(
-                <Input
-                  disabled={disabled}
-                  type='number'
-                  placeholder={languageForProductEdit.OriginalPrice}
-                />
-              )
-            }
-          </Form.Item>
+          <div>
+            <Form.Item style={{display:'none'}}>
+              {
+                getFieldDecorator(`salesInfo[${record.index}].sku_info[${index}].sku_property_ids`,{
+                  initialValue: record.sku_property_ids
+                })(
+                  <Input
+                    disabled={disabled}
+                  />
+                )
+              }
+            </Form.Item>
+            <Form.Item>
+              {
+                getFieldDecorator(`salesInfo[${record.index}].sku_info[${index}].price`,{
+                  initialValue: text
+                })(
+                  <Input
+                    disabled={disabled}
+                    type='number'
+                    placeholder={languageForProductEdit.OriginalPrice}
+                  />
+                )
+              }
+            </Form.Item>
+          </div>
         );
       },
     },
@@ -65,12 +80,12 @@ const SkuPriceInfo = ({ form, languageDetails, permission, currency, skuPriceInf
       title: languageForProductEdit.salesPrice,
       dataIndex: 'discount_price',
       key: 'discount_price',
-      classType: 3,
+      classType: 2,
       render: (text, record, index) => {
         return (
           <Form.Item>
             {
-              getFieldDecorator(`salesInfo[${record.index}].skuInfo[${index}].discount_price`,{
+              getFieldDecorator(`salesInfo[${record.index}].sku_info[${index}].discount_price`,{
                 initialValue: text
               })(
                 <Input
@@ -88,12 +103,12 @@ const SkuPriceInfo = ({ form, languageDetails, permission, currency, skuPriceInf
       title: languageForProductEdit.ShippingFee,
       dataIndex: 'ship_price',
       key: 'ship_price',
-      classType: 3,
+      classType: 2,
       render: (text, record, index) => {
         return (
           <Form.Item>
             {
-              getFieldDecorator(`salesInfo[${record.index}].skuInfo[${index}].ship_price`,{
+              getFieldDecorator(`salesInfo[${record.index}].sku_info[${index}].ship_price`,{
                 initialValue: text
               })(
                 <Input
@@ -126,7 +141,7 @@ const SkuPriceInfo = ({ form, languageDetails, permission, currency, skuPriceInf
       className={styles.card}
       // bordered={false}
     >
-      <div className="ant-card-head-title">{languageForProductEdit.SKUSupplyInformation}</div>
+      <div className="ant-card-head-title">{languageForProductEdit.SKUPrice}</div>
 
       <SkuInfoTable
         languageDetails={languageDetails}
@@ -137,6 +152,7 @@ const SkuPriceInfo = ({ form, languageDetails, permission, currency, skuPriceInf
         disabled={disabled}
         dataSource={skuPriceInfo}
         dataKey={'sku_property_ids'}
+        rowSelection={true}
       />
     </div>
   )
