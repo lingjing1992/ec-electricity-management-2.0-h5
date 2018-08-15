@@ -29,7 +29,7 @@ const SkuSupplyInfo = ({ form, languageDetails, permission, currency, salesInfo 
         return (
           <Form.Item>
             {
-              getFieldDecorator(`salesInfo[${record.index}].skuInfo[${index}].refPrice`,{
+              getFieldDecorator(`salesInfo[${record.index}].sku_info[${index}].refPrice`,{
                 initialValue: text
               })(
                 <Input
@@ -52,7 +52,7 @@ const SkuSupplyInfo = ({ form, languageDetails, permission, currency, salesInfo 
         return (
           <Form.Item>
             {
-              getFieldDecorator(`salesInfo[${record.index}].skuInfo[${index}].supplyPrice`,{
+              getFieldDecorator(`salesInfo[${record.index}].sku_info[${index}].supplyPrice`,{
                 initialValue: text
               })(
                 <Input
@@ -76,7 +76,7 @@ const SkuSupplyInfo = ({ form, languageDetails, permission, currency, salesInfo 
         return (
           <Form.Item>
             {
-              getFieldDecorator(`salesInfo[${record.index}].skuInfo[${index}].refShipPrice`, {
+              getFieldDecorator(`salesInfo[${record.index}].sku_info[${index}].refShipPrice`, {
                 initialValue: text
               })(
                 <Input

@@ -10,6 +10,10 @@ export default class SkuInfoTable extends PureComponent {
     dataSource: [],
   }
 
+  state = {
+    selectedRowKeys:[],//批量选择id
+  }
+
   //获取对应货币的值
   getCurrencyKey = (key, index) => {
     const { dataSource } = this.props;
@@ -24,24 +28,40 @@ export default class SkuInfoTable extends PureComponent {
   }
   //批量填充
   BatchInput = () => {
-    const { form: { getFieldsValue, setFieldsValue } } = this.props;
+    const { form: { getFieldsValue, setFieldsValue }, dataKey } = this.props;
+    const { selectedRowKeys } = this.state;
     const inputValue = getFieldsValue(['refPrice','supplyPrice','refShipPrice', 'salesInfo']);
     setFieldsValue({
       salesInfo: {
-        skuInfo: inputValue.salesInfo.skuInfo.map(() => {
-          return {
-            refPrice: inputValue.refPrice,
-            supplyPrice: inputValue.supplyPrice,
-            refShipPrice: inputValue.refShipPrice,
+        sku_info: inputValue.salesInfo.sku_info.map((item) => {
+          if(selectedRowKeys.indexOf(item[dataKey])){
+            return {
+              ...item,
+              refPrice: inputValue.refPrice,
+              supplyPrice: inputValue.supplyPrice,
+              refShipPrice: inputValue.refShipPrice,
+            }
+          }else {
+            return item
           }
         })
       }
     })
   }
   render(){
-    const { languageDetails, form, columns, dataKey, currency, disabled } = this.props;
+    const { languageDetails, form, columns, dataKey, currency, disabled, rowSelection } = this.props;
+    const { selectedRowKeys } = this.state;
     const languageForProductEdit = languageDetails.goods.productEdit;
     const { getFieldDecorator } = form;
+    // 价格选择批量填充，打勾的才填充
+    const rowSelectionObject = rowSelection ? {
+      selectedRowKeys: selectedRowKeys,
+      onChange: (selectedRowKeys) => {
+        this.setState({
+          selectedRowKeys: selectedRowKeys
+        })
+      },
+    } : null;
     return (
       <div>
         {/*批量填充*/}
@@ -122,6 +142,7 @@ export default class SkuInfoTable extends PureComponent {
                     dataSource={this.getCurrencyKey(item,index)}
                     columns={columns}
                     pagination={false}
+                    rowSelection={rowSelectionObject}
                   />
                 </TabPane>
               )
