@@ -50,6 +50,8 @@ export default class OrderList extends Component {
     showAdvancedSearch: false, // 展示高级搜索
     query: getQueryString(this.props.location.search) || '',
     visibleEditorStatus :false,  //填写发货信息
+    visibleShipNosTip :false,  //物流单号出错提示
+    isCheckShip :1,  //是否检查物流单号  0-不检查, 1-检查
     orderNo : '', //订单号
     payTime: '',//订单支付时间
     shippingTypes: [],//物流类型
@@ -423,7 +425,7 @@ export default class OrderList extends Component {
               // console.log(moment(data.data.deliveryTime).format('YYYY-MM-DD'))
               setFieldsValue({
                 type: data.data.type,
-                // oddNumbers: data.data.shipNo || '',
+                oddNumbers: data.data.shipNo || '',
                 links: data.data.trackLink,
                 deliveryTime:  moment(data.data.deliveryTime),
               })
@@ -464,7 +466,7 @@ export default class OrderList extends Component {
 
   //确认发货
   handleOkEditorStatus = (e) => {
-    const {type,orderNo,payTime, orderStatus} = this.state;
+    const {type,orderNo,payTime, isCheckShip,orderStatus} = this.state;
     const {orders} = this.props;
     const {getFieldValue} = this.props.form;
     const languageForMessage = this.props.global.languageDetails.message;
@@ -504,6 +506,7 @@ export default class OrderList extends Component {
           var dispatchType=`orders/${type}PushUpdateSpuStatus`;
         }else {
           var record ={
+            isCheckShip:isCheckShip,
             orderNo : orderNo,
             type : getFieldValue('type').trim(),
             shipNo : oddNumbers,
@@ -514,7 +517,7 @@ export default class OrderList extends Component {
         }
 
         this.orderSendGoods(record,dispatchType);
-        console.log(record)
+        // console.log(record)
       }
     });
   }
@@ -530,7 +533,23 @@ export default class OrderList extends Component {
       payTime: '',
     })
   }
-
+  //物流单号出错忽略并提交
+  handleOkShipNosTip= (e) => {
+    this.setState({
+      isCheckShip: 0,
+      visibleShipNosTip: false,
+      visibleEditorStatus: false,
+    });
+    setTimeout(()=>{
+      this.handleOkEditorStatus();
+    })
+  }
+  //物流单号出错取消
+  handleCanceShipNosTip= (e) => {
+    this.setState({
+      visibleShipNosTip: false,
+    });
+  }
 
   // 发货
   orderSendGoods(record,dispatchType) {
@@ -538,11 +557,25 @@ export default class OrderList extends Component {
     this.props.dispatch({
       type: dispatchType,
       payload: record,
-      callback: () => {
-        this.setState({
-          visibleEditorStatus: false,
-        });
-        this.loadData();
+      callback: (response) => {
+        let responseData = response.data;
+        if(responseData && responseData.hasOwnProperty('errorShipNos')){
+          this.setState({
+            visibleShipNosTip: true,
+          });
+          this.props.form.setFields({
+            oddNumbers: {
+              value: responseData.errorShipNos.toString(),
+              // errors: [new Error('forbid ha')],
+            },
+          });
+        }else {
+          this.setState({
+            isCheckShip: 1,
+            visibleEditorStatus: false,
+          });
+          this.loadData();
+        }
       },
     });
   }
@@ -616,7 +649,7 @@ export default class OrderList extends Component {
       percent: 0,
     });
   }
-  //导入法国信息
+  //导入发货信息
   downloadGoods = () => {
     const downloadLink = 'http://cdn.batmobi.net/ec/common/20180412/1523522325579_PxySL.xlsx';
     downloadUrl(downloadLink);
@@ -1663,6 +1696,7 @@ export default class OrderList extends Component {
               />
             </div>
           </Card>
+          {/*修改发货信息*/}
           <Modal
             title={languageForOrder.ShippingInformation}
             visible={this.state.visibleEditorStatus}
@@ -1745,6 +1779,21 @@ export default class OrderList extends Component {
               </p>
             </Form>
           </Modal>
+          {/*物流单号可能出错提示*/}
+          <Modal
+            title={languageForOrder.Tips}
+            visible={this.state.visibleShipNosTip}
+            onOk={this.handleOkShipNosTip}
+            onCancel={this.handleCanceShipNosTip}
+            okText={languageForOrder.IgnoreSubmit}
+            cancelText={languageForOrder.BackModify}
+            width={470}
+            key="4"
+          >
+            <div style={{fontSize:20,fontWeight:500,marginBottom:10}}>{languageForOrder.IsCheckShip}</div>
+            <div> {languageForOrder.ShipNnlike}</div>
+          </Modal>
+
           {/* 导入 */}
           <Modal
             title={languageForOrder.ImportDeliveryinfo}

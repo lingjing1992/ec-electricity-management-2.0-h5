@@ -491,6 +491,11 @@ export default {
         HasBeenMarked: '已标记为风险订单',
         OrderIsBackToNormal: '已取消标记风险订单',
 
+        IsCheckShip:'物流单号可能有误，请核对！',
+        ShipNnlike:'原因：单号与所选物流商常见单号规则不一致',
+        BackModify:'返回修改',
+        IgnoreSubmit:'忽略并提交',
+
         OrderExport: '导出订单',
         TypesOfERP: 'ERP类型',
         Tips: '提示',
