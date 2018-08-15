@@ -501,6 +501,11 @@ export default {
         HasBeenMarked: ' has been marked as risk order.',
         OrderIsBackToNormal: ' is back to normal order list now.',
 
+        IsCheckShip:'The tracking number might be wrong. Please check!',
+        ShipNnlike:'Reason: The tracking number is not consistent with the usual number rules of the selected carrier.',
+        BackModify:'Back to  Modify',
+        IgnoreSubmit:'Ignore and Submit',
+
         OrderExport: 'Order Export',
         TypesOfERP: 'Types of ERP',
         Tips: 'Tips',
