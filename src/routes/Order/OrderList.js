@@ -566,7 +566,7 @@ export default class OrderList extends Component {
           this.props.form.setFields({
             oddNumbers: {
               value: responseData.errorShipNos.toString(),
-              // errors: [new Error('forbid ha')],
+              errors: [new Error(responseData.errorShipNos)],
             },
           });
         }else {
@@ -1742,7 +1742,9 @@ export default class OrderList extends Component {
                 {...formItemLayout}
               >
                 {getFieldDecorator('oddNumbers', {
-                  rules: [{type: 'string', required: true, message: languageForMessage.beSeparatedWithCommas, whitespace: true}],
+                  rules: [
+                    {type: 'string', required: true, message: languageForMessage.beSeparatedWithCommas, whitespace: true}
+                    ],
                   initialValue:"",
                 })(
                   <TextArea name="" id=""  placeholder={languageForMessage.MultipleNumbers} className={styles.logisticsInp}></TextArea>
