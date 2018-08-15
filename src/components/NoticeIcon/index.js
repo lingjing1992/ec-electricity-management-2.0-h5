@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Popover, Icon, Tabs, Badge, Spin } from 'antd';
+import {Link, routerRedux} from 'dva/router';
 import classNames from 'classnames';
 import List from './NoticeList';
 import styles from './index.less';
@@ -28,12 +29,13 @@ export default class NoticeIcon extends PureComponent {
     const { onItemClick } = this.props;
     onItemClick(item, tabProps);
   }
+
   onTabChange = (tabType) => {
     this.setState({ tabType });
     this.props.onTabChange(tabType);
   }
   getNotificationBox= ()=> {
-    const { children, loading, locale } = this.props;
+    const { children, loading, noticeLanguage } = this.props;
     if (!children) {
       return null;
     }
@@ -48,8 +50,9 @@ export default class NoticeIcon extends PureComponent {
             data={child.props.list}
             onClick={item => this.onItemClick(item, child.props)}
             onClear={() => this.props.onClear(child.props.title)}
+            onEditProduct={item => this.props.onEditProduct(item)}
             title={child.props.title}
-            locale={locale}
+            noticeLanguage={noticeLanguage}
           />
         </TabPane>
       );

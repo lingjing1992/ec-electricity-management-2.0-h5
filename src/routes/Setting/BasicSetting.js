@@ -32,6 +32,7 @@ export default class BasicSetting extends Component {
             minStorage: data.data.minStorage,
             noticeType: data.data.noticeType,
             noticeRate: data.data.noticeRate,
+            warningType: data.data.warningType || 1,
           });
         }
       },
@@ -53,6 +54,7 @@ export default class BasicSetting extends Component {
             minStorage: values.minStorage,
             noticeType: values.noticeType,
             noticeRate: values.noticeRate,
+            warningType: values.warningType,
           },
           callback: data => {
             if (data.status === 200) {
@@ -66,18 +68,18 @@ export default class BasicSetting extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
+    const languageForGlobal = this.props.global.languageDetails.global;
+    const languageForBasicSetting = this.props.global.languageDetails.basicSetting;
     const noticeStyleOptions = [
       {
-        label: '系统通知',
-        value: 50,
+        label: languageForBasicSetting.SysNotice,
+        value: 101,
       },
       {
         label: 'Email',
         value: 100,
       },
     ];
-    const languageForGlobal = this.props.global.languageDetails.global;
-    const languageForBasicSetting = this.props.global.languageDetails.basicSetting;
     const {
       setting: { loading },
     } = this.props;
@@ -92,7 +94,7 @@ export default class BasicSetting extends Component {
             <div className={`ant-form-item-label`}>{languageForBasicSetting.QuantityInStock}</div>
             <div className={`clearfix`}>
               <FormItem className={`left`}>
-                {getFieldDecorator('stock', {
+                {getFieldDecorator('warningType', {
                   initialValue: 1,
                 })(
                   <Select className={`select-size-small`}>

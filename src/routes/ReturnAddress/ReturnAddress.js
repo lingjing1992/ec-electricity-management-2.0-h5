@@ -100,7 +100,7 @@ export default class returnAddress extends Component {
       },
       {
         title: languageForRturnAddr.Recipient,
-        dataIndex: 'recipient',
+        dataIndex: 'backName',
       },
       {
         title: languageForRturnAddr.Address,

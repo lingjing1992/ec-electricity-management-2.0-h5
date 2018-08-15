@@ -8,6 +8,7 @@ export default {
     noticeResoureData: {
       normalNotice:[],
       orderNotice: [],
+      goodsNotice: [],
     },
     noticeTargetData: [],
     type:2,//1:公告 2订单
@@ -123,7 +124,11 @@ export default {
     noticeDataSolve(state, action) {
       const noticeResoureData = action.payload || state.noticeResoureData;
       let noticeTargetData = Object.keys(noticeResoureData).reduce((key1,key2)=> {
-        return noticeResoureData[key1].concat(noticeResoureData[key2]);
+        if(typeof key1 === 'string'){
+          return noticeResoureData[key1].concat(noticeResoureData[key2]);
+        }else {
+          return key1.concat(noticeResoureData[key2]);
+        }
       }).map((item)=>{
         item.datetime = item.dateTime;
         return item;
@@ -131,7 +136,7 @@ export default {
       return {
         ...state,
         noticeResoureData: noticeResoureData,
-        noticeTargetData: noticeTargetData
+        noticeTargetData: noticeTargetData,
       };
     },
     setNoticeResoureData(state,action) {

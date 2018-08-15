@@ -27,9 +27,16 @@ export default class NoticePane extends PureComponent {
     this.props.onSearch(params);
   };
 
-  //查看订单
+  //编辑商品
+  editProduct = (item, e) => {
+    this.props.dispatch(routerRedux.push(`/goods/goodsCreate?spu_id=${item.spuId}&action=edit`));
+    this.props.onClick(item.id);
+    e.stopPropagation();
+  };
+
+   //查看订单
   checkOrder = (item, e) => {
-    this.props.dispatch(routerRedux.push(`/order/order-detail?order_no=${item.orderNo}`));
+    this.props.dispatch(routerRedux.push(`/order/orderDetail?order_no=${item.orderNo}`));
     this.props.onClick(item.id);
     e.stopPropagation();
   };
@@ -41,7 +48,7 @@ export default class NoticePane extends PureComponent {
     const searchType = {
       3: [
         {
-          id: 'product',
+          id: 'goods',
           text: 'SPU',
         },
       ],
@@ -141,12 +148,21 @@ export default class NoticePane extends PureComponent {
                   }}
                 >
                   <div className={styles.orderPaneTop}>
-                    <span className={styles.noticeTitle}>{item.title}</span>
+                    <span className={styles.noticeTitle}>
+                      {item.title}
+                      {/*<span  style={{ display: type == 3 ? 'inline' : 'none' }}> {languageForProductNotice.outStock}</span>*/}
+                    </span>
                     <a
                       style={{ display: type == 2 ? 'inline' : 'none' }}
                       onClick={this.checkOrder.bind(this, item)}
                     >
                       {languageForProductNotice.CheckOrders}
+                    </a>
+                    <a
+                      style={{ display: type == 3 ? 'inline' : 'none' }}
+                      onClick={this.editProduct.bind(this, item)}
+                    >
+                      {languageForProductNotice.editProduct}
                     </a>
                   </div>
                   <p className={styles.noticeContent}>{item.content}</p>

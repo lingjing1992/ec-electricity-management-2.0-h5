@@ -180,6 +180,8 @@ export default {
       notification: '通知',
       OrderNo: '订单号',
       CheckOrders: '查看订单',
+      editProduct: '编辑商品',
+      outStock: '库存不足',
     },
     //首页概况
     index: {
@@ -1059,6 +1061,7 @@ export default {
     basicSetting: {
       QuantityInStock: '库存数量',
       NotificationForm: '通知形式',
+      SysNotice: '系统通知',
       InformTheFrequency: '通知频率',
       OnlyOnce: '只提醒一次',
       QuantityNotBeEmpty: '库存数量最低值不能为空',

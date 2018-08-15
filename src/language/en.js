@@ -182,6 +182,8 @@ export default {
       readAllNotification: "You've read all order notification.",
       OrderNo: 'Order No.',
       CheckOrders: 'Check Orders',
+      editProduct: 'Edit Product',
+      outStock: 'is out of stock',
     },
     //首页概况
     index: {
@@ -1089,6 +1091,7 @@ export default {
     basicSetting: {
       QuantityInStock: 'Quantity in Stock',
       NotificationForm: 'Notification Form',
+      SysNotice: 'System Notice',
       InformTheFrequency: 'Inform the Frequency',
       OnlyOnce: 'Only once',
       QuantityNotBeEmpty: 'The quantity in stock  should not be empty.',
