@@ -189,6 +189,9 @@ class BasicLayout extends React.PureComponent {
     }
     //获取权限后的回调
     const getRolePowerCallback = (response) => {
+      if(!response || !response.hasOwnProperty('modules')){
+        window.location.href = `//${window.location.host}/user/login`;
+      }
       this.props.dispatch({
         type: 'login/brand',
         payload: null,
@@ -282,6 +285,7 @@ class BasicLayout extends React.PureComponent {
     const {location} = this.props;
     const locationPathname = (location && location.pathname) || '';
     const languageForHeader = this.props.global.languageDetails.header;
+    const languageForNav = this.props.global.languageDetails.nav;
     const languageForMarketing = this.props.global.languageDetails.marketing.specialLists;
     const actionType = getQueryString().actionType || '';
     const type = getQueryString().type;
@@ -382,7 +386,7 @@ class BasicLayout extends React.PureComponent {
       result = languageForHeader.returnAddress;
     }
     else if(locationPathname==='/setting/basicSetting'){
-      result = languageForHeader.returnAddress;
+      result = languageForNav.basicSetting;
     }
     else {
       result = '';

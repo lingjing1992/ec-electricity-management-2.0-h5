@@ -1043,6 +1043,11 @@ export default {
       OnlyOnce: '只提醒一次',
       QuantityNotBeEmpty: '库存数量最低值不能为空',
       StockAlert: '库存预警',
+    },
+    //系统升级页面
+    update: {
+      text: ['系统升级中,','请稍后再试。'],
+      refresh: '刷新',
     }
   }
 }
