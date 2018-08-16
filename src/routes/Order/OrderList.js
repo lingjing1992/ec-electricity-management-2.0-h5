@@ -45,6 +45,7 @@ export default class OrderList extends Component {
     uploadMsg: null, // 导入错误信息
     visibleUploadMsg: null, // 导入信息
     errorUploadSpus: [], // 错误信息
+    errorShipErrors: [], // 错误物流信息
     uploadTime: null, // 开启3秒定时器，返回成功的时候关闭成功窗口
     percent: 0,//进度条的值
     showAdvancedSearch: false, // 展示高级搜索
@@ -365,6 +366,7 @@ export default class OrderList extends Component {
         this.clearDeliveryInfo();
         // 发货
         this.setState({
+          isCheckShip: 1,
           visibleEditorStatus: true,
           orderNo: record.order_no,
           payTime: record.pay_time,
@@ -496,6 +498,7 @@ export default class OrderList extends Component {
         console.log(orderStatus);
         if(orderStatus==1){
           var record ={
+            isCheckShip:isCheckShip,
             order_no : orderNo,
             type : getFieldValue('type').trim(),
             shipNo : oddNumbers,
@@ -565,7 +568,7 @@ export default class OrderList extends Component {
           });
           this.props.form.setFields({
             oddNumbers: {
-              value: responseData.errorShipNos.toString(),
+              value: record.shipNo,
               errors: [new Error(responseData.errorShipNos)],
             },
           });
@@ -641,15 +644,17 @@ export default class OrderList extends Component {
     });
   }
 
-  // 导入订单
+  // 导入发货信息
   showModalImportFile = () => {
     this.setState({
       visibleImportFile: true,
       errorUploadSpus: [],
+      errorShipErrors: [],
       percent: 0,
+      isCheckShip: 1,
     });
   }
-  //导入发货信息
+  //下载发货信息模板
   downloadGoods = () => {
     const downloadLink = 'http://cdn.batmobi.net/ec/common/20180412/1523522325579_PxySL.xlsx';
     downloadUrl(downloadLink);
@@ -691,7 +696,7 @@ export default class OrderList extends Component {
   }
   //上传
   handleUpload = () => {
-    const { fileList, exporType , uploadSize, } = this.state;
+    const { fileList, exporType , uploadSize,isCheckShip } = this.state;
     const formData = new FormData();
     const languageForMessage = this.props.global.languageDetails.message;
     // const uploadMax = 1024 * 1024 * 8; // 8M
@@ -718,7 +723,7 @@ export default class OrderList extends Component {
     });
     // You can use any AJAX library you like
     reqwest({
-      url: `${setApiHost()}/api/merchant/v1/order/uploadShipNos`,
+      url: `${setApiHost()}/api/merchant/v1/order/uploadShipNos?isCheckShip=${isCheckShip}`,
       method: 'post',
       processData: false,
       data: formData,
@@ -733,7 +738,7 @@ export default class OrderList extends Component {
             progressShow: false,
           })
           if (res.status !== 200) {
-            if (res.data && res.data.errors) {
+            if (res.data && res.data.errors.length>0) {
               _this.setState({
                 fileList: [],
                 uploading: false,
@@ -744,6 +749,26 @@ export default class OrderList extends Component {
                 fileList: [],
                 uploading: false,
               });
+            }
+            //有物流号错误信息
+            if(res.data && res.data.shipErrors.length>0){
+              _this.setState({
+                errorShipErrors: res.data.shipErrors,
+              });
+              //没有必改errors
+              if(res.data.errors.length==0){
+                //改变btn可点击状态
+                _this.setState({
+                  fileList: fileList,
+                  isCheckShip: 0,
+                });
+              }else{
+                // _this.setState({
+                //   errorShipErrors: res.data.shipErrors,
+                // });
+              }
+            }else{
+
             }
             notification.error({
               message: languageForMessage.KindlyReminder,
@@ -805,7 +830,6 @@ export default class OrderList extends Component {
     // 如果点击了，直接去掉定时器
     clearTimeout(this.state.uploadTime);
     this.loadData();
-    console.log(e);
     this.setState({
       visibleUploadMsg: false,
     });
@@ -814,7 +838,6 @@ export default class OrderList extends Component {
   handleCancelUploadMsg = (e) => {
     clearTimeout(this.state.uploadTime);
     this.loadData();
-    console.log(e);
     this.setState({
       visibleUploadMsg: false,
     });
@@ -886,7 +909,7 @@ export default class OrderList extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { type, uploading, permission, query, riskOrderPromit, modifyShippingParams } = this.state;
+    const { type, uploading, permission, query, riskOrderPromit, modifyShippingParams,errorUploadSpus,errorShipErrors, } = this.state;
     const { orders: { loading, ordersType } } = this.props;
     const { orders } = this.props;
     const selectAllowClear = true; // 支持清除选中的select
@@ -1272,7 +1295,7 @@ export default class OrderList extends Component {
           },
         });
       }
-    const props = {
+    const importDeliveryinfoProps = {
       name: 'uploadFile',
       action: `${setApiHost()}/api/merchant/v1/spu/uploadSpus`,
       accept: 'aplication/zip',
@@ -1302,6 +1325,10 @@ export default class OrderList extends Component {
             percent: 0,
           })
         }
+        //上传完成提交服务器
+        setTimeout(()=>{
+          this.handleUpload();
+        },10)
       },
       beforeUpload: (file,fileList) => {
         // const isZip = file.type === 'application/x-zip-compressed';
@@ -1351,6 +1378,30 @@ export default class OrderList extends Component {
       {
         title: languageForGlobal.errorReason,
         dataIndex: 'errorMsg',
+      },
+    ];
+    const columnsErrorShipErrorsTable = [
+      {
+        title: languageForGlobal.serialNo,
+        dataIndex: 'xuhao',
+        render: (text, record, index) => {
+          console.log('record', record);
+          return (
+            <div>{index + 1}</div>
+          );
+        },
+      },
+      {
+        title: languageForGlobal.locationError,
+        dataIndex: 'errorPath',
+      },
+      {
+        title: languageForOrder.LogisticsType,
+        dataIndex: 'logisticsCompany',
+      },
+      {
+        title: languageForOrder.TrackingNo,
+        dataIndex: 'logisticeNo',
       },
     ];
     const  dataSource= orders.data.hasOwnProperty('orders') ? orders.data.orders : [];
@@ -1408,8 +1459,12 @@ export default class OrderList extends Component {
         });
       },
     };
-    //适配不同语言弹窗
-    const currentLanguage = this.props.global.language;
+    //设置物流单号出错提交按钮文案
+    let languageStartToUploadFiles = languageForGlobal.Submit;
+    if(errorUploadSpus.length == 0 && errorShipErrors.length != 0){
+      languageStartToUploadFiles = languageForOrder.IgnoreSubmit;
+    }
+
     const formItemLayout = { layout: 'vertical',}
     const rowSelection = {
       onChange: (selectedRowKeys, selectedRows) => {
@@ -1796,18 +1851,18 @@ export default class OrderList extends Component {
             <div> {languageForOrder.ShipNnlike}</div>
           </Modal>
 
-          {/* 导入 */}
+          {/* 批量导入发货信息 */}
           <Modal
             title={languageForOrder.ImportDeliveryinfo}
             visible={this.state.visibleImportFile}
-            onOk={this.handleOkImportFile}
+            // onOk={this.handleOkImportFile}
             onCancel={this.handleCancelImportFile}
             okText={languageForGlobal.UploadFiles}
             maskClosable={false}
             className={styles.GoodsListImportFileModal}
             key="2"
             footer={[
-              <Button key="back" size="large" onClick={this.handleCancelImportFile}>{languageForGlobal.Cancel}</Button>,
+              <Button key="back" size="large" onClick={this.handleCancelImportFile}>{languageForGlobal.cancel}</Button>,
               <Button
                 className="upload-demo-start"
                 type="primary"
@@ -1815,12 +1870,14 @@ export default class OrderList extends Component {
                 disabled={this.state.fileList.length === 0}
                 loading={uploading}
               >
-                {uploading ? languageForGlobal.UploadFiles : languageForGlobal.StartToUploadFiles}
+                {
+                  uploading ? languageForGlobal.UploadFiles : languageStartToUploadFiles
+              }
               </Button>,
             ]}
           >
             <div style={{ marginBottom: 10,marginTop: 20 }}>
-              <Upload {...props} >
+              <Upload {...importDeliveryinfoProps} >
                 <Button type="primary">
                   <Icon type="upload" /> {languageForGlobal.selectDocuments}
                 </Button>
@@ -1849,9 +1906,28 @@ export default class OrderList extends Component {
             >
               <div>{languageForGlobal.errorReason}：</div>
               <Table
-                rowKey='id'
+                style={{ marginBottom:20 }}
+                rowKey='errorPath'
                 columns={columnsErrorUploadSpusTable}
                 dataSource={this.state.errorUploadSpus}
+              />
+            </div>
+
+            {/*可能有错误物流号*/}
+            <div style={
+              this.state.errorShipErrors.length > 0
+                ?
+                { display: 'block',  }
+                :
+                { display: 'none' }}
+            >
+              <div style={{ color: 'red' }}>{languageForGlobal.trackingTips}：</div>
+              <div style={{ fontSize: 12}}>{languageForOrder.FollowingCheck[0]}</div>
+              <div style={{ fontSize: 12,marginBottom: 10 }}>{languageForOrder.FollowingCheck[1]}</div>
+              <Table
+                rowKey='errorPath'
+                columns={columnsErrorShipErrorsTable}
+                dataSource={this.state.errorShipErrors}
               />
             </div>
           </Modal>

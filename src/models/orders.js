@@ -270,7 +270,7 @@ export default {
         payload: response,
       });
       if (callback) {
-        callback();
+        callback(response);
       }
       yield put({
         type: 'changeLoading',
