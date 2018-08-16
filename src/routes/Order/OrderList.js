@@ -557,6 +557,7 @@ export default class OrderList extends Component {
   // 发货
   orderSendGoods(record,dispatchType) {
     // const { type, orderStatus} = this.state;
+    const languageForOrder = this.props.global.languageDetails.order.OrderManagement;
     this.props.dispatch({
       type: dispatchType,
       payload: record,
@@ -569,7 +570,7 @@ export default class OrderList extends Component {
           this.props.form.setFields({
             oddNumbers: {
               value: record.shipNo,
-              errors: [new Error(responseData.errorShipNos)],
+              errors: [new Error(languageForOrder.PleaseCheck + responseData.errorShipNos)],
             },
           });
         }else {

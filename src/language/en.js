@@ -504,11 +504,12 @@ export default {
         OrderIsBackToNormal: ' is back to normal order list now.',
 
         FollowingCheck:[`The following tracking numbers might be wrong, because they're not consistent with the usual number rules of the selected carrier. Please check.`,'Please ignore this tip if you have confirmed your tracking number.'],
+
         IsCheckShip:'The tracking number might be wrong. Please check!',
         ShipNnlike:'Reason: The tracking number is not consistent with the usual number rules of the selected carrier.',
+        PleaseCheck:'Please check : ',
         BackModify:'Back to  Modify',
         IgnoreSubmit:'Ignore and Submit',
-
         OrderExport: 'Order Export',
         TypesOfERP: 'Types of ERP',
         Tips: 'Tips',
