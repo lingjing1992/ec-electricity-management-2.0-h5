@@ -19,8 +19,8 @@ import {
   updateShippingNo,
   downloadOrdersType
 } from '../services/orders';
-import { getQueryString } from '../utils/utils';
-import { notification } from 'antd';
+import {getQueryString} from '../utils/utils';
+import {notification} from 'antd';
 
 export default {
   namespace: 'orders',
@@ -74,7 +74,7 @@ export default {
   },
 
   effects: {
-    * orderGetOrderFupplier({ payload, callback }, { call, put }) {
+    * orderGetOrderFupplier({payload, callback}, {call, put}) {
       const response = yield call(orderSellers, payload);
       yield put({
         type: 'getOrderFupplier',
@@ -84,7 +84,7 @@ export default {
         callback();
       }
     },
-    * orderGetOrderSellers({ payload, callback }, { call, put }) {
+    * orderGetOrderSellers({payload, callback}, {call, put}) {
       const response = yield call(orderSellers, payload);
       yield put({
         type: 'getOrderSellers',
@@ -94,7 +94,7 @@ export default {
         callback();
       }
     },
-    * orderGetLocals({ payload, callback }, { call, put }) {
+    * orderGetLocals({payload, callback}, {call, put}) {
       const response = yield call(orderGetLocals, payload);
       yield put({
         type: 'orderLocals',
@@ -104,7 +104,7 @@ export default {
         callback();
       }
     },
-    * orderGetPayTypes({ payload, callback }, { call, put }) {
+    * orderGetPayTypes({payload, callback}, {call, put}) {
       const response = yield call(getPayTypes, payload);
       yield put({
         type: 'getPayTypes',
@@ -114,7 +114,7 @@ export default {
         callback();
       }
     },
-    * orderGetList({ payload, callback }, { call, put }) {
+    * orderGetList({payload, callback}, {call, put}) {
       yield put({
         type: 'changeLoading',
         payload: true,
@@ -132,7 +132,7 @@ export default {
         callback();
       }
     },
-    * orderInitPage({ payload, callback }, { put }) {
+    * orderInitPage({payload, callback}, {put}) {
       yield put({
         type: 'initPage',
         payload,
@@ -141,7 +141,7 @@ export default {
         callback();
       }
     },
-    * orderOperationItem({ payload, callback }, { put }) {
+    * orderOperationItem({payload, callback}, {put}) {
       yield put({
         type: 'operationItem',
         payload,
@@ -150,7 +150,7 @@ export default {
         callback();
       }
     },
-    * orderPushTabId({ payload, callback }, { put }) {
+    * orderPushTabId({payload, callback}, {put}) {
       yield put({
         type: 'pushTabId',
         payload,
@@ -159,7 +159,7 @@ export default {
         callback();
       }
     },
-    * orderPushFilter({ payload, callback }, { put }) {
+    * orderPushFilter({payload, callback}, {put}) {
       yield put({
         type: 'pushFilter',
         payload,
@@ -168,7 +168,7 @@ export default {
         callback();
       }
     },
-    * orderPushKeyword({ payload, callback }, { put }) {
+    * orderPushKeyword({payload, callback}, {put}) {
       yield put({
         type: 'pushKeyword',
         payload,
@@ -177,7 +177,7 @@ export default {
         callback();
       }
     },
-    * orderPushShowSize({ payload, callback }, { put }) {
+    * orderPushShowSize({payload, callback}, {put}) {
       yield put({
         type: 'pushShowSize',
         payload,
@@ -186,7 +186,7 @@ export default {
         callback();
       }
     },
-    * orderPushShowNum({ payload, callback }, { put }) {
+    * orderPushShowNum({payload, callback}, {put}) {
       yield put({
         type: 'pushShowNum',
         payload,
@@ -195,7 +195,7 @@ export default {
         callback();
       }
     },
-    * orderPushSeller({ payload, callback }, { put }) {
+    * orderPushSeller({payload, callback}, {put}) {
       yield put({
         type: 'pushSeller',
         payload,
@@ -204,7 +204,7 @@ export default {
         callback();
       }
     },
-    * orderPushFupplier({ payload, callback }, { put }) {
+    * orderPushFupplier({payload, callback}, {put}) {
       yield put({
         type: 'pushFupplier',
         payload,
@@ -213,7 +213,7 @@ export default {
         callback();
       }
     },
-    * orderPushSourceType({ payload, callback }, { put }) {
+    * orderPushSourceType({payload, callback}, {put}) {
       yield put({
         type: 'pushSourceType',
         payload,
@@ -222,7 +222,7 @@ export default {
         callback();
       }
     },
-    * orderPushPayType({ payload, callback }, { put }) {
+    * orderPushPayType({payload, callback}, {put}) {
       yield put({
         type: 'pushPayType',
         payload,
@@ -231,7 +231,7 @@ export default {
         callback();
       }
     },
-    * orderPushLocal({ payload, callback }, { put }) {
+    * orderPushLocal({payload, callback}, {put}) {
       yield put({
         type: 'pushLocal',
         payload,
@@ -240,7 +240,7 @@ export default {
         callback();
       }
     },
-    * orderPushStartTime({ payload, callback }, { put }) {
+    * orderPushStartTime({payload, callback}, {put}) {
       yield put({
         type: 'pushStartTime',
         payload,
@@ -249,7 +249,7 @@ export default {
         callback();
       }
     },
-    * orderPushEndTime({ payload, callback }, { put }) {
+    * orderPushEndTime({payload, callback}, {put}) {
       yield put({
         type: 'pushEndTime',
         payload,
@@ -259,7 +259,7 @@ export default {
       }
     },
     // 修改主订单状态接口
-    * orderPushUpdateSpuStatus({ payload, callback }, { call, put }) {
+    * orderPushUpdateSpuStatus({payload, callback}, {call, put}) {
       yield put({
         type: 'changeLoading',
         payload: true,
@@ -270,7 +270,7 @@ export default {
         payload: response,
       });
       if (callback) {
-        callback();
+        callback(response);
       }
       yield put({
         type: 'changeLoading',
@@ -278,7 +278,7 @@ export default {
       });
     },
     // 详情 v1.4
-    * orderPushGetOrderDetail({ payload, callback }, { call, put }) {
+    * orderPushGetOrderDetail({payload, callback}, {call, put}) {
       yield put({
         type: 'changeLoading',
         payload: true,
@@ -297,7 +297,7 @@ export default {
       });
     },
     // 订单详情-日志  v1.4
-    * orderPushGetOrderRecord({ payload, callback }, { call, put }) {
+    * orderPushGetOrderRecord({payload, callback}, {call, put}) {
       yield put({
         type: 'changeLoading',
         payload: true,
@@ -316,7 +316,7 @@ export default {
       }
     },
     // 订单详情-修改商品获取数据  v1.4
-    * orderPushModifyOrderGoods({ payload, callback }, { call, put }) {
+    * orderPushModifyOrderGoods({payload, callback}, {call, put}) {
       // yield put({
       //   type: 'changeLoading',
       //   payload: true,
@@ -335,8 +335,8 @@ export default {
       }
     },
     // 退款申请  v1.4
-    * orderPushModifyOrderSub({ payload, callback }, { call, put, select }) {
-      const languageDetails = yield select((store)=>{
+    * orderPushModifyOrderSub({payload, callback}, {call, put, select}) {
+      const languageDetails = yield select((store) => {
         return store.global.languageDetails;
       })
       yield put({
@@ -374,7 +374,7 @@ export default {
       }
     },
     // 修改订单收货信息接口
-    * orderPushUpdateOrderAddress({ payload, callback }, { call, put }) {
+    * orderPushUpdateOrderAddress({payload, callback}, {call, put}) {
       const response = yield call(updateOrderAddress, payload);
       yield put({
         type: 'updateOrderAddress',
@@ -385,7 +385,7 @@ export default {
       }
     },
     // 获取国家列表
-    * orderPushGetLocals({ payload, callback }, { call, put }) {
+    * orderPushGetLocals({payload, callback}, {call, put}) {
       const response = yield call(getLocals, payload);
       yield put({
         type: 'getLocals',
@@ -396,7 +396,7 @@ export default {
       }
     },
     // 获取物流公司接口
-    * orderPushGetShippingNames({ payload, callback }, { call, put }) {
+    * orderPushGetShippingNames({payload, callback}, {call, put}) {
       const response = yield call(getShippingNames, payload);
       yield put({
         type: 'getShippingNames',
@@ -407,7 +407,7 @@ export default {
       }
     },
     // 订单搜索条件-来源类型列表接口 v1.3
-    * orderGetOrderSourceType({ payload, callback }, { call, put }) {
+    * orderGetOrderSourceType({payload, callback}, {call, put}) {
       const response = yield call(getOrderSourceType, payload);
       yield put({
         type: 'getOrderSourceType',
@@ -418,7 +418,7 @@ export default {
       }
     },
     // 回选状态
-    * orderReviewProvinceList({ payload, callback }, { put }) {
+    * orderReviewProvinceList({payload, callback}, {put}) {
       yield put({
         type: 'reviewProvinceList',
         payload,
@@ -428,7 +428,7 @@ export default {
       }
     },
     // 商品信息获取编辑信息
-    * orderGoodsEditor({ payload, callback }, { put }) {
+    * orderGoodsEditor({payload, callback}, {put}) {
       yield put({
         type: 'goodsEditor',
         payload,
@@ -438,7 +438,7 @@ export default {
       }
     },
     // 商品信息编辑
-    * orderPushUpdateSubOrderStatus({ payload, callback }, { call, put }) {
+    * orderPushUpdateSubOrderStatus({payload, callback}, {call, put}) {
       const response = yield call(updateSubOrderStatus, payload);
       yield put({
         type: 'updateSubOrderStatus',
@@ -449,7 +449,7 @@ export default {
       }
     },
     // 订单批量导出
-    * orderDownloadOrders({ payload, callback }, { call, put }) {
+    * orderDownloadOrders({payload, callback}, {call, put}) {
 
       yield put({
         type: 'changeLoading',
@@ -469,7 +469,7 @@ export default {
       }
     },
     // 重置
-    * orderReset({ callback }, { put }) {
+    * orderReset({callback}, {put}) {
       yield put({
         type: 'reset',
       });
@@ -478,7 +478,7 @@ export default {
       }
     },
     // 重置页码
-    * orderResetPages({ callback }, { put }) {
+    * orderResetPages({callback}, {put}) {
       yield put({
         type: 'resetPages',
       });
@@ -487,7 +487,7 @@ export default {
       }
     },
     //标记为风险订单
-    * updateRisk({ payload, callback }, { call, put }) {
+    * updateRisk({payload, callback}, {call, put}) {
       yield put({
         type: 'changeLoading',
         payload: true,
@@ -502,7 +502,7 @@ export default {
       });
     },
     // 根据订单号获取物流号信息接口
-    * getOrderShippingNo({ payload, callback }, { call, put }) {
+    * getOrderShippingNo({payload, callback}, {call, put}) {
       yield put({
         type: 'changeLoading',
         payload: true,
@@ -517,7 +517,7 @@ export default {
       });
     },
     // 根据订单号获取物流号信息接口
-    * updateShippingNo({ payload, callback }, { call, put }) {
+    * updateShippingNo({payload, callback}, {call, put}) {
       yield put({
         type: 'changeLoading',
         payload: true,
@@ -532,17 +532,17 @@ export default {
       });
     },
     //获取ERP订单类型
-    * downloadOrdersType({ payload, callback }, { call, put, select }) {
-      const ordersType = yield select((store)=>{
+    * downloadOrdersType({payload, callback}, {call, put, select}) {
+      const ordersType = yield select((store) => {
         return store.orders.ordersType;
       })
-      if(ordersType.length===0){
+      if (ordersType.length === 0) {
         const response = yield call(downloadOrdersType, payload);
         console.log(response);
-        if(response.status===200){
+        if (response.status === 200) {
           yield put({
-            type:'setOrdersType',
-            payload:response.data.types
+            type: 'setOrdersType',
+            payload: response.data.types
           })
         }
       }
@@ -570,14 +570,14 @@ export default {
       return countriesData ? {
         ...state,
         orderLocalsData: countriesData,
-      } : { ...state };
+      } : {...state};
     },
     getPayTypes(state, action) {
       const payTypesData = action.payload.data;
       return payTypesData ? {
         ...state,
         orderpayTypes: payTypesData.pay_types,
-      } : { ...state };
+      } : {...state};
     },
     getList(state, action) {
       return {
@@ -635,7 +635,7 @@ export default {
       return ShippingNamesData ? {
         ...state,
         logisticsList: action.payload.data.name,
-      } : { ...state };
+      } : {...state};
     },
     getOrderSourceType(state, action) {
       return {

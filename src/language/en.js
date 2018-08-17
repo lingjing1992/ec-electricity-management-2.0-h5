@@ -8,23 +8,25 @@ export default {
       serialNo: 'Serial No.',
       locationError: 'Location Error',
       errorReason: 'Error Reason',
+      trackingTips: 'Tracking Number Tips',
       iamge: 'Image',
       card: 'card',
       selectDocuments: 'Select Documents',
       downloadTemplate: 'Download Template',
       UploadFiles: 'Upload Files',
       StartToUploadFiles: 'Start to upload files',
-      English: 'English',
-      Chinese: 'Chinese (Hong Kong)',
-      German: 'German',
-      French: 'French',
-      noData: 'NO data.',
-      cancel: 'Cancel',
-      Confirm: 'Confirm',
-      Uploaded: 'Uploaded',
-      PleaseEnter: 'Please Enter ',
-      Pleasechoose: 'Please choose',
-      PleaseSelect: 'Please select',
+      Submit: 'Submit',
+      English           : 'English',
+      Chinese           : 'Chinese (Hong Kong)',
+      German            : 'German',
+      French            : 'French',
+      noData            : 'NO data.',
+      cancel            : 'Cancel',
+      Confirm           : 'Save',
+      Uploaded          : 'Uploaded',
+      PleaseEnter       : 'Please Enter ',
+      Pleasechoose      : 'Please choose',
+      PleaseSelect      : 'Please select',
     },
     //弹窗提示信息
     message: {
@@ -182,6 +184,8 @@ export default {
       readAllNotification: "You've read all order notification.",
       OrderNo: 'Order No.',
       CheckOrders: 'Check Orders',
+      editProduct: 'Edit Product',
+      outStock: 'is out of stock',
     },
     //首页概况
     index: {
@@ -483,7 +487,7 @@ export default {
         checkFrom: ['You can', 'check', 'from Shipped Order.'],
         ShippingInformation: 'Delivery info',
         OrderNo: 'Order No.',
-        LogisticsType: 'Logistics Type',
+        LogisticsType: 'Shipping Company  ',
         TrackingNo: 'Tracking No.',
         LogisticsTrackingURL: 'Logistics Tracking URL',
         ShippingTime: 'Shipping Time',
@@ -499,6 +503,13 @@ export default {
         HasBeenMarked: ' has been marked as risk order.',
         OrderIsBackToNormal: ' is back to normal order list now.',
 
+        FollowingCheck:[`The following tracking numbers might be wrong, because they're not consistent with the usual number rules of the selected carrier. Please check.`,'Please ignore this tip if you have confirmed your tracking number.'],
+
+        IsCheckShip:'The tracking number might be wrong. Please check!',
+        ShipNnlike:'Reason: The tracking number is not consistent with the usual number rules of the selected carrier.',
+        PleaseCheck:'Please check : ',
+        BackModify:'Back to  Modify',
+        IgnoreSubmit:'Ignore and Submit',
         OrderExport: 'Order Export',
         TypesOfERP: 'Types of ERP',
         Tips: 'Tips',
@@ -530,7 +541,7 @@ export default {
         TrackingNo: 'Tracking No.',
         TelephoneNo: 'Telephone No.',
         TotalWeight: 'Total Weight',
-        LogisticsType: 'Logistics Type',
+        LogisticsType: 'Shipping Company  ',
         LogisticsTracking: 'Logistics Tracking',
         ShippingTime: 'Shipping Time',
         LogisticsCompany: 'Logistics Company',
@@ -1089,10 +1100,16 @@ export default {
     basicSetting: {
       QuantityInStock: 'Quantity in Stock',
       NotificationForm: 'Notification Form',
+      SysNotice: 'System Notice',
       InformTheFrequency: 'Inform the Frequency',
       OnlyOnce: 'Only once',
       QuantityNotBeEmpty: 'The quantity in stock  should not be empty.',
       StockAlert: 'Stock Alert',
     },
-  },
-};
+    //系统升级页面
+    update: {
+      text: ['Being updated,','please try again later.'],
+      refresh: 'Reload',
+    }
+  }
+}

@@ -44,7 +44,7 @@ export default class Notice extends Component {
     searchKey: {
       '1': 'noticeTitle',
       '2': 'orderNo',
-      '3': 'product',
+      '3': 'goods',
     },
     permission: this.props.global.rolePower.modules['1010'].moduleSubs, //权限值
     total: 0, //列表总条数
@@ -87,7 +87,7 @@ export default class Notice extends Component {
   pemissonControl = () => {
     let { permission, tabPanes } = this.state;
     const tabPermission = {
-      '3': true,
+      '3': permission['10025'].status,
       '2': permission['10021'].status,
       '1': permission['10022'].status,
     };

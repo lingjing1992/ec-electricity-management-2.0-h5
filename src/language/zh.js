@@ -8,6 +8,7 @@ export default {
       serialNo: '序号',
       locationError: '错误位置',
       errorReason: '错误原因',
+      trackingTips: '物流单号提示',
       sure: '确定',
       Confirm: '确定',
       cancel: '取消',
@@ -15,6 +16,7 @@ export default {
       downloadTemplate: '下载模板示例',
       UploadFiles: '上传文件',
       StartToUploadFiles: '开始上传文件',
+      Submit: '提交',
       English: '英语',
       Chinese: '繁体中文',
       German: '德语',
@@ -180,6 +182,8 @@ export default {
       notification: '通知',
       OrderNo: '订单号',
       CheckOrders: '查看订单',
+      editProduct: '编辑商品',
+      outStock: '库存不足',
     },
     //首页概况
     index: {
@@ -488,6 +492,13 @@ export default {
         ModifyDeliveryinfo: '修改发货信息',
         HasBeenMarked: '已标记为风险订单',
         OrderIsBackToNormal: '已取消标记风险订单',
+
+        FollowingCheck:['以下物流单号可能有误，因其与所选物流商常见单号规则不一致，请核对。','如确认单号无误，请忽略本提示。'],
+        IsCheckShip:'物流单号可能有误，请核对！',
+        ShipNnlike:'原因：单号与所选物流商常见单号规则不一致',
+        PleaseCheck:'请检查 : ',
+        BackModify:'返回修改',
+        IgnoreSubmit:'忽略并提交',
 
         OrderExport: '导出订单',
         TypesOfERP: 'ERP类型',
@@ -1059,10 +1070,16 @@ export default {
     basicSetting: {
       QuantityInStock: '库存数量',
       NotificationForm: '通知形式',
+      SysNotice: '系统通知',
       InformTheFrequency: '通知频率',
       OnlyOnce: '只提醒一次',
       QuantityNotBeEmpty: '库存数量最低值不能为空',
       StockAlert: '库存预警',
     },
-  },
-};
+    //系统升级页面
+    update: {
+      text: ['系统升级中,','请稍后再试。'],
+      refresh: '刷新',
+    }
+  }
+}

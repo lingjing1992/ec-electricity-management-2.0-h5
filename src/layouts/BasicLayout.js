@@ -1,19 +1,19 @@
-import React, { Fragment } from 'react';
+import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
-import { Layout, Icon, message, Menu, Dropdown, Avatar, LocaleProvider } from 'antd';
+import {Layout, Icon, message, Menu, Dropdown, Avatar, LocaleProvider} from 'antd';
 import DocumentTitle from 'react-document-title';
-import { connect } from 'dva';
+import {connect} from 'dva';
 import Cookies from 'js-cookie';
-import { Route, Redirect, Switch, routerRedux } from 'dva/router';
-import { ContainerQuery } from 'react-container-query';
+import {Route, Redirect, Switch, routerRedux} from 'dva/router';
+import {ContainerQuery} from 'react-container-query';
 import classNames from 'classnames';
-import { enquireScreen, unenquireScreen } from 'enquire-js';
+import {enquireScreen, unenquireScreen} from 'enquire-js';
 import groupBy from 'lodash/groupBy';
 import SiderMenu from '../components/SiderMenu';
 import NotFound from '../routes/Exception/404';
-import { getRoutes, getQueryString, parseArr, googleAnalytics } from '../utils/utils';
+import {getRoutes, getQueryString, parseArr, googleAnalytics} from '../utils/utils';
 import Authorized from '../utils/Authorized';
-import { getMenuData } from '../common/menu';
+import {getMenuData} from '../common/menu';
 import NoticeIcon from '../components/NoticeIcon';
 import styles from './BasicLayout.less';
 import logo from '../assets/logo.png';
@@ -21,8 +21,8 @@ import moment from 'moment';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
 import enUS from 'antd/lib/locale-provider/en_US';
 
-const { Content, Header, Footer } = Layout;
-const { AuthorizedRoute, check } = Authorized;
+const {Content, Header, Footer} = Layout;
+const {AuthorizedRoute, check} = Authorized;
 
 /**
  * 根据菜单取得重定向地址.
@@ -117,15 +117,17 @@ class BasicLayout extends React.PureComponent {
   };
 
   getChildContext() {
-    const { location, routerData } = this.props;
+    const {location, routerData} = this.props;
     return {
       location,
       breadcrumbNameMap: getBreadcrumbNameMap(getMenuData(), routerData),
     };
   }
+
   componentWillMount() {
     this.init();
   }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.login.signOutStatus === 200) {
       //退出刷新页面初始化
@@ -136,6 +138,7 @@ class BasicLayout extends React.PureComponent {
       window.location.reload();
     }
   }
+
   componentDidMount() {
     document.querySelector('#root').addEventListener('click', this.closeNoticePop, false);
     googleAnalytics('UA-99247884-8');
@@ -144,23 +147,25 @@ class BasicLayout extends React.PureComponent {
   componentWillUnmount() {
     // unenquireScreen(this.enquireHandler);
     clearTimeout(this.resizeTimeout);
-    const { dispatch } = this.props;
+    const {dispatch} = this.props;
     dispatch({
       type: 'login/clear',
     });
     document.querySelector('#root').removeEventListener('click', this.closeNoticePop);
   }
+
   //点击页面其他地方关闭通知弹窗
   closeNoticePop = () => {
     this.setState({
       popupVisible: false,
     });
   };
+
   getPageTitle() {
-    const { location } = this.props;
+    const {location} = this.props;
     //    console.log(this.props.global)
     const languageForHeader = this.props.global.languageDetails.header; //顶部语言
-    const { pathname } = location;
+    const {pathname} = location;
     let title = languageForHeader.pageTitle;
     // const MubuData = getMenuData();
     // if (MubuData) {
@@ -172,6 +177,7 @@ class BasicLayout extends React.PureComponent {
     // }
     return title;
   }
+
   //初始化
   init = () => {
     let language = (window.navigator.browserLanguage || window.navigator.language).toLowerCase();
@@ -189,10 +195,13 @@ class BasicLayout extends React.PureComponent {
         type: 'global/setLanguage',
         payload: language,
       });
-      Cookies.set('lang', language, { expires: 99999 });
+      Cookies.set('lang', language, {expires: 99999});
     }
     //获取权限后的回调
-    const getRolePowerCallback = response => {
+    const getRolePowerCallback = (response) => {
+      if(!response || !response.hasOwnProperty('modules')){
+        window.location.href = `//${window.location.host}/user/login`;
+      }
       this.props.dispatch({
         type: 'login/brand',
         payload: null,
@@ -245,7 +254,7 @@ class BasicLayout extends React.PureComponent {
         item.children = item.children.map(children => {
           if (
             (children.hasOwnProperty('id') &&
-              !rolePower.modules[item.id].moduleSubs[children.id].status) ||
+            !rolePower.modules[item.id].moduleSubs[children.id].status) ||
             !children.hasOwnProperty('id')
           ) {
             children.hideInMenu = true;
@@ -290,9 +299,10 @@ class BasicLayout extends React.PureComponent {
 
   //面包屑标题
   setTitle = () => {
-    const { location } = this.props;
+    const {location} = this.props;
     const locationPathname = (location && location.pathname) || '';
     const languageForHeader = this.props.global.languageDetails.header;
+    const languageForNav = this.props.global.languageDetails.nav;
     const languageForMarketing = this.props.global.languageDetails.marketing.specialLists;
     const actionType = getQueryString().actionType || '';
     const type = getQueryString().type;
@@ -379,9 +389,11 @@ class BasicLayout extends React.PureComponent {
       result = languageForHeader.templateDetails;
     } else if (locationPathname === '/setting/returnAddress') {
       result = languageForHeader.returnAddress;
-    } else if (locationPathname === '/setting/basicSetting') {
-      result = languageForHeader.returnAddress;
-    } else {
+    }
+    else if(locationPathname==='/setting/basicSetting'){
+      result = languageForNav.basicSetting;
+    }
+    else {
       result = '';
     }
 
@@ -394,7 +406,7 @@ class BasicLayout extends React.PureComponent {
       return {};
     }
     const newNotices = notices.map(notice => {
-      const newNotice = { ...notice };
+      const newNotice = {...notice};
       if (newNotice.datetime) {
         newNotice.datetime = moment(notice.datetime).fromNow();
       }
@@ -410,7 +422,7 @@ class BasicLayout extends React.PureComponent {
           doing: 'gold',
         }[newNotice.status];
         newNotice.extra = (
-          <Tag color={color} style={{ marginRight: 0 }}>
+          <Tag color={color} style={{marginRight: 0}}>
             {newNotice.extra}
           </Tag>
         );
@@ -419,14 +431,22 @@ class BasicLayout extends React.PureComponent {
     });
     return groupBy(newNotices, 'type');
   };
+  //编辑商品点击
+  onEditProduct = (item) => {
+    this.props.dispatch(routerRedux.push(`/goods/goodsCreate?spu_id=${item.spuId}&action=edit`));
+    this.setState({
+      popupVisible: false,
+    });
+  }
   //公告清除
   noticeClear = tabTitle => {
-    const { noticeResoureData } = this.props.notice;
+    const {noticeResoureData} = this.props.notice;
     const languageForProductNotice = this.props.global.languageDetails.notice;
     const languageForProductMessage = this.props.global.languageDetails.message;
     const titleJson = {
       [languageForProductNotice.notice]: 'normalNotice',
       [languageForProductNotice.Orders]: 'orderNotice',
+      [languageForProductNotice.Product]: 'goodsNotice',
     };
     this.props.dispatch({
       type: 'notice/noticeClear',
@@ -444,7 +464,7 @@ class BasicLayout extends React.PureComponent {
   };
 
   handleMenuCollapse = collapsed => {
-    const { dispatch } = this.props;
+    const {dispatch} = this.props;
     dispatch({
       type: 'global/changeLayoutCollapsed',
       payload: collapsed,
@@ -452,7 +472,7 @@ class BasicLayout extends React.PureComponent {
   };
   //侧边栏伸缩控制
   toggle = () => {
-    const { collapsed } = this.props;
+    const {collapsed} = this.props;
     this.props.dispatch({
       type: 'global/changeLayoutCollapsed',
       payload: !collapsed,
@@ -464,14 +484,14 @@ class BasicLayout extends React.PureComponent {
     }, 600);
   };
   //角色切换退出登录
-  onMenuClick = ({ key }) => {
+  onMenuClick = ({key}) => {
     if (key === 'logout') {
       this.props.dispatch({
         type: 'login/logout',
       });
     } else {
-      const { login } = this.props;
-      const { brandList } = login;
+      const {login} = this.props;
+      const {brandList} = login;
       this.props.dispatch({
         type: 'login/switchBrand',
         payload: {
@@ -481,8 +501,8 @@ class BasicLayout extends React.PureComponent {
           if (response.status === 200) {
             brandList.map((item, index) => {
               if (item.id === parseInt(key, 10)) {
-                Cookies.set('ELE_USERNAME_BRAND', item.name, { expires: 30 });
-                Cookies.set('ELE_JURISDICTION', item, { expires: 30 });
+                Cookies.set('ELE_USERNAME_BRAND', item.name, {expires: 30});
+                Cookies.set('ELE_JURISDICTION', item, {expires: 30});
               }
             });
           }
@@ -493,7 +513,7 @@ class BasicLayout extends React.PureComponent {
 
   //订单公告点击
   noticeOnItemClick = item => {
-    const { type } = this.props.notice;
+    const {type} = this.props.notice;
     this.setState({
       popupVisible: false,
     });
@@ -517,11 +537,11 @@ class BasicLayout extends React.PureComponent {
       collapsed,
       match,
       location,
-      global: { rolePower, language, languageDetails, contentWidth, systemUpdate },
-      notice: { noticeTargetData },
+      global: {rolePower, language, languageDetails, contentWidth, systemUpdate},
+      notice: {noticeTargetData},
     } = this.props;
-    const { isMobile: mb, languageText, languageIconUp, popupVisible, MenuData } = this.state;
-    const { brandList = [] } = login;
+    const {isMobile: mb, languageText, languageIconUp, popupVisible, MenuData} = this.state;
+    const {brandList = []} = login;
     const languageForHeader = this.props.global.languageDetails.header; //顶部语言
     const languageForProductNotice = this.props.global.languageDetails.notice;
     const permission = rolePower.hasOwnProperty('modules') ? true : false; //权限是都加载完成
@@ -529,10 +549,11 @@ class BasicLayout extends React.PureComponent {
     const bashRedirect = this.getBaseRedirect();
     const languageSlected = this.props.global.language == 'en' ? enUS : zhCN;
     let noticeData = this.getNoticeData(noticeTargetData);
-    //公告底部清除文案
-    const locale = {
+    //公告文案
+    const noticeLanguage = {
       emptyText: languageDetails.global.noData,
       clear: languageForProductNotice.Clear,
+      editProduct: languageForProductNotice.editProduct,
       title: languageForProductNotice.ClearTitle,
     };
     //通知数量
@@ -549,7 +570,7 @@ class BasicLayout extends React.PureComponent {
          */}
         <Menu.Divider />
         <Menu.Item key="logout">
-          <Icon type="logout" />
+          <Icon type="logout"/>
           {languageForHeader.logOut}
         </Menu.Item>
       </Menu>
@@ -557,10 +578,9 @@ class BasicLayout extends React.PureComponent {
     const layout = (
       <Layout
         id={styles.layout}
-        className={`${collapsed ? styles.collapsed : styles.normal} layout`}
-      >
+        className={`${collapsed ? styles.collapsed : styles.normal} layout`}>
         {permission ? (
-          <div className={styles.basiclayoutContent} style={{ minWidth: contentWidth + 96 }}>
+          <div className={styles.basiclayoutContent} style={{minWidth: contentWidth + 96}}>
             {MenuData.length > 0 ? (
               <SiderMenu
                 logo={logo}
@@ -600,7 +620,7 @@ class BasicLayout extends React.PureComponent {
                             type: 'global/setLanguage',
                             payload: item.key,
                           });
-                          Cookies.set('lang', item.key, { expires: 99999 });
+                          Cookies.set('lang', item.key, {expires: 99999});
                           window.location.href = window.location.href;
                         }}
                       >
@@ -617,7 +637,7 @@ class BasicLayout extends React.PureComponent {
                     <span className={styles.languageBox}>
                       {parseArr(languageText)[language]}
                       <Icon
-                        style={{ marginLeft: 14 }}
+                        style={{marginLeft: 14}}
                         type="down"
                         className={`${languageIconUp ? styles.up : ''} ${styles.languageIcon}`}
                       />
@@ -630,12 +650,14 @@ class BasicLayout extends React.PureComponent {
                     count={noticeCountNum}
                     onItemClick={this.noticeOnItemClick}
                     onClear={this.noticeClear.bind(this)}
-                    popupAlign={{ offset: [20, -16] }}
+                    onEditProduct={this.onEditProduct.bind(this)}
+                    popupAlign={{offset: [20, -16]}}
                     popupVisible={popupVisible}
-                    locale={locale}
+                    noticeLanguage={noticeLanguage}
                     className={styles.notice}
                     onClick={() => {
                       let tabPermission = {
+                        '3': noticePermission['10025'].status,
                         '2': noticePermission['10021'].status,
                         '1': noticePermission['10022'].status,
                       };
@@ -652,9 +674,9 @@ class BasicLayout extends React.PureComponent {
                       }
                     }}
                   >
-                    {true ? (
+                    {noticePermission['10025'].status ? (
                       <NoticeIcon.Tab
-                        list={noticeData[1]}
+                        list={noticeData[3]}
                         title={languageForProductNotice.Product}
                         emptyText={languageForProductNotice.readAllInfo}
                       />
@@ -689,7 +711,7 @@ class BasicLayout extends React.PureComponent {
                     }}
                   >
                     <span className={`${styles.action} ${styles.account}`}>
-                      <Avatar size="small" icon="user" className={styles.avatar} />
+                      <Avatar size="small" icon="user" className={styles.avatar}/>
                       {Cookies.get('ELE_USERNAME_BRAND')
                         ? Cookies.get('ELE_USERNAME_BRAND')
                         : Cookies.get('ELE_USERNAME')}
@@ -697,20 +719,20 @@ class BasicLayout extends React.PureComponent {
                         type="down"
                         className={`${styles.accountBrand} ${
                           this.state.accountBrandIcon ? styles.up : styles.check
-                        }`}
+                          }`}
                       />
                     </span>
                   </Dropdown>
                 </div>
                 <div
-                  style={{ display: systemUpdate.isUpdate ? 'block' : 'none' }}
+                  style={{display: systemUpdate.isUpdate ? 'block' : 'none'}}
                   className={`${styles.headerCover}`}
                 />
               </Header>
-              <Content style={{ padding: '24px', height: '100%' }}>
+              <Content style={{padding: '24px', height: '100%'}}>
                 <Switch>
                   {redirectData.map(item => (
-                    <Redirect key={item.from} exact from={item.from} to={item.to} />
+                    <Redirect key={item.from} exact from={item.from} to={item.to}/>
                   ))}
                   {getRoutes(match.path, routerData).map(item => {
                     const authority = item.path === '/update' ? true : !systemUpdate.isUpdate;
@@ -728,8 +750,8 @@ class BasicLayout extends React.PureComponent {
                       />
                     );
                   })}
-                  <Redirect exact from="/" to={bashRedirect} />
-                  <Route render={NotFound} />
+                  <Redirect exact from="/" to={bashRedirect}/>
+                  <Route render={NotFound}/>
                 </Switch>
               </Content>
             </Layout>

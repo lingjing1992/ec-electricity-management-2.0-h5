@@ -93,6 +93,7 @@ export default class returnAddressInput extends Component {
       id: 0,
       deftType: true,
       city: undefined,
+      backName:undefined,
       region: undefined,
       zip: undefined,
       country: 'China',
@@ -162,8 +163,8 @@ export default class returnAddressInput extends Component {
             max: 20,
           },
         ],
-        key: 'recipient',
-        initialValue: defaultValue.recipient,
+        key: 'backName',
+        initialValue: defaultValue.backName,
       },
       {
         type: 2, //文本选择框Select

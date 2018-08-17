@@ -45,7 +45,7 @@ class UserLayout extends React.PureComponent {
     const { pathname } = location;
     let title = 'Ant Design Pro';
     if (routerData[pathname] && routerData[pathname].name) {
-      title = `${routerData[pathname].name} - Ant Design Pro`;
+      title = `E-commerce Backstage Management System.`;
     }
     return title;
   }
