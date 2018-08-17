@@ -481,6 +481,7 @@ export default class OrderList extends Component {
             }
         })
     }
+    //取消发货地址弹窗
     handleCancelEditorStatus = (e) => {
         this.setState({
             visibleEditorStatus: false,
