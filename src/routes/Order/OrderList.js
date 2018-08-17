@@ -438,6 +438,7 @@ export default class OrderList extends Component {
                             this.clearDeliveryInfo();
                             // 修改发货信息
                             this.setState({
+                                isCheckShip:1,
                                 visibleEditorStatus: true,
                                 orderNo: record.order_no,
                                 payTime: record.pay_time,
