@@ -15,13 +15,33 @@ class Ueditor extends Component {
     clearInterval(timer);
   }
 
-  handleBlur = (editor) => {
-    this.props.getContent(editor,this.props.language);
+  componentWillReceiveProps(nextProps){
+    const { editor } = this.state;
+    if(nextProps.value !== this.props.value && nextProps.value && editor){
+      this.editorReady(editor,nextProps.value);
+    }
   }
+
+  componentDidMount(){
+    this.newEditor();
+  }
+
+  componentWillUnmount(){
+    const { editor } = this.state ;
+    if(!!editor && editor.hasOwnProperty('container')){
+      editor.removeListener('blur',this.handleBlur);
+      editor.destroy();
+    }
+  }
+
+  handleBlur = (editor) => {
+    this.props.getContent(editor,this.props.language); 
+  }
+
 
   editorReady = (editor,value) => {
     editor.ready( () => {
-      const newValue =value ? value:'<p></p>';
+      const newValue =value ? value : '<p></p>';
       editor.setContent(newValue);
       this.handleBlur(editor);
     });
@@ -230,25 +250,6 @@ class Ueditor extends Component {
         editorSwitch: false,
       })
       editor.addListener('blur',this.handleBlur.bind(this,editor));
-    }
-  }
-
-  componentWillReceiveProps(nextProps){
-    const { editor } = this.state;
-    if(nextProps.value !== this.props.value && nextProps.value && editor){
-      this.editorReady(editor,nextProps.value);
-    }
-  }
-
-  componentDidMount(){
-    this.newEditor();
-  }
-
-  componentWillUnmount(){
-    const { editor } = this.state ;
-    if(!!editor && editor.hasOwnProperty('container')){
-      editor.removeListener('blur',this.handleBlur);
-      editor.destroy();
     }
   }
   render(){

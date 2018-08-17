@@ -1,12 +1,14 @@
 import React from 'react';
 import styles from './GoodsCreate.less';
 import SkuInfoTable from './SkuInfoTable';
+import { skuPricSolve } from '../../utils/utils';
 import { Input, Form } from 'antd';
 
 const SkuPriceInfo = ({ form, languageDetails, permission, currency, skuPriceInfo }) => {
   const languageForProductEdit = languageDetails.goods.productEdit;
   const { getFieldDecorator } = form;
   const disabled = permission['100042'].disabled;
+  const dataKey = 'sku_property_ids';
   const columns = [
     {
       title: languageForProductEdit.SKUAttribute,
@@ -135,6 +137,31 @@ const SkuPriceInfo = ({ form, languageDetails, permission, currency, skuPriceInf
       classType: 2,
     },
   ];
+  //需要填充的数据
+  const inputArr = [
+    {
+      key: 'price',
+      placeholder: languageForProductEdit.OriginalPrice,
+    },
+    {
+      key: 'discount_price',
+      placeholder: languageForProductEdit.salesPrice, 
+    },
+    {
+      key: 'ship_price',
+      placeholder: languageForProductEdit.ShippingFee,
+    }
+  ];
+  //批量填充
+  const batchInput = (selectedRowKeys, rateOfExChange) => {
+    const { getFieldsValue, setFieldsValue } = form;
+    const keysArr = inputArr.map(item => item.key);
+    const inputValue = getFieldsValue([...keysArr, 'salesInfo']);
+    const result = skuPricSolve(selectedRowKeys, inputValue, rateOfExChange, keysArr, dataKey);
+    setFieldsValue({
+      salesInfo: result
+    })
+  }
   return (
     <div
       // title={languageForProductEdit.SKUSupplyInformation}
@@ -151,8 +178,12 @@ const SkuPriceInfo = ({ form, languageDetails, permission, currency, skuPriceInf
         currency={currency}
         disabled={disabled}
         dataSource={skuPriceInfo}
-        dataKey={'sku_property_ids'}
+        dataKey={dataKey}
         rowSelection={true}
+        exchangeRate={true}
+        hasTab={true}
+        batchInput={batchInput}
+        inputArr={inputArr}
       />
     </div>
   )

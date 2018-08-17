@@ -33,8 +33,8 @@ const ProductName = ({form, language, languageDetails}) => {
                     message: languageForMessage.morethan100,
                   },
                 ],
-                placeholder: `${languageForGlobal.PleaseEnter}${languageForGlobal.English}`
-                // initialValue: getgoods.goods_name && getgoods.goods_name[item],
+                placeholder: `${languageForGlobal.PleaseEnter}${languageForGlobal.English}`,
+                initialValue: null,
               })(
                 <Input
                   placeholder={isEnglish ? `${languageForGlobal.PleaseEnter}${languageForGlobal.English}` : null}

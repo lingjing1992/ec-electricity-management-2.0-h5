@@ -19,6 +19,7 @@ export default {
     operationItem: {},
     // 优惠码
     spuDiscount: [],
+
   },
 
   effects: {
