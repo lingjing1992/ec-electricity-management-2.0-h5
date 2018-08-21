@@ -122,6 +122,7 @@ export default class OrderList extends Component {
             payload: { tab_id: 1 },
         });
     }
+    
     // 搜索条件---获得商家列表
     getOrderSellers = () => {
         const { type } = this.state;
