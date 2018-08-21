@@ -113,7 +113,6 @@ export default class OrderList extends Component {
             payload: null,
         });
     }
-
     // 搜索条件---获得商家列表
     getOrderFupplier = () => {
         const { type } = this.state;
@@ -122,7 +121,7 @@ export default class OrderList extends Component {
             payload: { tab_id: 1 },
         });
     }
-    
+
     // 搜索条件---获得商家列表
     getOrderSellers = () => {
         const { type } = this.state;
