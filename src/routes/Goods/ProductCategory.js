@@ -9,7 +9,7 @@ const ProductCategory = ({form, languageDetails, goodsType, permission, onGoodsT
     <Form.Item
       label={languageForProductEdit.productType}
     >
-      {getFieldDecorator('goodsType', {
+      {getFieldDecorator('goodsTypeId', {
         rules: [{required: true, message: languageForMessage.selectProductType}],
         // initialValue: this.state.spuId ? `${getgoods.goodsType_id && getgoods.goodsType_id}` : undefined,
         onChange: (value) => {

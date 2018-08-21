@@ -276,6 +276,7 @@ export function getLanguageParams(language,values) {
  */
 //小数四射五入
 export function toFixed(target,num) {
+  num = num ? num : 2;
   return Math.round(target * Math.pow(10, num)) / Math.pow(10, num);
 }
 
@@ -473,6 +474,32 @@ export function offset(curEle){
 //滚动条返回顶部
 export function scrollToTop(){
   document.body.scrollTop = document.documentElement.scrollTop = 0;
+}
+
+//sku供货信息和价格信息批量数据处理
+export function skuPricSolve( selectedRowKeys, inputValue, rateOfExChange, keysArr, dataKey) {
+  return inputValue.salesInfo.map((salesInfo) => {
+    //兑换率
+    const rate = rateOfExChange.filter(exChange => salesInfo.currency === exChange.currencyCode)[0].exchangeRate;
+    return {
+      ...salesInfo,
+      sku_info: salesInfo.sku_info.map((item) => {
+        //只处理选中的数据
+        if(selectedRowKeys.indexOf(item[dataKey])>-1){
+          const obj = {};
+          keysArr.forEach((item)=>{
+            inputValue[item] ? obj[item] = toFixed(inputValue[item]*rate) : null;
+          })
+          return {
+            ...item,
+            ...obj
+          }
+        }else {
+          return item;
+        }
+      })
+    }
+  })
 }
 
 

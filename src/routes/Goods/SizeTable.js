@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form } from 'antd';
+import { Form} from 'antd';
 import styles from './GoodsCreate.less';
 import UeDitorContent from './UeDitorContent';
 const ProductDetail = ({ language, languageDetails, getContent, value }) => {
@@ -14,8 +14,8 @@ const ProductDetail = ({ language, languageDetails, getContent, value }) => {
         languageDetails={languageDetails}
         getContent={getContent}
         value={value}
-        valueKey={`goods_details`}
-        id={`GoodsDetail`}
+        valueKey={`size_desc`}
+        id={`sizeDesc`}
       />
     </Form.Item>
   )

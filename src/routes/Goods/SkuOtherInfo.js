@@ -1,14 +1,13 @@
 import React from 'react';
 import styles from './GoodsCreate.less';
 import SkuInfoTable from './SkuInfoTable';
-import { skuPricSolve } from '../../utils/utils';
 import { Input, Form } from 'antd';
 
-const SkuSupplyInfo = ({ form, languageDetails, permission, currency, salesInfo }) => {
+const SkuOtherInfo = ({ form, languageDetails, permission, currency, skuOtherInfo }) => {
   const languageForProductEdit = languageDetails.goods.productEdit;
   const { getFieldDecorator } = form;
   const disabled = permission['100042'].disabled;
-  //table列表
+  const dataKey = 'sku_property_ids';
   const columns = [
     {
       title: languageForProductEdit.SKUAttribute,
@@ -23,16 +22,16 @@ const SkuSupplyInfo = ({ form, languageDetails, permission, currency, salesInfo 
       },
     },
     {
-      title: languageForProductEdit.OriginalPrice,
-      dataIndex: 'refPrice',
-      key: 'refPrice',
+      title: languageForProductEdit.Stock,
+      dataIndex: 'quantity',
+      key: 'quantity',
       classType: 6,
       render: (text, record,index) => {
         return (
           <div>
             <Form.Item style={{display:'none'}}>
               {
-                getFieldDecorator(`salesInfo[${record.index}].sku_info[${index}].sku_property_ids`,{
+                getFieldDecorator(`otherInfo[${index}].sku_property_ids`,{
                   initialValue: record.sku_property_ids
                 })(
                   <Input
@@ -43,13 +42,13 @@ const SkuSupplyInfo = ({ form, languageDetails, permission, currency, salesInfo 
             </Form.Item>
             <Form.Item>
               {
-                getFieldDecorator(`salesInfo[${record.index}].sku_info[${index}].refPrice`,{
+                getFieldDecorator(`otherInfo[${index}].quantity`,{
                   initialValue: text
                 })(
                   <Input
                     disabled={disabled}
                     type='number'
-                    placeholder={languageForProductEdit.OriginalPrice}
+                    placeholder={languageForProductEdit.Stock}
                   />
                 )
               }
@@ -59,102 +58,113 @@ const SkuSupplyInfo = ({ form, languageDetails, permission, currency, salesInfo 
       },
     },
     {
-      title: languageForProductEdit.SupplyPrice,
-      dataIndex: 'supplyPrice',
-      key: 'supplyPrice',
+      title: `${languageForProductEdit.Weight}（g）`,
+      dataIndex: 'weight',
+      key: 'weight',
       classType: 6,
       render: (text, record, index) => {
         return (
           <Form.Item>
             {
-              getFieldDecorator(`salesInfo[${record.index}].sku_info[${index}].supplyPrice`,{
+              getFieldDecorator(`otherInfo[${index}].weight`,{
                 initialValue: text
               })(
                 <Input
                   disabled={disabled}
                   type='number'
-                  placeholder={languageForProductEdit.SupplyPrice}
+                  placeholder={`${languageForProductEdit.Weight}（g）`}
                 />
               )
             }
           </Form.Item>
-
+        );
+      },
+    }, {
+      title: languageForProductEdit.SupplierSKU,
+      dataIndex: 'seller_sku',
+      key: 'seller_sku',
+      classType: 6,
+      render: (text, record, index) => {
+        return (
+          <Form.Item>
+            {
+              getFieldDecorator(`otherInfo[${index}].seller_sku`,{
+                initialValue: text || null
+              })(
+                <Input
+                  disabled={disabled}
+                  type='number'
+                  placeholder={languageForProductEdit.SupplierSKU}
+                />
+              )
+            }
+          </Form.Item>
         );
       },
     },
-    {
-      title: languageForProductEdit.ShippingFee,
-      dataIndex: 'refShipPrice',
-      key: 'refShipPrice',
-      classType: 6,
-      render: (text, record, index) => {
-        return (
-          <Form.Item>
-            {
-              getFieldDecorator(`salesInfo[${record.index}].sku_info[${index}].refShipPrice`, {
-                initialValue: text
-              })(
-                <Input
-                  disabled={disabled}
-                  type='number'
-                  placeholder={languageForProductEdit.ShippingFee}
-                />
-              )
-            }
-          </Form.Item>
-        );
-      },
-    }
-    ];
-  const dataKey = 'sku_property_ids';
-  //需要填充的数据
+  ];
   const inputArr = [
     {
-      key: 'refPrice',
-      placeholder: languageForProductEdit.OriginalPrice,
+      key: 'quantity',
+      placeholder: languageForProductEdit.Stock
     },
     {
-      key: 'supplyPrice',
-      placeholder: languageForProductEdit.SupplyCost,
+      key: 'weight',
+      placeholder: languageForProductEdit.Weight
     },
     {
-      key: 'refShipPrice',
-      placeholder: languageForProductEdit.ShippingFee
+      key: 'seller_sku',
+      placeholder: languageForProductEdit.SupplierSKU
     }
-    ];
-  //批量填充
-  const batchInput = (selectedRowKeys, rateOfExChange) => {
+  ]
+  const batchInput = (selectedRowKeys) => {
     const { getFieldsValue, setFieldsValue } = form;
     const keysArr = inputArr.map(item => item.key);
-    const inputValue = getFieldsValue([...keysArr, 'salesInfo']);
-    const result = skuPricSolve(selectedRowKeys, inputValue, rateOfExChange, keysArr, dataKey);
+    const inputValue = getFieldsValue([...keysArr, 'otherInfo']);
+    const result = inputValue.otherInfo.map((item) => {
+      if(selectedRowKeys.indexOf(item[dataKey])>-1) {
+        const obj = {};
+        keysArr.forEach((item) => {
+          inputValue[item] ? obj[item] = inputValue[item] : null;
+        })
+        return {
+          ...item,
+          ...obj
+        }
+      }else {
+        return item
+      }
+    })
+    console.log(result);
+    // return;
     setFieldsValue({
-      salesInfo: result
+      otherInfo: result
     })
   }
   return (
     <div
       className={styles.card}
     >
-      <div className="ant-card-head-title">{languageForProductEdit.SKUSupplyInformation}</div>
-
+      <div className={`ant-card-head-title ${styles.otherInfo}`}>
+        {languageForProductEdit.OtherInformation}
+      </div>
       <SkuInfoTable
         languageDetails={languageDetails}
         permission={permission}
         form={form}
         columns={columns}
         currency={currency}
-        dataSource={salesInfo}
+        dataSource={skuOtherInfo}
         disabled={disabled}
         dataKey={dataKey}
         batchInput={batchInput}
         inputArr={inputArr}
+        hasTab={false}
         rowSelection={true}
-        exchangeRate={true}
-        hasTab={true}
+        exchangeRate={false}
       />
     </div>
   )
 }
 
-export default SkuSupplyInfo;
+export default SkuOtherInfo

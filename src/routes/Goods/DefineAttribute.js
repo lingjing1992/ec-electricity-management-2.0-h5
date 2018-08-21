@@ -7,13 +7,12 @@ const DefineAttribute = ({ form, createDefinedAttr, languageDetails, showModalSp
   const languageForProductEdit = languageDetails.goods.productEdit;
   return (
     <div>
-      <CreateAttribute
-        form={form}
-        spuAttributesList={createDefinedAttr}
-        type={'definedAttr'}
-      />
+      {/*<CreateAttribute*/}
+        {/*form={form}*/}
+        {/*spuAttributesList={createDefinedAttr}*/}
+        {/*type={'definedAttr'}*/}
+      {/*/>*/}
       <Form.Item
-        // label="SPU自定义属性属性"
         className={`${styles.spuTitleName} ${styles.spuNulTitl} ${styles.spuButton}`}
       >
         <Button

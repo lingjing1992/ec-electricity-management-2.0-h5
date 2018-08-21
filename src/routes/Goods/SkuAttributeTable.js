@@ -46,17 +46,6 @@ export default class SkuAttributeTable extends PureComponent {
     const disabled = permission['100041'].disabled;
     //表格属性
     const columns = [
-      // {
-      //   title: 'ID',
-      //   dataIndex: 'property_id',
-      //   key: 'property_id',
-      //   classType: 1,
-      //   render: (text) => {
-      //     return (
-      //       <div>{text}</div>
-      //     );
-      //   },
-      // },
       {
         title: languageForProductEdit.Type,
         dataIndex: 'name',
@@ -132,7 +121,7 @@ export default class SkuAttributeTable extends PureComponent {
                   <Form.Item>
                     {
                       getFieldDecorator(`propertyConfig[${_index}][${index}].url`, {
-                        initialValue: null
+                        initialValue: imageUrl
                       })(
                         <Upload
                           name="upload_img"
